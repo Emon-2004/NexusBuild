@@ -4,6 +4,7 @@ import { Search, LogOut, LayoutDashboard, Menu, X, MapPin, Building2 } from "luc
 import { useAuth } from "../../Context/AuthContext";
 import { useDatabase } from "../../Context/DatabaseContext";
 import { PROJECTS } from "../../data/projectsData";
+import DEFAULT_SYSTEM_SETTINGS from "../../config/defaultSettings";
 
 // ─── Navbar ───────────────────────────────────────────────────────────────────
 // Figma spec (Header - TopNavBar, consistent across all frames):
@@ -280,7 +281,7 @@ const Navbar = () => {
                                     <Building2 size={24} />
                                 </div>
                                 <span className="text-[22px] font-extrabold text-[#000f22] tracking-tight">
-                                    {systemSettings?.companyName || 'Reliance Housing Ltd.'}
+                                    {systemSettings?.companyName || DEFAULT_SYSTEM_SETTINGS.companyName}
                                 </span>
                             </div>
                         )}

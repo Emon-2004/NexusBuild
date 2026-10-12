@@ -1,6 +1,7 @@
 import { createContext, useContext } from 'react';
 import { useDatabase } from './DatabaseContext';
 import { useAuth } from './AuthContext';
+import { DEFAULT_SYSTEM_SETTINGS } from '../config/defaultSettings';
 import { showToast } from '../Components/Toast/globalToast';
 
 const ClientDataContext = createContext(null);
@@ -58,10 +59,10 @@ export const ClientDataProvider = ({ children }) => {
 
     const support = {
         exec: {
-            name: db.systemSettings?.accountExecName || 'Farhana Islam',
-            role: db.systemSettings?.accountExecRole || 'Dedicated Account Exec',
-            email: db.systemSettings?.accountExecEmail || 'farhana@reliance.com',
-            phone: db.systemSettings?.accountExecPhone || '+880 1700-123456'
+            name: db.systemSettings?.accountExecName || DEFAULT_SYSTEM_SETTINGS.accountExecName,
+            role: db.systemSettings?.accountExecRole || DEFAULT_SYSTEM_SETTINGS.accountExecRole,
+            email: db.systemSettings?.accountExecEmail || DEFAULT_SYSTEM_SETTINGS.accountExecEmail,
+            phone: db.systemSettings?.accountExecPhone || DEFAULT_SYSTEM_SETTINGS.accountExecPhone
         },
         faqs: [
             { q: 'How do I submit a variation order request?', a: 'All variation order requests must be submitted through your assigned Project Manager via this portal. Navigate to the "Submit Request" form on the left, select "Change Order", and attach any relevant architectural sketches or vendor quotes.' },

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import heroImg from '../../assets/pics/hero_pic.png';
 import { useClientData } from '../../Context/ClientDataContext';
 import { useDatabase } from '../../Context/DatabaseContext';
+import { DEFAULT_SYSTEM_SETTINGS } from '../../config/defaultSettings';
 import { showToast } from '../../Components/Toast/globalToast';
 
 const PrintView = ({ financials, userProfile, systemSettings }) => (
@@ -21,22 +22,13 @@ const PrintView = ({ financials, userProfile, systemSettings }) => (
                     )}
                     <div>
                         <h1 className="font-extrabold text-2xl tracking-wider text-[#003178] leading-none uppercase">
-                            {systemSettings?.companyName || 'RELIANCE HOUSING LTD.'}
+                            {systemSettings?.companyName || DEFAULT_SYSTEM_SETTINGS.companyName}
                         </h1>
                         <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">Premier Property & Infrastructure Solutions</p>
                     </div>
                 </div>
                 <div className="text-[11px] text-slate-400 mt-2">
-                    {(() => {
-                        try {
-                            const saved = localStorage.getItem('system_settings');
-                            if (saved) {
-                                const parsed = JSON.parse(saved);
-                                return `${parsed.headOfficeAddress} • ${parsed.supportEmail} • ${parsed.supportPhone}`;
-                            }
-                        } catch(e) {}
-                        return 'Shamabay New Market, Narayanganj • info@reliancehousing.com • +880 1234 567890';
-                    })()}
+                    {systemSettings?.headOfficeAddress || DEFAULT_SYSTEM_SETTINGS.headOfficeAddress} • {systemSettings?.supportEmail || DEFAULT_SYSTEM_SETTINGS.supportEmail} • {systemSettings?.supportPhone || DEFAULT_SYSTEM_SETTINGS.supportPhone}
                 </div>
             </div>
             <div className="text-right space-y-1">
@@ -205,7 +197,7 @@ const Overview = () => {
                 doc.setTextColor(255, 255, 255);
                 doc.setFont("helvetica", "bold");
                 doc.setFontSize(13);
-                doc.text("RELIANCE HOUSING LTD.", 39, 18);
+                doc.text(systemSettings?.companyName || DEFAULT_SYSTEM_SETTINGS.companyName, 39, 18);
                 
                 doc.setTextColor(254, 118, 42);
                 doc.setFont("helvetica", "bold");
@@ -215,16 +207,7 @@ const Overview = () => {
                 doc.setTextColor(190, 210, 240);
                 doc.setFont("helvetica", "normal");
                 doc.setFontSize(8);
-                const sysContact = (() => {
-                    try {
-                        const s = localStorage.getItem('system_settings');
-                        if (s) {
-                            const p = JSON.parse(s);
-                            return `${p.headOfficeAddress} | ${p.supportEmail} | ${p.supportPhone}`;
-                        }
-                    } catch(e) {}
-                    return "Shamabay New Market, Narayanganj | info@reliancehousing.com | +880 1234 567890";
-                })();
+                const sysContact = `${systemSettings?.headOfficeAddress || DEFAULT_SYSTEM_SETTINGS.headOfficeAddress} | ${systemSettings?.supportEmail || DEFAULT_SYSTEM_SETTINGS.supportEmail} | ${systemSettings?.supportPhone || DEFAULT_SYSTEM_SETTINGS.supportPhone}`;
                 doc.text(sysContact, 39, 28);
 
                 // Official Receipt Badge
@@ -363,7 +346,7 @@ const Overview = () => {
                 doc.setTextColor(254, 118, 42);
                 doc.setFont("helvetica", "bold");
                 doc.setFontSize(7);
-                doc.text("RELIANCE HOUSING", 108, 174, { align: 'center' });
+                doc.text((systemSettings?.companyName || DEFAULT_SYSTEM_SETTINGS.companyName).toUpperCase(), 108, 174, { align: 'center' });
                 doc.setFont("helvetica", "bold");
                 doc.setFontSize(6.5);
                 doc.text("VERIFIED SECURE", 108, 179, { align: 'center' });
@@ -382,7 +365,7 @@ const Overview = () => {
                 doc.setTextColor(148, 163, 184);
                 doc.setFont("helvetica", "italic");
                 doc.setFontSize(6.5);
-                doc.text("This receipt is electronically generated and verified by Reliance Housing Ltd. database records. No physical signature is required.", 20, 221);
+                doc.text(`This receipt is electronically generated and verified by ${systemSettings?.companyName || DEFAULT_SYSTEM_SETTINGS.companyName} database records. No physical signature is required.`, 20, 221);
 
                 // Save PDF
                 doc.save(`Receipt_${tx.id || 'txn'}.pdf`);

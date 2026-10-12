@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Download, FileText, CheckCircle } from 'lucide-react';
 import { useClientData } from '../../Context/ClientDataContext';
+import { useDatabase } from '../../Context/DatabaseContext';
+import { DEFAULT_SYSTEM_SETTINGS } from '../../config/defaultSettings';
 import { showToast } from '../../Components/Toast/globalToast';
 
-const PrintView = ({ financials, userProfile }) => (
+const PrintView = ({ financials, userProfile, systemSettings }) => (
     <div id="print-area" className="hidden print:block bg-white text-slate-800 p-12 font-sans max-w-4xl mx-auto border border-slate-300 rounded shadow-sm">
         {/* Corporate Header Banner */}
         <div className="flex justify-between items-start border-b border-slate-350 pb-8 mb-8">
@@ -11,21 +13,12 @@ const PrintView = ({ financials, userProfile }) => (
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-[#003178] rounded flex items-center justify-center font-black text-xl text-white">R</div>
                     <div>
-                        <h1 className="font-extrabold text-2xl tracking-wider text-[#003178] leading-none">RELIANCE HOUSING LTD.</h1>
+                        <h1 className="font-extrabold text-2xl tracking-wider text-[#003178] leading-none uppercase">{systemSettings?.companyName || DEFAULT_SYSTEM_SETTINGS.companyName}</h1>
                         <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">Premier Property & Infrastructure Solutions</p>
                     </div>
                 </div>
                 <div className="text-[11px] text-slate-400 mt-2">
-                    {(() => {
-                        try {
-                            const saved = localStorage.getItem('system_settings');
-                            if (saved) {
-                                const parsed = JSON.parse(saved);
-                                return `${parsed.headOfficeAddress} • ${parsed.supportEmail} • ${parsed.supportPhone}`;
-                            }
-                        } catch(e) {}
-                        return 'Shamabay New Market, Narayanganj • info@reliancehousing.com • +880 1234 567890';
-                    })()}
+                    {systemSettings?.headOfficeAddress || DEFAULT_SYSTEM_SETTINGS.headOfficeAddress} • {systemSettings?.supportEmail || DEFAULT_SYSTEM_SETTINGS.supportEmail} • {systemSettings?.supportPhone || DEFAULT_SYSTEM_SETTINGS.supportPhone}
                 </div>
             </div>
             <div className="text-right space-y-1">
@@ -129,6 +122,7 @@ const PrintView = ({ financials, userProfile }) => (
 
 const FinancialLedger = () => {
     const { loading, financials, userProfile, downloadStatement } = useClientData();
+    const { systemSettings } = useDatabase();
 
     const handleDownloadReceipt = (tx) => {
         const generatePDF = () => {
@@ -160,7 +154,7 @@ const FinancialLedger = () => {
                 doc.setTextColor(255, 255, 255);
                 doc.setFont("helvetica", "bold");
                 doc.setFontSize(13);
-                doc.text("RELIANCE HOUSING LTD.", 39, 18);
+                doc.text(systemSettings?.companyName || DEFAULT_SYSTEM_SETTINGS.companyName, 39, 18);
                 
                 doc.setTextColor(254, 118, 42);
                 doc.setFont("helvetica", "bold");
@@ -170,16 +164,7 @@ const FinancialLedger = () => {
                 doc.setTextColor(190, 210, 240);
                 doc.setFont("helvetica", "normal");
                 doc.setFontSize(8);
-                const sysContact = (() => {
-                    try {
-                        const s = localStorage.getItem('system_settings');
-                        if (s) {
-                            const p = JSON.parse(s);
-                            return `${p.headOfficeAddress} | ${p.supportEmail} | ${p.supportPhone}`;
-                        }
-                    } catch(e) {}
-                    return "Shamabay New Market, Narayanganj | info@reliancehousing.com | +880 1234 567890";
-                })();
+                const sysContact = `${systemSettings?.headOfficeAddress || DEFAULT_SYSTEM_SETTINGS.headOfficeAddress} | ${systemSettings?.supportEmail || DEFAULT_SYSTEM_SETTINGS.supportEmail} | ${systemSettings?.supportPhone || DEFAULT_SYSTEM_SETTINGS.supportPhone}`;
                 doc.text(sysContact, 39, 28);
 
                 // Official Receipt Badge
@@ -318,7 +303,7 @@ const FinancialLedger = () => {
                 doc.setTextColor(254, 118, 42);
                 doc.setFont("helvetica", "bold");
                 doc.setFontSize(7);
-                doc.text("RELIANCE HOUSING", 108, 174, { align: 'center' });
+                doc.text((systemSettings?.companyName || DEFAULT_SYSTEM_SETTINGS.companyName).toUpperCase(), 108, 174, { align: 'center' });
                 doc.setFont("helvetica", "bold");
                 doc.setFontSize(6.5);
                 doc.text("VERIFIED SECURE", 108, 179, { align: 'center' });
@@ -337,7 +322,7 @@ const FinancialLedger = () => {
                 doc.setTextColor(148, 163, 184);
                 doc.setFont("helvetica", "italic");
                 doc.setFontSize(6.5);
-                doc.text("This receipt is electronically generated and verified by Reliance Housing Ltd. database records. No physical signature is required.", 20, 221);
+                doc.text(`This receipt is electronically generated and verified by ${systemSettings?.companyName || DEFAULT_SYSTEM_SETTINGS.companyName} database records. No physical signature is required.`, 20, 221);
 
                 // Save PDF
                 doc.save(`Receipt_${tx.id || 'txn'}.pdf`);
@@ -394,7 +379,7 @@ const FinancialLedger = () => {
 
     return (
         <>
-            <PrintView financials={financials} userProfile={userProfile} />
+            <PrintView financials={financials} userProfile={userProfile} systemSettings={systemSettings} />
             
             <div className="flex flex-col gap-6 print:hidden w-full max-w-5xl text-slate-800">
                 

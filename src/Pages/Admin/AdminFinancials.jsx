@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useAdminData } from '../../Context/AdminDataContext';
+import { useDatabase } from '../../Context/DatabaseContext';
+import { DEFAULT_SYSTEM_SETTINGS } from '../../config/defaultSettings';
 import { Search, Download, Filter, Eye, Plus, X, Building2, CreditCard, CheckCircle } from 'lucide-react';
 import { showToast } from '../../Components/Toast/globalToast';
 
@@ -8,6 +10,7 @@ const AdminFinancials = () => {
         properties, clients, transactions, installments,
         addTransaction, updateInstallment, updateProperty 
     } = useAdminData();
+    const { systemSettings } = useDatabase();
 
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedReceiptProp, setSelectedReceiptProp] = useState(null);
@@ -407,7 +410,7 @@ const AdminFinancials = () => {
                         <div className="p-6 bg-[#1A4B9C] text-white flex justify-between items-center flex-shrink-0">
                             <div>
                                 <h3 className="text-lg font-bold">Official Payment Receipt</h3>
-                                <p className="text-blue-200 text-xs mt-0.5">Reliance Housing LTD • Client Copy</p>
+                                <p className="text-blue-200 text-xs mt-0.5">{systemSettings?.companyName || DEFAULT_SYSTEM_SETTINGS.companyName} • Client Copy</p>
                             </div>
                             <button onClick={() => setSelectedReceiptProp(null)} className="text-blue-200 hover:text-white">
                                 <X size={20} />
@@ -418,9 +421,9 @@ const AdminFinancials = () => {
                             <div id="receipt-print-area" className="space-y-6">
                                 <div className="flex justify-between items-start border-b border-slate-200 pb-4">
                                     <div>
-                                        <div className="font-extrabold text-xl text-[#1A4B9C]">RELIANCE HOUSING LTD.</div>
-                                        <div className="text-xs text-slate-500">Chashiara, Narayanganj</div>
-                                        <div className="text-xs text-slate-500">contact@reliancehousing.com</div>
+                                        <div className="font-extrabold text-xl text-[#1A4B9C] uppercase">{systemSettings?.companyName || DEFAULT_SYSTEM_SETTINGS.companyName}</div>
+                                        <div className="text-xs text-slate-500">{systemSettings?.headOfficeAddress || DEFAULT_SYSTEM_SETTINGS.headOfficeAddress}</div>
+                                        <div className="text-xs text-slate-500">{systemSettings?.supportEmail || DEFAULT_SYSTEM_SETTINGS.supportEmail}</div>
                                     </div>
                                     <div className="text-right">
                                         <div className="text-xs text-slate-400 font-bold uppercase">Receipt No</div>

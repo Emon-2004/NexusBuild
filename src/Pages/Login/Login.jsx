@@ -7,11 +7,14 @@ import Footer from '../../Components/Footer/Footer';
 import Navbar from '../../Components/Header/Navbar';
 import ForgotPasswordModal from '../../Components/ForgotPasswordModal/ForgotPasswordModal';
 import { useAuth } from '../../Context/AuthContext';
+import { useDatabase } from '../../Context/DatabaseContext';
+import { DEFAULT_SYSTEM_SETTINGS } from '../../config/defaultSettings';
 // ─── Login logging is handled inline below via supabase.rpc() ────────────────
 
 const Login = () => {
     const navigate = useNavigate();
     const { user, signIn } = useAuth();
+    const { systemSettings } = useDatabase();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -46,7 +49,7 @@ const Login = () => {
             await signIn(loginEmail, password);
             setRedirecting(true);
         } catch (err) {
-            setError(err.message || 'Invalid email or password. Please use a registered client email, or "admin@reliance.com".');
+            setError(err.message || 'Invalid email or password. Please use a registered client email or administrator account.');
         } finally {
             setLoading(false);
         }
@@ -379,7 +382,7 @@ const Login = () => {
                                         <div className="flex-1 h-px bg-[#e1e3e4]" />
                                     </div>
                                     <p className="text-[14px] text-[#43474d] text-center">
-                                        New to Reliance Housing?{' '}
+                                        New to {systemSettings?.companyName || DEFAULT_SYSTEM_SETTINGS.companyName}?{' '}
                                         <Link
                                             to="/register"
                                             className="text-[#0a2540] font-bold hover:text-[#fe762a] transition-colors duration-200"

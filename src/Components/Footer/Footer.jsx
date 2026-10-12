@@ -16,15 +16,12 @@ import { Mail, Phone, MapPin, Building2 } from "lucide-react";
 
 import { useDatabase } from "../../Context/DatabaseContext";
 
+import DEFAULT_SYSTEM_SETTINGS from "../../config/defaultSettings";
+
 const Footer = () => {
     const { systemSettings } = useDatabase();
 
-    const currentSettings = systemSettings || {
-        companyName: 'Reliance Housing Ltd.',
-        headOfficeAddress: 'Shamabay New Market, 259 B B Road, Narayanganj',
-        supportEmail: 'info@reliancehousing.com',
-        supportPhone: '+880 1234 567890'
-    };
+    const currentSettings = systemSettings || DEFAULT_SYSTEM_SETTINGS;
 
     return (
         <footer className="bg-[#000f22] text-white border-t border-[#0a2540]">

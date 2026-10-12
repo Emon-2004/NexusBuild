@@ -21,11 +21,11 @@ const STATS = [
 ];
 
 // ── Timeline milestones ───────────────────────────────────────────────────────
-const MILESTONES = [
+const getMilestones = (companyName) => [
     {
         year: '2003',
         title: 'Foundation',
-        desc: 'Reliance Housing Ltd. founded at Shamabay New Market with a vision for Narayanganj\'s growth.',
+        desc: `${companyName} founded at Shamabay New Market with a vision for Narayanganj's growth.`,
     },
     {
         year: '2009',
@@ -85,24 +85,28 @@ const TEAM = [
     },
 ];
 
+import DEFAULT_SYSTEM_SETTINGS from '../../config/defaultSettings';
+
 // ─────────────────────────────────────────────────────────────────────────────
 const About = () => {
     const { systemSettings } = useDatabase();
-    const headAddress = systemSettings?.headOfficeAddress || 'Shamabay New Market, 259 B B Road, Narayanganj';
+    const companyName = systemSettings?.companyName || DEFAULT_SYSTEM_SETTINGS.companyName;
+    const headAddress = systemSettings?.headOfficeAddress || DEFAULT_SYSTEM_SETTINGS.headOfficeAddress;
+    const milestones = getMilestones(companyName);
 
     // Dynamic About Hero Properties
-    const heroEyebrow = systemSettings?.aboutHeroEyebrow || 'Est. 2003 · Narayanganj, Bangladesh';
-    const heroHeadline = systemSettings?.aboutHeroHeadline || 'Decades of Trust in Narayanganj.';
-    const heroSubtitle = systemSettings?.aboutHeroSubtitle || "What began in the bustling corridors of Shamabay New Market, B B Road, has evolved into Narayanganj's hallmark of infrastructure excellence. Reliance Housing Ltd. was founded on a simple promise: to build not just structures, but legacies of trust and architectural integrity.";
-    const heroCta1Text = systemSettings?.aboutHeroCta1Text || 'Explore Our Heritage';
-    const heroCta1Link = systemSettings?.aboutHeroCta1Link || '/';
-    const heroCta2Text = systemSettings?.aboutHeroCta2Text || 'View on Map';
-    const heroCta2Link = systemSettings?.aboutHeroCta2Link || '/gismap';
+    const heroEyebrow = systemSettings?.aboutHeroEyebrow || DEFAULT_SYSTEM_SETTINGS.aboutHeroEyebrow;
+    const heroHeadline = systemSettings?.aboutHeroHeadline || DEFAULT_SYSTEM_SETTINGS.aboutHeroHeadline;
+    const heroSubtitle = systemSettings?.aboutHeroSubtitle || DEFAULT_SYSTEM_SETTINGS.aboutHeroSubtitle;
+    const heroCta1Text = systemSettings?.aboutHeroCta1Text || DEFAULT_SYSTEM_SETTINGS.aboutHeroCta1Text;
+    const heroCta1Link = systemSettings?.aboutHeroCta1Link || DEFAULT_SYSTEM_SETTINGS.aboutHeroCta1Link;
+    const heroCta2Text = systemSettings?.aboutHeroCta2Text || DEFAULT_SYSTEM_SETTINGS.aboutHeroCta2Text;
+    const heroCta2Link = systemSettings?.aboutHeroCta2Link || DEFAULT_SYSTEM_SETTINGS.aboutHeroCta2Link;
 
     // Dynamic Our People Properties
-    const peopleEyebrow = systemSettings?.aboutPeopleEyebrow || 'Our People';
-    const peopleTitle = systemSettings?.aboutPeopleTitle || "The Visionaries Behind Narayanganj's Finest Landmarks";
-    const peopleSubtitle = systemSettings?.aboutPeopleSubtitle || "The visionaries behind Narayanganj's finest landmarks.";
+    const peopleEyebrow = systemSettings?.aboutPeopleEyebrow || DEFAULT_SYSTEM_SETTINGS.aboutPeopleEyebrow;
+    const peopleTitle = systemSettings?.aboutPeopleTitle || DEFAULT_SYSTEM_SETTINGS.aboutPeopleTitle;
+    const peopleSubtitle = systemSettings?.aboutPeopleSubtitle || DEFAULT_SYSTEM_SETTINGS.aboutPeopleSubtitle;
     const teamMembers = systemSettings?.aboutTeamMembers?.length ? systemSettings.aboutTeamMembers : TEAM;
 
     return (
@@ -288,7 +292,7 @@ const About = () => {
                         <div className="hidden lg:block absolute left-1/2 -translate-x-px top-0 bottom-0 w-px bg-[#e1e3e4]" />
 
                         <div className="flex flex-col gap-12">
-                            {MILESTONES.map((m, i) => {
+                            {milestones.map((m, i) => {
                                 const isLeft = i % 2 === 0;
                                 return (
                                     <div
@@ -430,8 +434,7 @@ const About = () => {
                                 Building the future of Bangladesh with transparency, integrity, and innovative GIS technology.
                             </h2>
                             <p className="text-[18px] font-normal text-[#b0c8eb] leading-[28px]">
-                                Since our founding at Shamabay New Market, {systemSettings?.companyName || 'Reliance Housing Ltd.'} has been synonymous
-                                with stability and innovation in the local infrastructure landscape.
+                                {systemSettings?.aboutStoryText || DEFAULT_SYSTEM_SETTINGS.aboutStoryText}
                             </p>
                         </div>
 

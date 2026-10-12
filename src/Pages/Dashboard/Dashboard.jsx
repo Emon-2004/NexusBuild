@@ -7,6 +7,7 @@ import {
 import { useAuth } from '../../Context/AuthContext';
 import { ClientDataProvider, useClientData } from '../../Context/ClientDataContext';
 import { useDatabase } from '../../Context/DatabaseContext';
+import { DEFAULT_SYSTEM_SETTINGS } from '../../config/defaultSettings';
 import { showToast } from '../../Components/Toast/globalToast';
 
 const NAV_LINKS = [
@@ -167,7 +168,7 @@ const DashboardContent = () => {
                         )}
                         <div className="min-w-0">
                             <div className="text-white font-bold text-lg leading-tight truncate">
-                                {systemSettings?.companyName || 'Reliance Housing LTD'}
+                                {systemSettings?.companyName || DEFAULT_SYSTEM_SETTINGS.companyName}
                             </div>
                             <div className="text-[#A0B2C6] text-xs mt-0.5 font-medium">Client Portal</div>
                         </div>

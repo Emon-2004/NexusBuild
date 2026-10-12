@@ -7,6 +7,7 @@ import {
 import Navbar from "../../Components/Header/Navbar";
 import Footer from "../../Components/Footer/Footer";
 import { useDatabase } from "../../Context/DatabaseContext";
+import { DEFAULT_SYSTEM_SETTINGS } from "../../config/defaultSettings";
 
 // ─── Project Details Page ─────────────────────────────────────────────────────
 // Displays comprehensive information for an individual project.
@@ -30,7 +31,7 @@ const ImageWithSkeleton = ({ src, alt, className }) => {
 
 const ProjectDetails = () => {
     const { id } = useParams();
-    const { publicProjects } = useDatabase();
+    const { publicProjects, systemSettings } = useDatabase();
     
     const project = publicProjects.find(p => 
         String(p.id).toLowerCase() === String(id).toLowerCase() || 
@@ -286,7 +287,7 @@ const ProjectDetails = () => {
                                 to="/contact"
                                 className="inline-flex items-center justify-center gap-2 bg-[#fe762a] hover:bg-[#a14000] text-[#5e2200] hover:text-white font-bold text-[14px] py-3.5 px-4 rounded-[4px] transition-colors mt-2"
                             >
-                                Contact Reliance Housing
+                                Contact {systemSettings?.companyName || DEFAULT_SYSTEM_SETTINGS.companyName}
                                 <ArrowRight size={16} />
                             </Link>
                         </div>

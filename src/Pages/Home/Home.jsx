@@ -18,6 +18,7 @@ import {
 
 import { PROJECTS } from "../../data/projectsData";
 import { useDatabase } from "../../Context/DatabaseContext";
+import { DEFAULT_SYSTEM_SETTINGS } from "../../config/defaultSettings";
 import map_mockup from "../../assets/pics/map_mockup.png";
 
 // Public assets matching design system
@@ -168,36 +169,36 @@ const Home = () => {
                         {/* Tagline pill badge */}
                         <div className="inline-flex self-start">
                             <span className="bg-[#a14000] text-white text-[12px] font-medium px-3.5 py-1.5 uppercase tracking-wider rounded-[2px]">
-                                {systemSettings?.heroTagline || 'Reliance Housing Ltd.'}
+                                {systemSettings?.heroTagline || DEFAULT_SYSTEM_SETTINGS.heroTagline}
                             </span>
                         </div>
 
                         {/* Headline */}
                         <h1 className="text-[32px] sm:text-[44px] lg:text-[56px] font-bold text-white leading-[1.15] tracking-tight">
-                            {systemSettings?.heroHeadline || "Building Narayanganj's Future Architecture."}
+                            {systemSettings?.heroHeadline || DEFAULT_SYSTEM_SETTINGS.heroHeadline}
                         </h1>
 
                         {/* Subtitle */}
                         <p className="text-[16px] lg:text-[18px] font-normal text-[#e1e3e4] leading-relaxed max-w-[620px]">
-                            {systemSettings?.heroSubtitle || 'Precision-engineered residential complexes, commercial hubs, and GIS-mapped land developments designed for the next generation.'}
+                            {systemSettings?.heroSubtitle || DEFAULT_SYSTEM_SETTINGS.heroSubtitle}
                         </p>
 
                         {/* Action CTAs */}
                         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
                             <Link
-                                to={systemSettings?.heroCta1Link || "/projects"}
+                                to={systemSettings?.heroCta1Link || DEFAULT_SYSTEM_SETTINGS.heroCta1Link}
                                 className="flex items-center justify-center gap-2.5 px-8 py-4 bg-[#fe762a] hover:bg-[#a14000] text-[#5e2200] hover:text-white text-[14px] font-bold transition-colors duration-200 min-h-[48px] rounded-[4px]"
                             >
-                                {systemSettings?.heroCta1Text || "Explore All Projects"}
+                                {systemSettings?.heroCta1Text || DEFAULT_SYSTEM_SETTINGS.heroCta1Text}
                                 <ArrowRight size={16} />
                             </Link>
 
                             <Link
-                                to={systemSettings?.heroCta2Link || "/gismap"}
+                                to={systemSettings?.heroCta2Link || DEFAULT_SYSTEM_SETTINGS.heroCta2Link}
                                 className="flex items-center justify-center gap-2.5 px-8 py-4 border border-[#fe762a] text-white hover:bg-[#fe762a]/10 text-[14px] font-bold transition-all duration-200 min-h-[48px] rounded-[4px]"
                             >
                                 <Globe size={16} className="text-[#fe762a]" />
-                                {systemSettings?.heroCta2Text || "Interactive GIS Map"}
+                                {systemSettings?.heroCta2Text || DEFAULT_SYSTEM_SETTINGS.heroCta2Text}
                             </Link>
                         </div>
                     </div>
@@ -592,10 +593,10 @@ const Home = () => {
                             Our Heritage
                         </span>
                         <h2 className="text-[28px] lg:text-[32px] font-bold text-[#000f22] leading-tight">
-                            Decades of Trust in Narayanganj.
+                            {systemSettings?.heritageHeadline || DEFAULT_SYSTEM_SETTINGS.heritageHeadline}
                         </h2>
                         <p className="text-[16px] lg:text-[18px] font-normal text-[#43474d] leading-relaxed">
-                            Since our founding at Shamabay New Market, {systemSettings?.companyName || 'Reliance Housing Ltd.'} has stood as a symbol of structural reliability and community growth.
+                            {systemSettings?.heritageStoryText || DEFAULT_SYSTEM_SETTINGS.heritageStoryText}
                         </p>
                         <p className="text-[16px] font-normal text-[#43474d] leading-relaxed">
                             From high-rise residential towers on BB Road to commercial hubs, our pledge remains steadfast: uncompromising engineering quality, regulatory compliance, and total client transparency.

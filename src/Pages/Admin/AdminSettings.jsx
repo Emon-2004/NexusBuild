@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { Save, Building2, Palette, Settings, CheckCircle, Upload, Trash2, Layout, Image, Users, Plus, Mail, Phone, MapPin, Globe, MessageSquare, Compass } from 'lucide-react';
 import { useDatabase } from '../../Context/DatabaseContext';
+import { DEFAULT_SYSTEM_SETTINGS } from '../../config/defaultSettings';
 import { showToast } from '../../Components/Toast/globalToast';
 
 const PRESET_COLORS = [
@@ -364,7 +365,7 @@ const AdminSettings = () => {
                                         value={settings?.heroTagline || ''} 
                                         onChange={e => setSettings({...settings, heroTagline: e.target.value})}
                                         className="w-full border border-[#E2E8F0] rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#1A4B9C] text-slate-800 bg-white" 
-                                        placeholder="e.g. Reliance Housing Ltd."
+                                        placeholder={`e.g. ${DEFAULT_SYSTEM_SETTINGS.heroTagline}`}
                                     />
                                 </div>
                                 <div>
@@ -905,7 +906,7 @@ const AdminSettings = () => {
                                                 value={settings?.accountExecEmail || ''} 
                                                 onChange={e => setSettings({...settings, accountExecEmail: e.target.value})}
                                                 className="w-full border border-[#E2E8F0] rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#1A4B9C] text-slate-800 bg-white" 
-                                                placeholder="farhana@reliance.com"
+                                                placeholder={DEFAULT_SYSTEM_SETTINGS.accountExecEmail}
                                             />
                                         </div>
                                         <div>
@@ -915,7 +916,7 @@ const AdminSettings = () => {
                                                 value={settings?.accountExecPhone || ''} 
                                                 onChange={e => setSettings({...settings, accountExecPhone: e.target.value})}
                                                 className="w-full border border-[#E2E8F0] rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#1A4B9C] text-slate-800 bg-white" 
-                                                placeholder="+880 1700-123456"
+                                                placeholder={DEFAULT_SYSTEM_SETTINGS.accountExecPhone}
                                             />
                                         </div>
                                     </div>

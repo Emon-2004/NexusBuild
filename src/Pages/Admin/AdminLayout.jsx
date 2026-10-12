@@ -7,6 +7,7 @@ import {
 import { useAuth } from '../../Context/AuthContext';
 import { AdminDataProvider, useAdminData } from '../../Context/AdminDataContext';
 import { useDatabase } from '../../Context/DatabaseContext';
+import { DEFAULT_SYSTEM_SETTINGS } from '../../config/defaultSettings';
 
 const NAV_LINKS = [
     { to: '/admin',            label: 'Dashboard',        icon: LayoutDashboard, end: true },
@@ -204,7 +205,7 @@ const AdminLayoutContent = () => {
                             )}
                         </div>
                         <div>
-                            <div className="text-white font-bold text-sm sm:text-base leading-none">{systemSettings?.companyName || 'Reliance Housing Ltd.'}</div>
+                            <div className="text-white font-bold text-sm sm:text-base leading-none">{systemSettings?.companyName || DEFAULT_SYSTEM_SETTINGS.companyName}</div>
                             <div className="text-blue-200 text-[10px] mt-0.5 uppercase tracking-wider">Admin Panel</div>
                         </div>
                         <button 
@@ -420,7 +421,7 @@ const AdminLayoutContent = () => {
                         <div className="flex items-center gap-3 border-l border-slate-200 pl-6">
                             <div className="text-right hidden sm:block">
                                 <div className="text-sm font-bold text-slate-800">Admin (MD)</div>
-                                <div className="text-xs text-slate-500">Reliance Housing Ltd.</div>
+                                <div className="text-xs text-slate-500">{systemSettings?.companyName || DEFAULT_SYSTEM_SETTINGS.companyName}</div>
                             </div>
                             <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center border border-slate-200">
                                 <img src={`https://ui-avatars.com/api/?name=Admin&background=1A4B9C&color=fff`} alt="Profile" className="w-10 h-10 rounded-full" />

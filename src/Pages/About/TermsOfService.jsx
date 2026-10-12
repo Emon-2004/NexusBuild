@@ -1,15 +1,20 @@
 import React from 'react';
 import Navbar from '../../Components/Header/Navbar';
 import Footer from '../../Components/Footer/Footer';
+import { useDatabase } from '../../Context/DatabaseContext';
+import DEFAULT_SYSTEM_SETTINGS from '../../config/defaultSettings';
 
 const TermsOfService = () => {
+    const { systemSettings } = useDatabase();
+    const company = systemSettings?.companyName || DEFAULT_SYSTEM_SETTINGS.companyName;
+
     return (
         <div className="flex flex-col min-h-screen bg-[#f3f4f5]">
             <Navbar />
             <div className="flex-grow max-w-4xl mx-auto px-6 py-12 bg-white my-8 rounded-lg shadow-md">
                 <h1 className="text-3xl font-bold text-[#000f22] mb-6">Terms of Service</h1>
                 <div className="prose text-[#43474d] space-y-4">
-                    <p>Welcome to NexusBuild (operated by Reliance Housing LTD). By accessing or using our website, portal, and services, you agree to comply with and be bound by the following terms and conditions.</p>
+                    <p>Welcome to NexusBuild (operated by {company}). By accessing or using our website, portal, and services, you agree to comply with and be bound by the following terms and conditions.</p>
                     
                     <h2 className="text-xl font-semibold text-[#000f22] mt-6">1. Acceptance of Terms</h2>
                     <p>By registering an account, purchasing properties, or accessing any service provided by us, you accept these terms in full. If you disagree with any part of these terms, you must not use our services.</p>
@@ -21,10 +26,10 @@ const TermsOfService = () => {
                     <p>All property purchases, installment schedules, and transactional records are managed in accordance with official sale agreements. Installment payments must be paid on or before their respective due dates. Late payments may attract interest or penalties as specified in individual contract agreements.</p>
 
                     <h2 className="text-xl font-semibold text-[#000f22] mt-6">4. Intellectual Property</h2>
-                    <p>All content, designs, GIS maps, logo, and graphics on this platform are intellectual property of Reliance Housing LTD and NexusBuild. Unauthorized duplication, modification, or distribution is strictly prohibited.</p>
+                    <p>All content, designs, GIS maps, logo, and graphics on this platform are intellectual property of {company} and NexusBuild. Unauthorized duplication, modification, or distribution is strictly prohibited.</p>
 
                     <h2 className="text-xl font-semibold text-[#000f22] mt-6">5. Limitation of Liability</h2>
-                    <p>Reliance Housing LTD shall not be liable for any direct, indirect, incidental, or consequential damages resulting from the use or inability to use our services, or any unauthorized access to your account.</p>
+                    <p>{company} shall not be liable for any direct, indirect, incidental, or consequential damages resulting from the use or inability to use our services, or any unauthorized access to your account.</p>
 
                     <h2 className="text-xl font-semibold text-[#000f22] mt-6">6. Changes to Terms</h2>
                     <p>We reserve the right to modify these terms at any time. Changes will be posted on this page with an updated modification date.</p>

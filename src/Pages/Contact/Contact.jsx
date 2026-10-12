@@ -14,40 +14,6 @@ import { showToast } from '../../Components/Toast/globalToast';
 // Sections: Hero | 3 Info Cards | Form + Map
 // ─────────────────────────────────────────────────────────────────────────────
 
-// ── Contact info cards ────────────────────────────────────────────────────────
-const CARDS = [
-    {
-        id:       'general',
-        icon:     Mail,
-        iconBg:   '#0a2540',   // dark navy — Figma fills
-        title:    'General Inquiries',
-        lines: [
-            { label: 'Email',  value: 'info@reliancehousing.com' },
-            { label: 'Phone',  value: '+880 1234 567890' },
-        ],
-    },
-    {
-        id:       'sales',
-        icon:     TrendingUp,
-        iconBg:   '#fe762a',   // orange accent — Figma fills
-        title:    'Sales & Investment',
-        lines: [
-            { label: 'Email',  value: 'sales@nexusbuild.com' },
-            { label: 'Hours',  value: 'Mon – Fri: 9:00 AM – 6:00 PM' },
-        ],
-    },
-    {
-        id:       'support',
-        icon:     HeadphonesIcon,
-        iconBg:   '#000f22',   // darkest — Figma fills
-        title:    'Customer Support',
-        lines: [
-            { label: 'Email',  value: 'support@reliancehousing.com' },
-            { label: 'Hours',  value: 'Mon – Sat: 8:00 AM – 8:00 PM' },
-        ],
-    },
-];
-
 // ── Subject options ───────────────────────────────────────────────────────────
 const SUBJECTS = [
     'General Inquiry',
@@ -57,15 +23,12 @@ const SUBJECTS = [
     'Other',
 ];
 
+import DEFAULT_SYSTEM_SETTINGS from '../../config/defaultSettings';
+
 // ─────────────────────────────────────────────────────────────────────────────
 const Contact = () => {
     const { addLead, systemSettings } = useDatabase();
-    const savedSettingsToUse = systemSettings || {
-        companyName: 'Reliance Housing Ltd.',
-        headOfficeAddress: 'Shamabay New Market, 259 B B Road, Narayanganj',
-        supportEmail: 'info@reliancehousing.com',
-        supportPhone: '+880 1234 567890'
-    };
+    const savedSettingsToUse = systemSettings || DEFAULT_SYSTEM_SETTINGS;
 
     const [form, setForm] = useState({
         fullName: '',
@@ -179,8 +142,8 @@ const Contact = () => {
                                 iconBg:   '#0a2540',
                                 title:    savedSettingsToUse.contactGeneralTitle || 'General Inquiries',
                                 lines: [
-                                    savedSettingsToUse.contactGeneralEmail || savedSettingsToUse.supportEmail || 'info@reliancehousing.com',
-                                    savedSettingsToUse.contactGeneralPhone || savedSettingsToUse.supportPhone || '+880 1234 567890'
+                                    savedSettingsToUse.contactGeneralEmail || savedSettingsToUse.supportEmail || DEFAULT_SYSTEM_SETTINGS.contactGeneralEmail,
+                                    savedSettingsToUse.contactGeneralPhone || savedSettingsToUse.supportPhone || DEFAULT_SYSTEM_SETTINGS.contactGeneralPhone
                                 ]
                             },
                             {
@@ -199,7 +162,7 @@ const Contact = () => {
                                 iconBg:   '#000f22',
                                 title:    savedSettingsToUse.contactSupportTitle || 'Customer Support',
                                 lines: [
-                                    savedSettingsToUse.contactSupportEmail || 'support@reliancehousing.com',
+                                    savedSettingsToUse.contactSupportEmail || DEFAULT_SYSTEM_SETTINGS.contactSupportEmail,
                                     savedSettingsToUse.contactSupportHours || 'Mon – Sat: 8:00 AM – 8:00 PM'
                                 ]
                             }

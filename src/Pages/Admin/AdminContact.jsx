@@ -1,31 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Save, Mail, Phone, Clock, MapPin, Globe, Compass, MessageSquare } from 'lucide-react';
 import { useDatabase } from '../../Context/DatabaseContext';
+import { DEFAULT_SYSTEM_SETTINGS } from '../../config/defaultSettings';
 import { showToast } from '../../Components/Toast/globalToast';
 
 const AdminContact = () => {
     const { systemSettings, updateSystemSettings } = useDatabase();
     const [activeTab, setActiveTab] = useState('hero');
-    const [settings, setSettings] = useState({
-        companyName: 'Reliance Housing Ltd.',
-        supportEmail: 'info@reliancehousing.com',
-        supportPhone: '+880 1234 567890',
-        headOfficeAddress: 'Shamabay New Market, 259 B B Road, Narayanganj',
-        contactHeroTitle: 'Get In Touch',
-        contactHeroSubtitle: "Whether you're enquiring about a project, exploring investment opportunities, or need support — our team is ready to assist you.",
-        contactOfficeHours: 'Mon – Fri: 9:00 AM – 6:00 PM\nSaturday: 9:00 AM – 2:00 PM\nSunday: Closed',
-        contactMapLat: '23.622',
-        contactMapLng: '90.500',
-        contactGeneralTitle: 'General Inquiries',
-        contactGeneralEmail: 'info@reliancehousing.com',
-        contactGeneralPhone: '+880 1234 567890',
-        contactSalesTitle: 'Sales & Investment',
-        contactSalesEmail: 'sales@nexusbuild.com',
-        contactSalesHours: 'Mon – Fri: 9:00 AM – 6:00 PM',
-        contactSupportTitle: 'Customer Support',
-        contactSupportEmail: 'support@reliancehousing.com',
-        contactSupportHours: 'Mon – Sat: 8:00 AM – 8:00 PM'
-    });
+    const [settings, setSettings] = useState(() => ({
+        ...DEFAULT_SYSTEM_SETTINGS,
+        ...(systemSettings || {})
+    }));
 
     useEffect(() => {
         if (systemSettings) {

@@ -1,5 +1,7 @@
 import React from 'react';
 import { useAdminData } from '../../Context/AdminDataContext';
+import { useDatabase } from '../../Context/DatabaseContext';
+import { DEFAULT_SYSTEM_SETTINGS } from '../../config/defaultSettings';
 import { 
     Download, TrendingUp, DollarSign, Building, AlertCircle,
     UserPlus, CreditCard, CheckSquare, Megaphone,
@@ -10,21 +12,26 @@ import { useNavigate } from 'react-router';
 const AdminPrintReport = ({ 
     isGlobal, currentProject, activeProjectsCount, totalRevenue, totalReceivables,
     unitsSold, totalUnitsCount, pendingApprovals, newLeads, activeClients,
-    transactions, clients, properties, projects, formatBDT, collectionRate, revenueGrowth
+    transactions, clients, properties, projects, formatBDT, collectionRate, revenueGrowth,
+    systemSettings
 }) => (
     <div id="print-area" className="hidden print:block bg-white text-slate-800 p-12 font-sans max-w-4xl mx-auto border border-slate-300 rounded shadow-sm">
         {/* Header */}
         <div className="flex justify-between items-start border-b-2 border-[#1A4B9C] pb-6 mb-8">
             <div className="space-y-1">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-[#1A4B9C] text-white flex items-center justify-center font-black text-xl rounded">R</div>
+                    <div className="w-10 h-10 bg-[#1A4B9C] text-white flex items-center justify-center font-black text-xl rounded">
+                        {(systemSettings?.companyName || 'R').charAt(0).toUpperCase()}
+                    </div>
                     <div>
-                        <h1 className="font-extrabold text-2xl tracking-wider text-[#1A4B9C] leading-none">RELIANCE HOUSING LTD.</h1>
+                        <h1 className="font-extrabold text-2xl tracking-wider text-[#1A4B9C] leading-none uppercase">
+                            {systemSettings?.companyName || DEFAULT_SYSTEM_SETTINGS.companyName}
+                        </h1>
                         <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">Super Admin Executive Operational Report</p>
                     </div>
                 </div>
                 <div className="text-[11px] text-slate-400 mt-2">
-                    Narayanganj Corporate HQ • executive@reliancehousing.com • +880 1800-000000
+                    {systemSettings?.headOfficeAddress || DEFAULT_SYSTEM_SETTINGS.headOfficeAddress} • {systemSettings?.supportEmail || DEFAULT_SYSTEM_SETTINGS.supportEmail} • {systemSettings?.supportPhone || DEFAULT_SYSTEM_SETTINGS.supportPhone}
                 </div>
             </div>
             <div className="text-right space-y-1">
@@ -172,6 +179,7 @@ const AdminPrintReport = ({
 
 const AdminDashboard = () => {
     const { clients, properties, transactions, applications, leads, projects, activeProject } = useAdminData();
+    const { systemSettings } = useDatabase();
     const navigate = useNavigate();
 
     const isGlobal = activeProject === 'all';
@@ -244,6 +252,7 @@ const AdminDashboard = () => {
                 formatBDT={formatBDT}
                 collectionRate={collectionRate}
                 revenueGrowth={revenueGrowth}
+                systemSettings={systemSettings}
             />
 
             <div className="max-w-5xl mx-auto space-y-6 px-4 lg:px-0 print:hidden">
@@ -365,7 +374,7 @@ const AdminDashboard = () => {
                         <div className="px-6 py-4 border-b border-[#E2E8F0] flex justify-between items-center bg-slate-50">
                             <div>
                                 <h3 className="text-sm font-bold text-slate-800">Projects Performance Comparison Matrix</h3>
-                                <p className="text-xs text-slate-500">Executive comparison across all active Reliance Housing developments</p>
+                                <p className="text-xs text-slate-500">Executive comparison across all active {systemSettings?.companyName || DEFAULT_SYSTEM_SETTINGS.companyName} developments</p>
                             </div>
                             <span className="text-xs bg-[#E1EFFE] text-[#1A4B9C] px-3 py-1 rounded-full font-bold">
                                 {projects.length} Active Developments

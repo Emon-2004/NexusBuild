@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { Link } from "react-router";
 import { Search, MapPin, ArrowRight, Wrench, CalendarCheck, RotateCcw, CheckCircle2 } from "lucide-react";
 import { useDatabase } from "../../Context/DatabaseContext";
+import { DEFAULT_SYSTEM_SETTINGS } from "../../config/defaultSettings";
 import { supabase } from "../../lib/supabaseClient";
 import { showToast } from '../../Components/Toast/globalToast';
 
@@ -194,7 +195,7 @@ const Projects = () => {
                         {/* Figma: red pill — #a14000 fill, 12px fw=500 white */}
                         <div className="inline-flex self-start">
                             <span className="bg-[#a14000] text-white text-[12px] font-medium px-3 py-1 uppercase tracking-wider rounded-[2px]">
-                                {systemSettings?.heroTagline || systemSettings?.companyName || 'Reliance Housing Ltd.'}
+                                {systemSettings?.heroTagline || DEFAULT_SYSTEM_SETTINGS.heroTagline}
                             </span>
                         </div>
 
@@ -522,10 +523,10 @@ const Projects = () => {
                     {/* Left */}
                     <div className="flex-1 flex flex-col gap-6 max-w-[552px]">
                         <h2 className="text-[28px] lg:text-[32px] font-semibold text-[#000f22] leading-tight">
-                            Decades of Trust in Narayanganj.
+                            {systemSettings?.heritageHeadline || DEFAULT_SYSTEM_SETTINGS.heritageHeadline}
                         </h2>
                         <p className="text-[16px] lg:text-[18px] font-normal text-[#43474d] leading-relaxed">
-                            Since our founding at Shamabay New Market, {systemSettings?.companyName || 'Reliance Housing Ltd.'} has been synonymous with stability and innovation in the local infrastructure landscape.
+                            {systemSettings?.projectsStoryText || DEFAULT_SYSTEM_SETTINGS.projectsStoryText}
                         </p>
                         <p className="text-[16px] font-normal text-[#43474d] leading-relaxed">
                             We don't just build apartments; we architect communities. From the bustling corridors of BB Road to the quiet luxury of riverfront estates, our commitment remains the same: uncompromising quality and absolute transparency.
