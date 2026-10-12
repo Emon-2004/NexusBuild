@@ -37,7 +37,7 @@ const Login = () => {
     }, [user, navigate, redirecting]);
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        if (e) e.preventDefault();
         setError('');
         setLoading(true);
 
@@ -47,6 +47,22 @@ const Login = () => {
             setRedirecting(true);
         } catch (err) {
             setError(err.message || 'Invalid email or password. Please use a registered client email, or "admin@reliance.com".');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleDemoLogin = async (demoEmail, demoPassword) => {
+        setEmail(demoEmail);
+        setPassword(demoPassword);
+        setError('');
+        setLoading(true);
+
+        try {
+            await signIn(demoEmail, demoPassword);
+            setRedirecting(true);
+        } catch (err) {
+            setError(err.message || 'Demo login failed. Please verify credentials.');
         } finally {
             setLoading(false);
         }
@@ -314,6 +330,46 @@ const Login = () => {
                                         </>
                                     )}
                                 </button>
+
+                                {/* Demo Credentials Buttons — Enabled when VITE_ENABLE_DEMO === "true" */}
+                                {import.meta.env.VITE_ENABLE_DEMO === "true" && (
+                                    <div className="flex flex-col gap-2 pt-1">
+                                        <div className="flex items-center gap-2">
+                                            <div className="flex-1 h-px bg-[#e1e3e4]" />
+                                            <span className="text-[11px] text-[#74777e] font-semibold uppercase tracking-wider">
+                                                Quick Demo Login
+                                            </span>
+                                            <div className="flex-1 h-px bg-[#e1e3e4]" />
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <button
+                                                type="button"
+                                                disabled={loading || redirecting}
+                                                onClick={() => handleDemoLogin("user@example.com", "User@123456")}
+                                                className="
+                                                    w-full py-2.5 px-3 border border-[#c4c6ce] hover:border-[#0a2540]
+                                                    bg-white hover:bg-slate-50 text-[#000f22] font-semibold text-[13px]
+                                                    rounded-lg transition-all duration-200 disabled:opacity-50
+                                                    disabled:cursor-not-allowed cursor-pointer text-center
+                                                "
+                                            >
+                                                Demo User
+                                            </button>
+                                            <button
+                                                type="button"
+                                                disabled={loading || redirecting}
+                                                onClick={() => handleDemoLogin("admin@example.com", "Admin@123456")}
+                                                className="
+                                                    w-full py-2.5 px-3 border border-[#000f22] bg-[#000f22] hover:bg-[#0a2540]
+                                                    text-white font-semibold text-[13px] rounded-lg transition-all duration-200
+                                                    disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-center
+                                                "
+                                            >
+                                                Demo Admin
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
 
                                 {/* Divider + Register link — Figma: Divider 448x48 with 16px V padding */}
                                 <div className="flex flex-col items-center gap-4 pt-2">

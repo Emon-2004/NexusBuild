@@ -33,7 +33,17 @@ export const AuthProvider = ({ children }) => {
                 phone: clientData.phone
             };
         }
-        return null;
+
+        // ── Fallback when approval is commented out (so users without active approval can still log in) ──
+        return {
+            id: sessionUser.id,
+            email: sessionUser.email,
+            role: clientData?.role || (sessionUser.email === 'admin@example.com' ? 'admin' : 'client'),
+            clientId: clientData?.id || sessionUser.id,
+            name: clientData?.name || sessionUser.user_metadata?.full_name || sessionUser.email.split('@')[0],
+            phone: clientData?.phone || sessionUser.user_metadata?.phone || ''
+        };
+        // return null; // Uncomment when restoring mandatory admin approval
     };
 
     useEffect(() => {
@@ -55,9 +65,9 @@ export const AuthProvider = ({ children }) => {
                 if (userData) {
                     setUser(userData);
                 } else {
-                    // Unapproved or invalid -> sign out immediately
-                    await supabase.auth.signOut();
-                    setUser(null);
+                    // ── Unapproved or invalid -> sign out immediately (commented out for future use) ──
+                    // await supabase.auth.signOut();
+                    // setUser(null);
                 }
                 setLoading(false);
             } else {
@@ -76,12 +86,13 @@ export const AuthProvider = ({ children }) => {
             .eq('email', email)
             .maybeSingle();
 
-        if (clientErr || !clientData) {
-            throw new Error("Your account is pending admin approval or does not exist. Our team will contact you soon.");
-        }
-        if (clientData.status !== 'Active' && clientData.role !== 'admin') {
-            throw new Error("Your account is not active. Please contact support.");
-        }
+        // ── Admin Approval Check (Temporarily commented out for future use) ──
+        // if (clientErr || !clientData) {
+        //     throw new Error("Your account is pending admin approval or does not exist. Our team will contact you soon.");
+        // }
+        // if (clientData.status !== 'Active' && clientData.role !== 'admin') {
+        //     throw new Error("Your account is not active. Please contact support.");
+        // }
 
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
