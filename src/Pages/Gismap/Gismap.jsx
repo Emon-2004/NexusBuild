@@ -178,7 +178,7 @@ const Gismap = () => {
     );
 
     return (
-        <div className="min-h-screen bg-[#F8FAFC] flex flex-col font-sans text-slate-800">
+        <div className="min-h-screen bg-base-200 flex flex-col font-sans text-base-content">
             {/* Header Navigation */}
             <Navbar />
 
@@ -198,30 +198,30 @@ const Gismap = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                     
                     {/* LEFT SIDEBAR: Area Selector & Project Catalog (4 cols) */}
-                    <div className="lg:col-span-4 bg-white border border-[#E2E8F0] rounded-2xl shadow-sm overflow-hidden flex flex-col h-[650px]">
+                    <div className="lg:col-span-4 bg-base-100 border border-base-300 rounded-2xl shadow-sm overflow-hidden flex flex-col h-[650px]">
                         
                         {/* Area Location Filter Tabs */}
-                        <div className="p-4 border-b border-[#E2E8F0] bg-slate-50 space-y-3">
-                            <div className="text-[10px] font-bold text-[#1A4B9C] uppercase tracking-wider">
+                        <div className="p-4 border-b border-base-300 bg-base-200/50 space-y-3">
+                            <div className="text-[10px] font-bold text-primary uppercase tracking-wider">
                                 Search Property Projects
                             </div>
 
                             {/* Search Input */}
                             <div className="relative mt-2">
-                                <Search size={14} className="absolute left-3 top-2.5 text-slate-400" />
+                                <Search size={14} className="absolute left-3 top-2.5 text-base-content/40" />
                                 <input
                                     type="text"
                                     placeholder="Search project or address..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="w-full pl-9 pr-3 py-1.5 bg-white border border-[#E2E8F0] rounded-lg text-xs font-medium focus:outline-none focus:border-[#1A4B9C]"
+                                    className="w-full pl-9 pr-3 py-1.5 bg-base-100 border border-base-300 rounded-lg text-xs font-medium focus:outline-none focus:border-primary text-base-content"
                                 />
                             </div>
                         </div>
 
                         {/* Project Cards List */}
                         <div className="flex-1 overflow-y-auto p-3 space-y-3">
-                            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-1">
+                            <div className="text-[10px] font-bold text-base-content/50 uppercase tracking-wider px-1">
                                 Available Projects ({filteredProjects.length})
                             </div>
 
@@ -234,17 +234,17 @@ const Gismap = () => {
                                             onClick={() => handleSelectProject(proj)}
                                             className={`p-4 rounded-xl border transition-all cursor-pointer flex flex-col justify-between gap-3 ${
                                                 isSelected 
-                                                    ? 'bg-blue-50/70 border-[#1A4B9C] shadow-md ring-1 ring-[#1A4B9C]' 
-                                                    : 'bg-white border-[#E2E8F0] hover:border-blue-300 hover:shadow-sm'
+                                                    ? 'bg-primary/10 border-primary shadow-md ring-1 ring-primary' 
+                                                    : 'bg-base-100 border-base-300 hover:border-primary/50 hover:shadow-sm'
                                             }`}
                                         >
                                             <div className="flex justify-between items-start">
                                                 <div>
-                                                    <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
+                                                    <h3 className="font-bold text-base-content text-sm flex items-center gap-2">
                                                         {proj.name}
-                                                        {isSelected && <CheckCircle2 size={14} className="text-[#1A4B9C]" />}
+                                                        {isSelected && <CheckCircle2 size={14} className="text-primary" />}
                                                     </h3>
-                                                    <div className="flex items-center gap-1 text-xs text-slate-500 mt-0.5">
+                                                    <div className="flex items-center gap-1 text-xs text-base-content/60 mt-0.5">
                                                         <MapPin size={12} className="text-[#fe762a] flex-shrink-0" />
                                                         <span className="truncate">{proj.location}</span>
                                                     </div>
@@ -274,30 +274,30 @@ const Gismap = () => {
                     </div>
 
                     {/* RIGHT MAIN AREA: Interactive Google/GIS Map Box (8 cols) */}
-                    <div className="lg:col-span-8 bg-white border border-[#E2E8F0] rounded-2xl shadow-sm overflow-hidden flex flex-col h-[650px]">
+                    <div className="lg:col-span-8 bg-base-100 border border-base-300 rounded-2xl shadow-sm overflow-hidden flex flex-col h-[650px]">
                         
                         {/* Map Header Toolbar */}
-                        <div className="p-4 border-b border-[#E2E8F0] bg-slate-50 flex justify-between items-center">
+                        <div className="p-4 border-b border-base-300 bg-base-200/50 flex justify-between items-center">
                             <div className="flex items-center gap-3">
-                                <div className="w-9 h-9 bg-[#1A4B9C] text-white rounded-lg flex items-center justify-center font-bold">
+                                <div className="w-9 h-9 bg-primary text-primary-content rounded-lg flex items-center justify-center font-bold">
                                     <Compass size={18} />
                                 </div>
                                 <div>
-                                    <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                                    <h2 className="text-base font-bold text-base-content flex items-center gap-2">
                                         {activeProject.name || 'Select a Project Location'}
                                     </h2>
-                                    <div className="text-xs text-slate-500 flex items-center gap-1.5">
+                                    <div className="text-xs text-base-content/60 flex items-center gap-1.5">
                                         <MapPin size={12} className="text-[#fe762a]" />
                                         <span>{activeProject.location || 'Narayanganj'}</span>
-                                        <span className="text-slate-300">•</span>
-                                        <span className="text-[#1A4B9C] font-semibold">GIS Map Location</span>
+                                        <span className="opacity-40">•</span>
+                                        <span className="text-primary font-semibold">GIS Map Location</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         {/* Interactive Embedded Map Viewport */}
-                        <div className="flex-1 bg-slate-100 relative">
+                        <div className="flex-1 bg-base-200 relative">
                             <iframe
                                 key={`${activeProject.id || 'p1'}_${getMapEmbedUrl(activeProject)}`}
                                 title={`GIS Map for ${activeProject.name}`}
@@ -313,14 +313,14 @@ const Gismap = () => {
                 </div>
 
                 {/* LOWER SECTION: Nearby Amenities */}
-                <div className="bg-white border border-[#E2E8F0] rounded-2xl shadow-sm p-6 space-y-6">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-4">
+                <div className="bg-base-100 border border-base-300 rounded-2xl shadow-sm p-6 space-y-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-base-200 pb-4">
                         <div>
                             <div className="text-[10px] font-bold text-[#fe762a] uppercase tracking-widest mb-0.5">
                                 2 KM Radius Geographic Analysis
                             </div>
-                            <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                                Nearby Amenities for <span className="text-[#1A4B9C]">{activeProject.name}</span>
+                            <h2 className="text-xl font-bold text-base-content flex items-center gap-2">
+                                Nearby Amenities for <span className="text-primary">{activeProject.name}</span>
                             </h2>
                         </div>
                     </div>
@@ -329,20 +329,20 @@ const Gismap = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         
                         {/* 1. Hospitals */}
-                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between space-y-3 hover:border-red-300 transition-colors">
-                            <div className="flex items-center gap-3 border-b border-slate-200 pb-3">
-                                <div className="w-9 h-9 bg-red-100 text-red-600 rounded-lg flex items-center justify-center">
+                        <div className="bg-base-200/60 border border-base-300 rounded-xl p-4 flex flex-col justify-between space-y-3 hover:border-red-400 transition-colors">
+                            <div className="flex items-center gap-3 border-b border-base-300 pb-3">
+                                <div className="w-9 h-9 bg-red-500/10 text-red-500 rounded-lg flex items-center justify-center">
                                     <Hospital size={18} />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-slate-900 text-sm">Hospitals & Health</h3>
-                                    <div className="text-[10px] text-slate-500 font-semibold">Within 2 km</div>
+                                    <h3 className="font-bold text-base-content text-sm">Hospitals & Health</h3>
+                                    <div className="text-[10px] text-base-content/60 font-semibold">Within 2 km</div>
                                 </div>
                             </div>
                             
                             <ul className="space-y-2 flex-1">
                                 {hospitals.map((h, i) => (
-                                    <li key={i} className="text-xs text-slate-700 flex items-start gap-2 bg-white p-2 rounded border border-slate-100">
+                                    <li key={i} className="text-xs text-base-content/80 flex items-start gap-2 bg-base-100 p-2 rounded border border-base-300">
                                         <ChevronRight size={12} className="text-red-500 mt-0.5 flex-shrink-0" />
                                         <span className="font-medium">{h}</span>
                                     </li>
@@ -351,20 +351,20 @@ const Gismap = () => {
                         </div>
 
                         {/* 2. Schools */}
-                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between space-y-3 hover:border-blue-300 transition-colors">
-                            <div className="flex items-center gap-3 border-b border-slate-200 pb-3">
-                                <div className="w-9 h-9 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">
+                        <div className="bg-base-200/60 border border-base-300 rounded-xl p-4 flex flex-col justify-between space-y-3 hover:border-blue-400 transition-colors">
+                            <div className="flex items-center gap-3 border-b border-base-300 pb-3">
+                                <div className="w-9 h-9 bg-blue-500/10 text-blue-500 rounded-lg flex items-center justify-center">
                                     <School size={18} />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-slate-900 text-sm">Nearby Schools</h3>
-                                    <div className="text-[10px] text-slate-500 font-semibold">Within 2 km</div>
+                                    <h3 className="font-bold text-base-content text-sm">Nearby Schools</h3>
+                                    <div className="text-[10px] text-base-content/60 font-semibold">Within 2 km</div>
                                 </div>
                             </div>
                             
                             <ul className="space-y-2 flex-1">
                                 {schools.map((s, i) => (
-                                    <li key={i} className="text-xs text-slate-700 flex items-start gap-2 bg-white p-2 rounded border border-slate-100">
+                                    <li key={i} className="text-xs text-base-content/80 flex items-start gap-2 bg-base-100 p-2 rounded border border-base-300">
                                         <ChevronRight size={12} className="text-blue-500 mt-0.5 flex-shrink-0" />
                                         <span className="font-medium">{s}</span>
                                     </li>
@@ -373,20 +373,20 @@ const Gismap = () => {
                         </div>
 
                         {/* 3. Colleges / Varsities */}
-                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between space-y-3 hover:border-indigo-300 transition-colors">
-                            <div className="flex items-center gap-3 border-b border-slate-200 pb-3">
-                                <div className="w-9 h-9 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center">
+                        <div className="bg-base-200/60 border border-base-300 rounded-xl p-4 flex flex-col justify-between space-y-3 hover:border-indigo-400 transition-colors">
+                            <div className="flex items-center gap-3 border-b border-base-300 pb-3">
+                                <div className="w-9 h-9 bg-indigo-500/10 text-indigo-500 rounded-lg flex items-center justify-center">
                                     <GraduationCap size={18} />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-slate-900 text-sm">Colleges & Universities</h3>
-                                    <div className="text-[10px] text-slate-500 font-semibold">Within 2 km</div>
+                                    <h3 className="font-bold text-base-content text-sm">Colleges & Universities</h3>
+                                    <div className="text-[10px] text-base-content/60 font-semibold">Within 2 km</div>
                                 </div>
                             </div>
                             
                             <ul className="space-y-2 flex-1">
                                 {colleges.map((c, i) => (
-                                    <li key={i} className="text-xs text-slate-700 flex items-start gap-2 bg-white p-2 rounded border border-slate-100">
+                                    <li key={i} className="text-xs text-base-content/80 flex items-start gap-2 bg-base-100 p-2 rounded border border-base-300">
                                         <ChevronRight size={12} className="text-indigo-500 mt-0.5 flex-shrink-0" />
                                         <span className="font-medium">{c}</span>
                                     </li>
@@ -395,20 +395,20 @@ const Gismap = () => {
                         </div>
 
                         {/* 4. Markets / Malls */}
-                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between space-y-3 hover:border-amber-300 transition-colors">
-                            <div className="flex items-center gap-3 border-b border-slate-200 pb-3">
-                                <div className="w-9 h-9 bg-amber-100 text-amber-600 rounded-lg flex items-center justify-center">
+                        <div className="bg-base-200/60 border border-base-300 rounded-xl p-4 flex flex-col justify-between space-y-3 hover:border-amber-400 transition-colors">
+                            <div className="flex items-center gap-3 border-b border-base-300 pb-3">
+                                <div className="w-9 h-9 bg-amber-500/10 text-amber-500 rounded-lg flex items-center justify-center">
                                     <ShoppingBag size={18} />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-slate-900 text-sm">Markets & Malls</h3>
-                                    <div className="text-[10px] text-slate-500 font-semibold">Within 2 km</div>
+                                    <h3 className="font-bold text-base-content text-sm">Markets & Malls</h3>
+                                    <div className="text-[10px] text-base-content/60 font-semibold">Within 2 km</div>
                                 </div>
                             </div>
                             
                             <ul className="space-y-2 flex-1">
                                 {markets.map((m, i) => (
-                                    <li key={i} className="text-xs text-slate-700 flex items-start gap-2 bg-white p-2 rounded border border-slate-100">
+                                    <li key={i} className="text-xs text-base-content/80 flex items-start gap-2 bg-base-100 p-2 rounded border border-base-300">
                                         <ChevronRight size={12} className="text-amber-500 mt-0.5 flex-shrink-0" />
                                         <span className="font-medium">{m}</span>
                                     </li>

@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router";
-import { Search, LogOut, LayoutDashboard, Menu, X, MapPin, Building2 } from "lucide-react";
+import { Search, LogOut, LayoutDashboard, Menu, X, MapPin, Building2, Sun, Moon } from "lucide-react";
 import { useAuth } from "../../Context/AuthContext";
 import { useDatabase } from "../../Context/DatabaseContext";
+import { useTheme } from "../../Context/ThemeContext";
 import { PROJECTS } from "../../data/projectsData";
 import DEFAULT_SYSTEM_SETTINGS from "../../config/defaultSettings";
 
@@ -120,7 +121,7 @@ const ProjectSearch = ({ onNavigate, className = "" }) => {
             <div className="relative flex items-center">
                 <Search
                     size={15}
-                    className="absolute left-3 text-[#74777e] pointer-events-none z-10"
+                    className="absolute left-3 text-base-content/50 pointer-events-none z-10"
                 />
                 <input
                     ref={inputRef}
@@ -134,9 +135,9 @@ const ProjectSearch = ({ onNavigate, className = "" }) => {
                     spellCheck={false}
                     className="
                         pl-9 pr-8 py-[9px] w-full
-                        bg-[#f3f4f5] border border-[#c4c6ce] rounded-[4px]
-                        text-[14px] font-semibold text-[#191c1d] placeholder-[#6b7280]
-                        focus:outline-none focus:border-[#0a2540] focus:ring-1 focus:ring-[#0a2540]/20
+                        bg-base-200 border border-base-300 rounded-[4px]
+                        text-[14px] font-semibold text-base-content placeholder-base-content/50
+                        focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20
                         transition-all
                     "
                 />
@@ -144,7 +145,7 @@ const ProjectSearch = ({ onNavigate, className = "" }) => {
                 {query && (
                     <button
                         onMouseDown={(e) => { e.preventDefault(); handleClear(); }}
-                        className="absolute right-2.5 text-[#74777e] hover:text-[#191c1d] transition-colors"
+                        className="absolute right-2.5 text-base-content/50 hover:text-base-content transition-colors"
                         aria-label="Clear search"
                     >
                         <X size={14} />
@@ -156,20 +157,20 @@ const ProjectSearch = ({ onNavigate, className = "" }) => {
             {open && (
                 <div className="
                     absolute top-[calc(100%+6px)] left-0 right-0
-                    bg-white border border-[#c4c6ce] rounded-[6px] shadow-xl
+                    bg-base-100 border border-base-300 rounded-[6px] shadow-xl
                     overflow-hidden z-[200]
                     min-w-[300px]
                 ">
                     {results.length === 0 ? (
                         /* No results state */
-                        <div className="flex items-center gap-3 px-4 py-3.5 text-[#74777e]">
+                        <div className="flex items-center gap-3 px-4 py-3.5 text-base-content/60">
                             <Search size={14} className="flex-shrink-0" />
                             <span className="text-[13px] font-medium">
                                 No projects found for &ldquo;{query}&rdquo;
                             </span>
                         </div>
                     ) : (
-                        <ul role="listbox" className="divide-y divide-[#f3f4f5]">
+                        <ul role="listbox" className="divide-y divide-base-300">
                             {results.map((project, idx) => (
                                 <li key={project.id} role="option" aria-selected={idx === activeIdx}>
                                     <button
@@ -179,19 +180,19 @@ const ProjectSearch = ({ onNavigate, className = "" }) => {
                                             w-full text-left px-4 py-3 flex items-start gap-3
                                             transition-colors duration-100 cursor-pointer
                                             ${idx === activeIdx
-                                                ? "bg-[#000f22] text-white"
-                                                : "hover:bg-[#f3f4f5] text-[#191c1d]"
+                                                ? "bg-primary text-primary-content"
+                                                : "hover:bg-base-200 text-base-content"
                                             }
                                         `}
                                     >
                                         {/* Icon badge */}
                                         <div className={`
                                             w-8 h-8 rounded-[3px] flex items-center justify-center flex-shrink-0 mt-0.5
-                                            ${idx === activeIdx ? "bg-white/15" : "bg-[#000f22]/8"}
+                                            ${idx === activeIdx ? "bg-white/20" : "bg-base-300 text-primary"}
                                         `}>
                                             <Building2
                                                 size={14}
-                                                className={idx === activeIdx ? "text-white" : "text-[#a14000]"}
+                                                className={idx === activeIdx ? "text-primary-content" : "text-primary"}
                                             />
                                         </div>
 
@@ -199,13 +200,13 @@ const ProjectSearch = ({ onNavigate, className = "" }) => {
                                         <div className="flex flex-col gap-0.5 min-w-0">
                                             <span className={`
                                                 text-[13px] font-bold leading-tight truncate
-                                                ${idx === activeIdx ? "text-white" : "text-[#000f22]"}
+                                                ${idx === activeIdx ? "text-primary-content" : "text-base-content"}
                                             `}>
                                                 {project.name}
                                             </span>
                                             <span className={`
                                                 text-[11px] flex items-center gap-1 truncate
-                                                ${idx === activeIdx ? "text-white/70" : "text-[#74777e]"}
+                                                ${idx === activeIdx ? "text-primary-content/80" : "text-base-content/70"}
                                             `}>
                                                 <MapPin size={10} className="flex-shrink-0" />
                                                 {project.fullAddress || project.location}
@@ -213,8 +214,8 @@ const ProjectSearch = ({ onNavigate, className = "" }) => {
                                                     <span className={`
                                                         ml-1.5 px-1.5 py-px text-[9px] font-bold uppercase tracking-wide rounded-[2px]
                                                         ${idx === activeIdx
-                                                            ? "bg-white/20 text-white"
-                                                            : "bg-[#a14000]/10 text-[#a14000]"
+                                                            ? "bg-white/25 text-white"
+                                                            : "bg-primary/10 text-primary"
                                                         }
                                                     `}>
                                                         {project.type}
@@ -229,8 +230,8 @@ const ProjectSearch = ({ onNavigate, className = "" }) => {
                     )}
 
                     {/* Footer hint */}
-                    <div className="px-4 py-2 bg-[#f8f9fa] border-t border-[#e1e3e4] flex items-center justify-between">
-                        <span className="text-[10px] text-[#9ea1a8] font-medium">
+                    <div className="px-4 py-2 bg-base-200 border-t border-base-300 flex items-center justify-between">
+                        <span className="text-[10px] text-base-content/60 font-medium">
                             {results.length > 0
                                 ? `${results.length} result${results.length !== 1 ? "s" : ""} — ↑↓ to navigate, Enter to open`
                                 : "Try a project name or location"}
@@ -246,6 +247,7 @@ const ProjectSearch = ({ onNavigate, className = "" }) => {
 const Navbar = () => {
     const { user, loading, signOut } = useAuth();
     const { systemSettings } = useDatabase();
+    const { isDark, toggleTheme } = useTheme();
     const navigate = useNavigate();
     const location = useLocation();
     const [mobileOpen, setMobileOpen] = useState(false);
@@ -259,7 +261,7 @@ const Navbar = () => {
     const isActive = (to) => location.pathname === to || location.pathname.startsWith(to + "/");
 
     return (
-        <header className="sticky top-0 z-50 bg-[#f8f9fa] border-b border-[#c4c6ce]">
+        <header className="sticky top-0 z-50 bg-base-100 border-b border-base-300">
             <div className="max-w-[1280px] mx-auto px-6 lg:px-12 h-20 flex items-center justify-between gap-8">
 
                 {/* ── Left: Logo + Nav ── */}
@@ -277,17 +279,17 @@ const Navbar = () => {
                             />
                         ) : (
                             <div className="flex items-center gap-2.5">
-                                <div className="w-11 h-11 bg-[#000f22] text-white rounded-xl flex items-center justify-center font-bold shadow-xs">
+                                <div className="w-11 h-11 bg-primary text-primary-content rounded-xl flex items-center justify-center font-bold shadow-xs">
                                     <Building2 size={24} />
                                 </div>
-                                <span className="text-[22px] font-extrabold text-[#000f22] tracking-tight">
+                                <span className="text-[22px] font-extrabold text-base-content tracking-tight">
                                     {systemSettings?.companyName || DEFAULT_SYSTEM_SETTINGS.companyName}
                                 </span>
                             </div>
                         )}
                     </Link>
 
-                    {/* Desktop Nav — Figma: 16px fw=400, active = bottom stroke #a14000 */}
+                    {/* Desktop Nav */}
                     <nav className="hidden md:flex items-center gap-6">
                         {NAV_LINKS.map(({ to, label }) => (
                             <Link
@@ -296,8 +298,8 @@ const Navbar = () => {
                                 className={`
                                     text-[16px] font-normal transition-colors duration-200 pb-1
                                     ${isActive(to)
-                                        ? "text-[#000f22] border-b-2 border-[#a14000]"
-                                        : "text-[#43474d] hover:text-[#000f22] border-b-2 border-transparent"}
+                                        ? "text-base-content font-bold border-b-2 border-primary"
+                                        : "text-base-content/70 hover:text-base-content border-b-2 border-transparent"}
                                 `}
                             >
                                 {label}
@@ -306,13 +308,24 @@ const Navbar = () => {
                     </nav>
                 </div>
 
-                {/* ── Right: Search + Auth CTAs ── */}
-                <div className="hidden md:flex items-center gap-4">
-                    {/* Search — Figma: 256×38, #f3f4f5 bg, r=4, #c4c6ce stroke */}
+                {/* ── Right: Search + Theme Toggle + Auth CTAs ── */}
+                <div className="hidden md:flex items-center gap-3">
+                    {/* Search */}
                     <ProjectSearch
                         onNavigate={navigate}
                         className="w-56"
                     />
+
+                    {/* Theme Toggle Button */}
+                    <button
+                        type="button"
+                        onClick={toggleTheme}
+                        aria-label="Toggle theme"
+                        className="p-2.5 rounded-[4px] border border-base-300 hover:bg-base-200 text-base-content transition-colors flex items-center justify-center cursor-pointer"
+                        title={isDark ? "Switch to light theme" : "Switch to dark theme"}
+                    >
+                        {isDark ? <Sun size={17} className="text-amber-400" /> : <Moon size={17} />}
+                    </button>
 
                     {/* Auth CTAs */}
                     {!loading && (
@@ -322,14 +335,14 @@ const Navbar = () => {
                                     {/* Dashboard button when logged in */}
                                     <Link
                                         to="/dashboard"
-                                        className="flex items-center gap-1.5 px-5 py-[9px] text-[14px] font-bold text-[#000f22] border border-[#000f22] hover:bg-[#000f22] hover:text-white rounded-none transition-all"
+                                        className="flex items-center gap-1.5 px-4 py-[9px] text-[14px] font-bold text-base-content border border-base-300 hover:bg-base-200 rounded-[4px] transition-all"
                                     >
                                         <LayoutDashboard size={14} />
                                         Dashboard
                                     </Link>
                                     <button
                                         onClick={handleLogout}
-                                        className="flex items-center gap-1.5 px-5 py-[9px] text-[14px] font-bold text-white bg-rose-600 hover:bg-rose-700 transition-all cursor-pointer"
+                                        className="flex items-center gap-1.5 px-4 py-[9px] text-[14px] font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-[4px] transition-all cursor-pointer"
                                     >
                                         <LogOut size={14} />
                                         Logout
@@ -337,17 +350,17 @@ const Navbar = () => {
                                 </>
                             ) : (
                                 <>
-                                    {/* Login — Figma: outline #000f22 border, no fill */}
+                                    {/* Login */}
                                     <Link
                                         to="/login"
-                                        className="px-5 py-[9px] text-[14px] font-bold text-[#000f22] border border-[#000f22] hover:bg-[#000f22] hover:text-white transition-all"
+                                        className="px-5 py-[9px] text-[14px] font-bold text-base-content border border-base-300 hover:bg-base-200 rounded-[4px] transition-all"
                                     >
                                         Login
                                     </Link>
-                                    {/* Register — Figma: filled #000f22, white text */}
+                                    {/* Register */}
                                     <Link
                                         to="/register"
-                                        className="px-5 py-[9px] text-[14px] font-bold text-white bg-[#000f22] hover:bg-[#0a2540] transition-all"
+                                        className="px-5 py-[9px] text-[14px] font-bold text-primary-content bg-primary hover:opacity-90 rounded-[4px] transition-all"
                                     >
                                         Register
                                     </Link>
@@ -357,28 +370,37 @@ const Navbar = () => {
                     )}
                 </div>
 
-                {/* ── Mobile: Search icon + Hamburger ── */}
-                <div className="md:hidden flex items-center gap-3">
+                {/* ── Mobile: Search icon + Theme toggle + Hamburger ── */}
+                <div className="md:hidden flex items-center gap-2">
                     <button
-                        onClick={() => { setMobileSearchOpen((s) => !s); setMobileOpen(false); }}
-                        className="text-[#43474d] hover:text-[#000f22] focus:outline-none"
-                        aria-label="Toggle search"
+                        type="button"
+                        onClick={toggleTheme}
+                        aria-label="Toggle theme"
+                        className="text-base-content/75 hover:text-base-content focus:outline-none p-1.5 cursor-pointer"
+                        title={isDark ? "Switch to light theme" : "Switch to dark theme"}
                     >
-                        <Search size={22} />
+                        {isDark ? <Sun size={20} className="text-amber-400" /> : <Moon size={20} />}
                     </button>
                     <button
-                        className="text-[#43474d] hover:text-[#000f22] focus:outline-none"
+                        onClick={() => { setMobileSearchOpen((s) => !s); setMobileOpen(false); }}
+                        className="text-base-content/75 hover:text-base-content focus:outline-none p-1.5 cursor-pointer"
+                        aria-label="Toggle search"
+                    >
+                        <Search size={20} />
+                    </button>
+                    <button
+                        className="text-base-content/75 hover:text-base-content focus:outline-none p-1.5 cursor-pointer"
                         onClick={() => { setMobileOpen(!mobileOpen); setMobileSearchOpen(false); }}
                         aria-label="Toggle menu"
                     >
-                        {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+                        {mobileOpen ? <X size={22} /> : <Menu size={22} />}
                     </button>
                 </div>
             </div>
 
             {/* ── Mobile Search Bar (slide-down) ── */}
             {mobileSearchOpen && (
-                <div className="md:hidden bg-[#f8f9fa] border-t border-[#c4c6ce] px-4 py-3">
+                <div className="md:hidden bg-base-100 border-t border-base-300 px-4 py-3">
                     <ProjectSearch
                         onNavigate={(path) => { navigate(path); setMobileSearchOpen(false); }}
                         className="w-full"
@@ -388,27 +410,39 @@ const Navbar = () => {
 
             {/* ── Mobile Menu Drawer ── */}
             {mobileOpen && (
-                <div className="md:hidden bg-[#f8f9fa] border-t border-[#c4c6ce] px-6 py-4 flex flex-col gap-4">
+                <div className="md:hidden bg-base-100 border-t border-base-300 px-6 py-4 flex flex-col gap-4">
                     {NAV_LINKS.map(({ to, label }) => (
                         <Link
                             key={to}
                             to={to}
                             onClick={() => setMobileOpen(false)}
-                            className={`text-[16px] font-medium py-2 transition-colors ${isActive(to) ? "text-[#000f22] font-bold" : "text-[#43474d]"}`}
+                            className={`text-[16px] py-2 transition-colors ${isActive(to) ? "text-base-content font-bold border-l-2 border-primary pl-2" : "text-base-content/70"}`}
                         >
                             {label}
                         </Link>
                     ))}
-                    <div className="border-t border-[#c4c6ce] pt-4 flex gap-3">
+
+                    {/* Mobile Theme Toggle Row */}
+                    <div className="flex items-center justify-between py-2 border-t border-base-300 text-sm font-medium text-base-content/80">
+                        <span>Theme Mode</span>
+                        <button
+                            onClick={toggleTheme}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded border border-base-300 bg-base-200 text-base-content text-xs font-semibold cursor-pointer"
+                        >
+                            {isDark ? <><Sun size={14} className="text-amber-400" /> Dark</> : <><Moon size={14} /> Light</>}
+                        </button>
+                    </div>
+
+                    <div className="border-t border-base-300 pt-4 flex gap-3">
                         {!loading && (user ? (
                             <>
-                                <Link to="/dashboard" onClick={() => setMobileOpen(false)} className="flex-1 text-center py-3 text-[14px] font-bold text-[#000f22] border border-[#000f22]">Dashboard</Link>
-                                <button onClick={handleLogout} className="flex-1 py-3 text-[14px] font-bold text-white bg-rose-600 cursor-pointer">Logout</button>
+                                <Link to="/dashboard" onClick={() => setMobileOpen(false)} className="flex-1 text-center py-3 text-[14px] font-bold text-base-content border border-base-300 rounded-[4px]">Dashboard</Link>
+                                <button onClick={handleLogout} className="flex-1 py-3 text-[14px] font-bold text-white bg-rose-600 rounded-[4px] cursor-pointer">Logout</button>
                             </>
                         ) : (
                             <>
-                                <Link to="/login" onClick={() => setMobileOpen(false)} className="flex-1 text-center py-3 text-[14px] font-bold text-[#000f22] border border-[#000f22]">Login</Link>
-                                <Link to="/register" onClick={() => setMobileOpen(false)} className="flex-1 text-center py-3 text-[14px] font-bold text-white bg-[#000f22]">Register</Link>
+                                <Link to="/login" onClick={() => setMobileOpen(false)} className="flex-1 text-center py-3 text-[14px] font-bold text-base-content border border-base-300 rounded-[4px]">Login</Link>
+                                <Link to="/register" onClick={() => setMobileOpen(false)} className="flex-1 text-center py-3 text-[14px] font-bold text-primary-content bg-primary rounded-[4px]">Register</Link>
                             </>
                         ))}
                     </div>

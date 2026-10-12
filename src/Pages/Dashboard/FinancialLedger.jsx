@@ -365,13 +365,13 @@ const FinancialLedger = () => {
     if (loading) {
         return (
             <div className="flex flex-col gap-6 max-w-5xl animate-pulse">
-                <div className="bg-white rounded-lg border border-[#E2E8F0] shadow-sm p-6 flex flex-col gap-4">
-                    <div className="skeleton h-6 w-56 rounded bg-slate-200" />
-                    <div className="skeleton h-36 w-full rounded bg-slate-100" />
+                <div className="bg-base-100 rounded-lg border border-base-300 shadow-sm p-6 flex flex-col gap-4">
+                    <div className="skeleton h-6 w-56 rounded bg-base-300" />
+                    <div className="skeleton h-36 w-full rounded bg-base-200" />
                 </div>
-                <div className="bg-white rounded-lg border border-[#E2E8F0] shadow-sm p-6 flex flex-col gap-4">
-                    <div className="skeleton h-6 w-48 rounded bg-slate-200" />
-                    <div className="skeleton h-48 w-full rounded bg-slate-100" />
+                <div className="bg-base-100 rounded-lg border border-base-300 shadow-sm p-6 flex flex-col gap-4">
+                    <div className="skeleton h-6 w-48 rounded bg-base-300" />
+                    <div className="skeleton h-48 w-full rounded bg-base-200" />
                 </div>
             </div>
         );
@@ -381,65 +381,65 @@ const FinancialLedger = () => {
         <>
             <PrintView financials={financials} userProfile={userProfile} systemSettings={systemSettings} />
             
-            <div className="flex flex-col gap-6 print:hidden w-full max-w-5xl text-slate-800">
+            <div className="flex flex-col gap-6 print:hidden w-full max-w-5xl text-base-content">
                 
                 {/* ── Financial Ledger Overview (Center Column matching Figma) ── */}
-                <div className="bg-white rounded-lg border border-[#E2E8F0] shadow-sm">
-                    <div className="p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-[#E2E8F0] gap-4">
-                        <h2 className="text-[#003178] font-bold text-base sm:text-[18px]">Financial Ledger Overview</h2>
+                <div className="bg-base-100 rounded-lg border border-base-300 shadow-sm">
+                    <div className="p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-base-300 gap-4">
+                        <h2 className="text-primary font-bold text-base sm:text-[18px]">Financial Ledger Overview</h2>
                         <div className="flex flex-wrap gap-3 w-full sm:w-auto">
                             <button 
                                 onClick={exportStatementCSV}
-                                className="flex-1 sm:flex-none flex justify-center items-center gap-2 px-3 py-1.5 border border-[#E2E8F0] hover:bg-slate-50 rounded-lg font-bold text-xs cursor-pointer text-slate-700"
+                                className="flex-1 sm:flex-none flex justify-center items-center gap-2 px-3 py-1.5 border border-base-300 hover:bg-base-200 rounded-lg font-bold text-xs cursor-pointer text-base-content"
                             >
                                 <Download size={14} /> Export CSV
                             </button>
                             <button 
                                 onClick={downloadStatement}
-                                className="flex-1 sm:flex-none flex justify-center items-center gap-2 px-3 py-1.5 bg-[#003178] hover:bg-[#00255a] text-white rounded-lg font-bold text-xs cursor-pointer"
+                                className="flex-1 sm:flex-none flex justify-center items-center gap-2 px-3 py-1.5 bg-primary hover:bg-primary/90 text-primary-content rounded-lg font-bold text-xs cursor-pointer"
                             >
                                 <Download size={14} /> Print Statement
                             </button>
                         </div>
                     </div>
                     
-                    <div className="divide-y divide-[#E2E8F0] px-4 sm:px-6 py-2">
+                    <div className="divide-y divide-base-300 px-4 sm:px-6 py-2">
                         <div className="flex flex-wrap justify-between items-center py-3 sm:py-4 gap-2">
-                            <span className="text-xs sm:text-sm text-slate-600 font-medium">Total Property Valuation</span>
-                            <span className="text-slate-800 font-bold text-sm sm:text-base whitespace-nowrap">৳ {financials.totalValuation}</span>
+                            <span className="text-xs sm:text-sm text-base-content/70 font-medium">Total Property Valuation</span>
+                            <span className="text-base-content font-bold text-sm sm:text-base whitespace-nowrap">৳ {financials.totalValuation}</span>
                         </div>
                         <div className="flex flex-wrap justify-between items-center py-3 sm:py-4 gap-2">
-                            <span className="text-xs sm:text-sm text-slate-600 font-medium">Total Amount Paid to Date</span>
-                            <span className="text-[#006E1C] font-bold text-sm sm:text-base whitespace-nowrap">৳ {financials.totalPaid}</span>
+                            <span className="text-xs sm:text-sm text-base-content/70 font-medium">Total Amount Paid to Date</span>
+                            <span className="text-emerald-600 dark:text-emerald-400 font-bold text-sm sm:text-base whitespace-nowrap">৳ {financials.totalPaid}</span>
                         </div>
                         <div className="flex flex-wrap justify-between items-center py-3 sm:py-4 gap-2">
-                            <span className="text-xs sm:text-sm text-slate-600 font-medium">Utility/Other Charges</span>
-                            <span className="text-slate-800 font-bold text-sm sm:text-base whitespace-nowrap">৳ {financials.otherCharges}</span>
+                            <span className="text-xs sm:text-sm text-base-content/70 font-medium">Utility/Other Charges</span>
+                            <span className="text-base-content font-bold text-sm sm:text-base whitespace-nowrap">৳ {financials.otherCharges}</span>
                         </div>
-                        <div className="flex flex-wrap justify-between items-center p-3 sm:p-4 bg-[#FDF2F2] rounded my-2 border border-red-100 gap-2">
-                            <span className="text-[#9B1C1C] font-bold text-xs sm:text-sm">Current Due Balance</span>
-                            <span className="text-[#9B1C1C] font-bold text-base sm:text-lg whitespace-nowrap">৳ {financials.dueBalance}</span>
+                        <div className="flex flex-wrap justify-between items-center p-3 sm:p-4 bg-error/10 rounded my-2 border border-error/20 gap-2">
+                            <span className="text-error font-bold text-xs sm:text-sm">Current Due Balance</span>
+                            <span className="text-error font-bold text-base sm:text-lg whitespace-nowrap">৳ {financials.dueBalance}</span>
                         </div>
                     </div>
                 </div>
 
                 {/* ── Installment Schedule Table ── */}
-                <div className="bg-white rounded-lg border border-[#E2E8F0] shadow-sm">
-                    <div className="p-6 border-b border-[#E2E8F0]">
-                        <h2 className="text-[#003178] font-bold text-[18px]">Installment Schedule</h2>
+                <div className="bg-base-100 rounded-lg border border-base-300 shadow-sm">
+                    <div className="p-6 border-b border-base-300">
+                        <h2 className="text-primary font-bold text-[18px]">Installment Schedule</h2>
                     </div>
                     
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse min-w-[600px]">
                             <thead>
-                                <tr className="bg-[#F7F9FB] border-b border-[#E2E8F0]">
-                                    <th className="py-3 px-6 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Installment No.</th>
-                                    <th className="py-3 px-6 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Due Date</th>
-                                    <th className="py-3 px-6 text-[11px] font-bold text-slate-500 uppercase tracking-wider text-right">Amount (৳)</th>
-                                    <th className="py-3 px-6 text-[11px] font-bold text-slate-500 uppercase tracking-wider text-right">Status</th>
+                                <tr className="bg-base-200 border-b border-base-300">
+                                    <th className="py-3 px-6 text-[11px] font-bold text-base-content/70 uppercase tracking-wider">Installment No.</th>
+                                    <th className="py-3 px-6 text-[11px] font-bold text-base-content/70 uppercase tracking-wider">Due Date</th>
+                                    <th className="py-3 px-6 text-[11px] font-bold text-base-content/70 uppercase tracking-wider text-right">Amount (৳)</th>
+                                    <th className="py-3 px-6 text-[11px] font-bold text-base-content/70 uppercase tracking-wider text-right">Status</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-[#E2E8F0]">
+                            <tbody className="divide-y divide-base-300">
                                 {[...financials.installments].sort((a, b) => {
                                     const aPaid = (a.status || '').toLowerCase() === 'paid';
                                     const bPaid = (b.status || '').toLowerCase() === 'paid';
@@ -447,14 +447,14 @@ const FinancialLedger = () => {
                                     if (!aPaid && bPaid) return -1;
                                     return new Date(a.dueDate || a.due_date) - new Date(b.dueDate || b.due_date);
                                 }).map((t) => (
-                                    <tr key={t.id} className={`hover:bg-slate-50 ${t.active ? 'bg-blue-50/30 border-l-4 border-l-[#003178]' : 'border-l-4 border-l-transparent'}`}>
-                                        <td className={`py-4 px-6 text-sm font-medium ${t.active ? 'text-slate-800 font-bold' : 'text-slate-700'}`}>
+                                    <tr key={t.id} className={`hover:bg-base-200/50 ${t.active ? 'bg-primary/10 border-l-4 border-l-primary' : 'border-l-4 border-l-transparent'}`}>
+                                        <td className={`py-4 px-6 text-sm font-medium ${t.active ? 'text-base-content font-bold' : 'text-base-content'}`}>
                                             {t.installment}
                                         </td>
-                                        <td className={`py-4 px-6 text-sm ${t.active ? 'text-[#003178] font-bold' : 'text-slate-500'}`}>
+                                        <td className={`py-4 px-6 text-sm ${t.active ? 'text-primary font-bold' : 'text-base-content/70'}`}>
                                             {t.dueDate}
                                         </td>
-                                        <td className={`py-4 px-6 text-sm font-bold text-right ${t.active ? 'text-slate-800' : 'text-slate-700'}`}>
+                                        <td className={`py-4 px-6 text-sm font-bold text-right text-base-content`}>
                                             ৳ {t.amount}
                                         </td>
                                         <td className="py-4 px-6 text-right">
@@ -470,22 +470,22 @@ const FinancialLedger = () => {
                 </div>
 
                 {/* ── Recent Transactions ── */}
-                <div className="bg-white rounded-lg border border-[#E2E8F0] shadow-sm p-6">
-                    <h2 className="text-[#003178] font-bold text-[18px] mb-5">Recent Transactions</h2>
+                <div className="bg-base-100 rounded-lg border border-base-300 shadow-sm p-6">
+                    <h2 className="text-primary font-bold text-[18px] mb-5">Recent Transactions</h2>
                     
                     <div className="flex flex-col gap-5">
                         {financials.transactions.map((item, idx) => (
-                            <div key={item.id} className="flex items-center gap-4 border-b border-[#E2E8F0] pb-4 last:border-0 last:pb-0">
-                                <div className="w-10 h-10 rounded-full bg-[#DEF7EC] flex items-center justify-center text-[#03543F] flex-shrink-0">
+                            <div key={item.id} className="flex items-center gap-4 border-b border-base-300 pb-4 last:border-0 last:pb-0">
+                                <div className="w-10 h-10 rounded-full bg-emerald-500/15 flex items-center justify-center text-emerald-600 dark:text-emerald-400 flex-shrink-0">
                                     <CheckCircle size={20} />
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                    <div className="font-bold text-slate-800 text-sm">৳ {item.amount}</div>
-                                    <div className="text-xs text-slate-500 mt-0.5 truncate">{item.date} • {item.type}</div>
+                                    <div className="font-bold text-base-content text-sm">৳ {item.amount}</div>
+                                    <div className="text-xs text-base-content/60 mt-0.5 truncate">{item.date} • {item.type}</div>
                                 </div>
                                 <button 
                                     onClick={() => handleDownloadReceipt(item)}
-                                    className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-[#003178] hover:bg-blue-100 transition-colors cursor-pointer"
+                                    className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary/20 transition-colors cursor-pointer"
                                 >
                                     <FileText size={16} />
                                 </button>

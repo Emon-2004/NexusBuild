@@ -88,7 +88,7 @@ const ResetPassword = () => {
     // ── Session not ready (still processing token or error) ───────────────────
     if (!sessionReady) {
         return (
-            <div className="flex flex-col min-h-screen bg-[#f4f7fa]">
+            <div className="flex flex-col min-h-screen bg-base-200 text-base-content">
                 <div className="flex-grow flex items-center justify-center p-4">
                     <div className="text-center space-y-3">
                         {sessionError ? (
@@ -96,21 +96,21 @@ const ResetPassword = () => {
                                 <div className="w-16 h-16 rounded-full bg-rose-50 flex items-center justify-center mx-auto">
                                     <AlertCircle size={36} className="text-rose-500" />
                                 </div>
-                                <h2 className="text-lg font-bold text-[#0c326f] tracking-tight">Invalid Link</h2>
-                                <p className="text-xs text-slate-500 max-w-xs">{sessionError}</p>
+                                <h2 className="text-lg font-bold text-primary tracking-tight">Invalid Link</h2>
+                                <p className="text-xs text-base-content/70 max-w-xs">{sessionError}</p>
                                 <Link
                                     to="/login"
-                                    className="inline-block mt-2 text-xs font-semibold text-[#0c326f] hover:underline"
+                                    className="inline-block mt-2 text-xs font-semibold text-primary hover:underline"
                                 >
                                     Back to Login
                                 </Link>
                             </>
                         ) : (
                             <>
-                                <div className="w-16 h-16 rounded-full bg-[#eef3ff] flex items-center justify-center mx-auto">
-                                    <span className="loading loading-spinner loading-lg text-[#0c326f]"></span>
+                                <div className="w-16 h-16 rounded-full bg-base-300 flex items-center justify-center mx-auto">
+                                    <span className="loading loading-spinner loading-lg text-primary"></span>
                                 </div>
-                                <p className="text-xs font-semibold text-[#0c326f]">Verifying your reset link...</p>
+                                <p className="text-xs font-semibold text-primary">Verifying your reset link...</p>
                             </>
                         )}
                     </div>
@@ -121,15 +121,15 @@ const ResetPassword = () => {
     }
 
     return (
-        <div className="flex flex-col min-h-screen bg-[#f4f7fa]">
+        <div className="flex flex-col min-h-screen bg-base-200 text-base-content">
             <div className="flex-grow flex items-center justify-center p-4 md:p-8">
-                <div className="relative flex flex-col md:flex-row w-full max-w-5xl bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100/80 min-h-[600px]">
+                <div className="relative flex flex-col md:flex-row w-full max-w-5xl bg-base-100 rounded-2xl shadow-xl overflow-hidden border border-base-300 min-h-[600px]">
 
                     {/* Back to login */}
                     <div className="absolute top-4 right-4 z-20">
                         <Link
                             to="/login"
-                            className="text-xs font-semibold text-slate-400 hover:text-[#0c326f] transition-colors duration-200"
+                            className="text-xs font-semibold text-base-content/60 hover:text-primary transition-colors duration-200"
                         >
                             Back to Login
                         </Link>
@@ -179,20 +179,20 @@ const ResetPassword = () => {
                     </div>
 
                     {/* ── Right Panel ────────────────────────────────────── */}
-                    <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center bg-white relative">
+                    <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center bg-base-100 relative">
                         <div className="max-w-sm mx-auto w-full">
 
                             {/* ── SUCCESS STATE ── */}
                             {done ? (
                                 <div className="flex flex-col items-center text-center space-y-4 py-8">
-                                    <div className="w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center">
+                                    <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center">
                                         <CheckCircle2 size={36} className="text-emerald-500" />
                                     </div>
-                                    <h2 className="text-lg font-bold text-[#0c326f] tracking-tight">Password Updated!</h2>
-                                    <p className="text-xs text-slate-500 leading-relaxed">
+                                    <h2 className="text-lg font-bold text-primary tracking-tight">Password Updated!</h2>
+                                    <p className="text-xs text-base-content/70 leading-relaxed">
                                         Your password has been changed successfully. Redirecting you to the login page…
                                     </p>
-                                    <div className="w-full bg-slate-100 rounded-full h-1 overflow-hidden">
+                                    <div className="w-full bg-base-200 rounded-full h-1 overflow-hidden">
                                         <div
                                             className="h-full bg-emerald-500 rounded-full"
                                             style={{ animation: 'progress-shrink 2.5s linear forwards' }}
@@ -200,17 +200,17 @@ const ResetPassword = () => {
                                     </div>
                                     <style>{`
                                         @keyframes progress-shrink {
-                                            from { width: 100%; }
-                                            to   { width: 0%; }
-                                        }
-                                    `}</style>
+                                             from { width: 100%; }
+                                             to   { width: 0%; }
+                                         }
+                                     `}</style>
                                 </div>
                             ) : (
                                 /* ── FORM STATE ── */
                                 <form onSubmit={handleSubmit} className="space-y-5">
                                     <div>
-                                        <h2 className="text-xl font-bold text-[#0c326f] tracking-tight">Set New Password</h2>
-                                        <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                                        <h2 className="text-xl font-bold text-primary tracking-tight">Set New Password</h2>
+                                        <p className="text-xs text-base-content/70 mt-1 leading-relaxed">
                                             Enter your new password below.
                                         </p>
                                     </div>
@@ -219,11 +219,11 @@ const ResetPassword = () => {
 
                                         {/* New Password */}
                                         <div className="space-y-1">
-                                            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
-                                                New Password
+                                            <label className="text-[10px] font-bold text-base-content/60 uppercase tracking-wider block">
+                                                 New Password
                                             </label>
                                             <div className="relative flex items-center">
-                                                <span className="absolute left-3 text-slate-400 pointer-events-none z-10 flex items-center">
+                                                <span className="absolute left-3 text-base-content/40 pointer-events-none z-10 flex items-center">
                                                     <Lock size={16} />
                                                 </span>
                                                 <input
@@ -233,12 +233,12 @@ const ResetPassword = () => {
                                                     placeholder="••••••••"
                                                     required
                                                     minLength={8}
-                                                    className="w-full pl-10 pr-10 py-2.5 bg-[#f8fafc] border border-slate-200 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all"
+                                                    className="w-full pl-10 pr-10 py-2.5 bg-base-200 border border-base-300 rounded-lg text-sm text-base-content placeholder:text-base-content/40 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all"
                                                 />
                                                 <button
                                                     type="button"
                                                     onClick={() => setShowNew(!showNew)}
-                                                    className="absolute right-3 text-slate-400 hover:text-slate-600 focus:outline-none flex items-center"
+                                                    className="absolute right-3 text-base-content/40 hover:text-base-content focus:outline-none flex items-center"
                                                 >
                                                     {showNew ? <EyeOff size={16} /> : <Eye size={16} />}
                                                 </button>
@@ -264,11 +264,11 @@ const ResetPassword = () => {
 
                                         {/* Confirm Password */}
                                         <div className="space-y-1">
-                                            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                                            <label className="text-[10px] font-bold text-base-content/60 uppercase tracking-wider block">
                                                 Confirm New Password
                                             </label>
                                             <div className="relative flex items-center">
-                                                <span className="absolute left-3 text-slate-400 pointer-events-none z-10 flex items-center">
+                                                <span className="absolute left-3 text-base-content/40 pointer-events-none z-10 flex items-center">
                                                     <Lock size={16} />
                                                 </span>
                                                 <input
@@ -277,18 +277,18 @@ const ResetPassword = () => {
                                                     onChange={e => { setConfirmPassword(e.target.value); setError(''); }}
                                                     placeholder="••••••••"
                                                     required
-                                                    className={`w-full pl-10 pr-10 py-2.5 bg-[#f8fafc] border rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none transition-all
+                                                    className={`w-full pl-10 pr-10 py-2.5 bg-base-200 border rounded-lg text-sm text-base-content placeholder:text-base-content/40 focus:outline-none transition-all
                                                         ${confirmPassword.length > 0
                                                             ? confirmPassword === newPassword
                                                                 ? 'border-emerald-400 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20'
                                                                 : 'border-rose-400 focus:border-rose-500 focus:ring-1 focus:ring-rose-500/20'
-                                                            : 'border-slate-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20'
+                                                            : 'border-base-300 focus:border-primary focus:ring-1 focus:ring-primary/20'
                                                         }`}
                                                 />
                                                 <button
                                                     type="button"
                                                     onClick={() => setShowConfirm(!showConfirm)}
-                                                    className="absolute right-3 text-slate-400 hover:text-slate-600 focus:outline-none flex items-center"
+                                                    className="absolute right-3 text-base-content/40 hover:text-base-content focus:outline-none flex items-center"
                                                 >
                                                     {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
                                                 </button>
@@ -303,7 +303,7 @@ const ResetPassword = () => {
                                     </div>
 
                                     {error && (
-                                        <p className="text-rose-500 text-xs font-medium bg-rose-50 border border-rose-100 rounded-md px-3 py-2">
+                                        <p className="text-rose-500 text-xs font-medium bg-rose-500/10 border border-rose-500/20 rounded-md px-3 py-2">
                                             {error}
                                         </p>
                                     )}
@@ -311,7 +311,7 @@ const ResetPassword = () => {
                                     <button
                                         type="submit"
                                         disabled={loading}
-                                        className="w-full bg-[#0c326f] hover:bg-[#092552] text-white py-3 px-4 rounded-lg text-xs font-semibold flex items-center justify-center gap-2 transition-colors duration-200 cursor-pointer shadow-sm disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+                                        className="w-full btn btn-primary text-white py-3 px-4 rounded-lg text-xs font-semibold flex items-center justify-center gap-2 cursor-pointer shadow-sm disabled:opacity-50 disabled:cursor-not-allowed mt-2"
                                     >
                                         {loading ? (
                                             <span className="flex items-center gap-2">
@@ -321,11 +321,11 @@ const ResetPassword = () => {
                                         ) : (<>Update Password <ArrowRight size={14} /></>)}
                                     </button>
 
-                                    <div className="border-t border-slate-100 my-4" />
+                                    <div className="border-t border-base-300 my-4" />
 
-                                    <p className="text-xs text-center text-slate-600">
+                                    <p className="text-xs text-center text-base-content/70">
                                         Remembered it?{' '}
-                                        <Link to="/login" className="text-[#0c326f] font-bold hover:underline">
+                                        <Link to="/login" className="text-primary font-bold hover:underline">
                                             Back to Login
                                         </Link>
                                     </p>

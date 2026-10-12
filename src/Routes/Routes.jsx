@@ -43,10 +43,10 @@ import ChatWidget from '../Components/ChatWidget/ChatWidget';
 // It shares the react-router context.
 const AppLayout = () => {
     return (
-        <>
+        <div className="min-h-screen bg-base-100 text-base-content transition-colors duration-150">
             <Outlet />
             <ChatWidget />
-        </>
+        </div>
     );
 };
 

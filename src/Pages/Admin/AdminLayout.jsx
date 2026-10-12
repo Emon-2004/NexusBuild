@@ -174,13 +174,13 @@ const AdminLayoutContent = () => {
     }, [navigate]);
 
     return (
-        <div className="flex h-screen overflow-hidden font-sans bg-[#F3F4F6] print:block print:h-auto print:overflow-visible relative">
+        <div className="flex h-screen overflow-hidden font-sans bg-base-200 text-base-content print:block print:h-auto print:overflow-visible relative">
             
             {/* Mobile Sidebar Overlay Backdrop */}
             {isSidebarOpen && (
                 <div 
                     onClick={() => setIsSidebarOpen(false)} 
-                    className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[55] lg:hidden"
+                    className="fixed inset-0 bg-neutral/60 backdrop-blur-xs z-[55] lg:hidden"
                 />
             )}
 
@@ -277,17 +277,17 @@ const AdminLayoutContent = () => {
             <div className="flex-1 flex flex-col overflow-hidden print:block print:h-auto print:overflow-visible">
                 
                 {/* Top Header (70px) */}
-                <header className="h-[70px] flex-shrink-0 bg-white border-b border-[#E2E8F0] px-4 lg:px-8 flex items-center justify-between z-40 relative print:hidden">
+                <header className="h-[70px] flex-shrink-0 bg-base-100 border-b border-base-300 px-4 lg:px-8 flex items-center justify-between z-40 relative print:hidden">
                     <div className="flex items-center gap-3">
                         <button 
                             onClick={() => setIsSidebarOpen(true)} 
-                            className="lg:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-lg cursor-pointer flex-shrink-0"
+                            className="lg:hidden p-2 text-base-content/70 hover:bg-base-200 rounded-lg cursor-pointer flex-shrink-0"
                         >
                             <Menu size={20} />
                         </button>
                         <div ref={searchRef} className="relative w-[150px] sm:w-[280px] md:w-[350px] lg:w-[450px]">
-                            <div className="flex items-center gap-2 sm:gap-3 bg-[#F3F4F6] rounded-lg px-3 sm:px-4 py-2 w-full">
-                            <Search size={18} className="text-slate-400" />
+                            <div className="flex items-center gap-2 sm:gap-3 bg-base-200 rounded-lg px-3 sm:px-4 py-2 w-full">
+                            <Search size={18} className="text-base-content/50" />
                             <input 
                                 type="text" 
                                 placeholder="Search clients, unit, projects..."
@@ -297,10 +297,10 @@ const AdminLayoutContent = () => {
                                     setShowSearchDropdown(true);
                                 }}
                                 onFocus={() => setShowSearchDropdown(true)}
-                                className="bg-transparent border-none outline-none text-sm w-full text-slate-700 placeholder-slate-400"
+                                className="bg-transparent border-none outline-none text-sm w-full text-base-content placeholder-base-content/40"
                             />
                             {searchTerm && (
-                                <button onClick={() => setSearchTerm('')} className="text-slate-400 hover:text-slate-600">
+                                <button onClick={() => setSearchTerm('')} className="text-base-content/50 hover:text-base-content cursor-pointer">
                                     <X size={14} />
                                 </button>
                             )}
@@ -308,11 +308,11 @@ const AdminLayoutContent = () => {
 
                         {/* Live Search Results Dropdown */}
                         {showSearchDropdown && searchTerm.trim().length > 0 && (
-                            <div className="absolute left-0 top-12 w-full bg-white border border-[#E2E8F0] shadow-2xl rounded-xl p-3 text-xs z-50 max-h-80 overflow-y-auto divide-y divide-slate-100">
-                                <div className="font-bold text-[11px] text-slate-400 uppercase tracking-wider pb-2 px-1">
+                            <div className="absolute left-0 top-12 w-full bg-base-100 border border-base-300 shadow-2xl rounded-xl p-3 text-xs z-50 max-h-80 overflow-y-auto divide-y divide-base-300">
+                                <div className="font-bold text-[11px] text-base-content/50 uppercase tracking-wider pb-2 px-1">
                                     Search Results ({searchResults.length})
                                 </div>
-                                <div className="divide-y divide-slate-100">
+                                <div className="divide-y divide-base-300">
                                     {searchResults.map(res => (
                                         <div 
                                             key={res.id} 
@@ -321,11 +321,11 @@ const AdminLayoutContent = () => {
                                                 setShowSearchDropdown(false);
                                                 setSearchTerm('');
                                             }}
-                                            className="py-2.5 px-2 hover:bg-slate-50 rounded-lg cursor-pointer transition-colors flex items-center justify-between group"
+                                            className="py-2.5 px-2 hover:bg-base-200 rounded-lg cursor-pointer transition-colors flex items-center justify-between group"
                                         >
                                             <div>
-                                                <div className="font-bold text-slate-800 text-sm group-hover:text-[#1A4B9C] transition-colors">{res.title}</div>
-                                                <div className="text-slate-500 text-xs mt-0.5">{res.subtitle}</div>
+                                                <div className="font-bold text-base-content text-sm group-hover:text-primary transition-colors">{res.title}</div>
+                                                <div className="text-base-content/60 text-xs mt-0.5">{res.subtitle}</div>
                                             </div>
                                             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${res.badge}`}>
                                                 {res.type}
@@ -333,7 +333,7 @@ const AdminLayoutContent = () => {
                                         </div>
                                     ))}
                                     {searchResults.length === 0 && (
-                                        <div className="py-6 text-center text-slate-400">
+                                        <div className="py-6 text-center text-base-content/50">
                                             No results matching "{searchTerm}"
                                         </div>
                                     )}
@@ -351,11 +351,11 @@ const AdminLayoutContent = () => {
                                 return (
                                     <button
                                         onClick={() => setShowNotif(p => !p)}
-                                        className="w-10 h-10 flex items-center justify-center rounded-full border border-[#1A4B9C] text-[#1A4B9C] hover:bg-blue-50 transition-colors cursor-pointer relative"
+                                        className="w-10 h-10 flex items-center justify-center rounded-full border border-primary text-primary hover:bg-primary/10 transition-colors cursor-pointer relative"
                                     >
                                         <Bell size={18} />
                                         {unreadAdminCount > 0 && (
-                                            <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white font-bold text-[9px] flex items-center justify-center rounded-full border-2 border-white">
+                                            <span className="absolute -top-1 -right-1 w-4 h-4 bg-error text-error-content font-bold text-[9px] flex items-center justify-center rounded-full border-2 border-base-100">
                                                 {unreadAdminCount}
                                             </span>
                                         )}
@@ -365,8 +365,8 @@ const AdminLayoutContent = () => {
                             
                             {/* Live Notification Dropdown */}
                             {showNotif && (
-                                <div className="absolute right-0 top-12 w-80 sm:w-96 bg-white border border-[#E2E8F0] shadow-2xl rounded-2xl p-4 text-xs text-slate-700 z-50 divide-y divide-slate-100">
-                                    <div className="font-bold text-sm text-[#1A4B9C] pb-2 flex justify-between items-center">
+                                <div className="absolute right-0 top-12 w-80 sm:w-96 bg-base-100 border border-base-300 shadow-2xl rounded-2xl p-4 text-xs text-base-content z-50 divide-y divide-base-300">
+                                    <div className="font-bold text-sm text-primary pb-2 flex justify-between items-center">
                                         <span>Notifications</span>
                                         <button 
                                             onClick={() => {
@@ -374,12 +374,12 @@ const AdminLayoutContent = () => {
                                                 setReadAdminNotifIds(allIds);
                                                 try { localStorage.setItem('admin_read_notifs', JSON.stringify(allIds)); } catch(e) {}
                                             }}
-                                            className="text-[10px] bg-blue-100 text-[#1A4B9C] px-2 py-0.5 rounded-full font-bold hover:bg-blue-200 cursor-pointer"
+                                            className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold hover:bg-primary/20 cursor-pointer"
                                         >
                                             Mark all as read
                                         </button>
                                     </div>
-                                    <div className="max-h-64 overflow-y-auto divide-y divide-slate-100 py-1">
+                                    <div className="max-h-64 overflow-y-auto divide-y divide-base-300 py-1">
                                         {adminNotifications.map(n => {
                                             const isUnread = !readAdminNotifIds.includes(n.id);
                                             return (
@@ -395,22 +395,22 @@ const AdminLayoutContent = () => {
                                                         setShowNotif(false);
                                                     }}
                                                     className={`py-2.5 px-2 rounded-lg cursor-pointer transition-colors space-y-1 group ${
-                                                        isUnread ? 'bg-blue-50/70 hover:bg-blue-100/70 font-semibold' : 'hover:bg-slate-50'
+                                                        isUnread ? 'bg-primary/10 hover:bg-primary/20 font-semibold' : 'hover:bg-base-200'
                                                     }`}
                                                 >
                                                     <div className="flex justify-between items-center">
-                                                        <span className="font-bold text-slate-800 text-xs group-hover:text-[#1A4B9C] transition-colors flex items-center gap-1.5">
-                                                            {isUnread && <span className="w-1.5 h-1.5 rounded-full bg-blue-600 inline-block" />}
+                                                        <span className="font-bold text-base-content text-xs group-hover:text-primary transition-colors flex items-center gap-1.5">
+                                                            {isUnread && <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />}
                                                             {n.title}
                                                         </span>
                                                         <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${n.badge}`}>{n.date}</span>
                                                     </div>
-                                                    <p className="text-slate-500 text-xs line-clamp-2 leading-relaxed">{n.desc}</p>
+                                                    <p className="text-base-content/70 text-xs line-clamp-2 leading-relaxed">{n.desc}</p>
                                                 </div>
                                             );
                                         })}
                                         {adminNotifications.length === 0 && (
-                                            <div className="py-6 text-center text-slate-400">No new notifications.</div>
+                                            <div className="py-6 text-center text-base-content/50">No new notifications.</div>
                                         )}
                                     </div>
                                 </div>
@@ -418,12 +418,12 @@ const AdminLayoutContent = () => {
                         </div>
 
                         {/* Profile Icon */}
-                        <div className="flex items-center gap-3 border-l border-slate-200 pl-6">
+                        <div className="flex items-center gap-3 border-l border-base-300 pl-6">
                             <div className="text-right hidden sm:block">
-                                <div className="text-sm font-bold text-slate-800">Admin (MD)</div>
-                                <div className="text-xs text-slate-500">{systemSettings?.companyName || DEFAULT_SYSTEM_SETTINGS.companyName}</div>
+                                <div className="text-sm font-bold text-base-content">Admin (MD)</div>
+                                <div className="text-xs text-base-content/60">{systemSettings?.companyName || DEFAULT_SYSTEM_SETTINGS.companyName}</div>
                             </div>
-                            <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center border border-slate-200">
+                            <div className="w-10 h-10 bg-base-200 rounded-full flex items-center justify-center border border-base-300">
                                 <img src={`https://ui-avatars.com/api/?name=Admin&background=1A4B9C&color=fff`} alt="Profile" className="w-10 h-10 rounded-full" />
                             </div>
                         </div>
@@ -438,14 +438,14 @@ const AdminLayoutContent = () => {
 
             {/* Project Switcher Modal */}
             {isProjectSwitcherOpen && (
-                <div className="fixed inset-0 bg-slate-900/50 flex items-center justify-center z-[100]">
-                    <div className="bg-white rounded-xl shadow-xl w-[450px] overflow-hidden">
-                        <div className="px-6 py-4 border-b border-[#E2E8F0] flex justify-between items-center bg-slate-50">
+                <div className="fixed inset-0 bg-neutral/60 backdrop-blur-sm flex items-center justify-center z-[100]">
+                    <div className="bg-base-100 border border-base-300 rounded-xl shadow-xl w-[450px] overflow-hidden">
+                        <div className="px-6 py-4 border-b border-base-300 flex justify-between items-center bg-base-200">
                             <div>
-                                <h3 className="font-bold text-slate-800">Select Project Environment</h3>
-                                <p className="text-[10px] text-slate-500 mt-0.5">Choose a project to manage its specific data.</p>
+                                <h3 className="font-bold text-base-content">Select Project Environment</h3>
+                                <p className="text-[10px] text-base-content/60 mt-0.5">Choose a project to manage its specific data.</p>
                             </div>
-                            <button onClick={() => setIsProjectSwitcherOpen(false)} className="text-slate-400 hover:text-slate-600">
+                            <button onClick={() => setIsProjectSwitcherOpen(false)} className="text-base-content/50 hover:text-base-content cursor-pointer">
                                 <X size={20} />
                             </button>
                         </div>
@@ -454,82 +454,82 @@ const AdminLayoutContent = () => {
                             <div className="p-4 space-y-2 max-h-[60vh] overflow-y-auto">
                                 <button 
                                     onClick={() => { setActiveProject('all'); setIsProjectSwitcherOpen(false); }}
-                                    className={`w-full text-left p-4 rounded-lg border transition-colors flex justify-between items-center ${activeProject === 'all' ? 'border-[#1A4B9C] bg-[#E1EFFE]' : 'border-[#E2E8F0] hover:border-[#1A4B9C]'}`}
+                                    className={`w-full text-left p-4 rounded-lg border transition-colors flex justify-between items-center ${activeProject === 'all' ? 'border-primary bg-primary/10' : 'border-base-300 hover:border-primary'}`}
                                 >
                                     <div>
-                                        <div className={`font-bold text-sm ${activeProject === 'all' ? 'text-[#1A4B9C]' : 'text-slate-800'}`}>All Projects Overview</div>
-                                        <div className="text-xs text-slate-500 mt-0.5">Master view for Super Admins</div>
+                                        <div className={`font-bold text-sm ${activeProject === 'all' ? 'text-primary' : 'text-base-content'}`}>All Projects Overview</div>
+                                        <div className="text-xs text-base-content/60 mt-0.5">Master view for Super Admins</div>
                                     </div>
-                                    {activeProject === 'all' && <Check size={18} className="text-[#1A4B9C]" />}
+                                    {activeProject === 'all' && <Check size={18} className="text-primary" />}
                                 </button>
 
                                 {projects?.map(proj => (
                                     <button 
                                         key={proj.id}
                                         onClick={() => { setActiveProject(proj.id); setIsProjectSwitcherOpen(false); }}
-                                        className={`w-full text-left p-4 rounded-lg border transition-colors flex justify-between items-center ${activeProject === proj.id ? 'border-[#1A4B9C] bg-[#E1EFFE]' : 'border-[#E2E8F0] hover:border-[#1A4B9C]'}`}
+                                        className={`w-full text-left p-4 rounded-lg border transition-colors flex justify-between items-center ${activeProject === proj.id ? 'border-primary bg-primary/10' : 'border-base-300 hover:border-primary'}`}
                                     >
                                         <div>
-                                            <div className={`font-bold text-sm ${activeProject === proj.id ? 'text-[#1A4B9C]' : 'text-slate-800'}`}>{proj.name}</div>
-                                            <div className="text-xs text-slate-500 mt-0.5">ID: {proj.id} • {proj.totalUnits || 0} Units</div>
+                                            <div className={`font-bold text-sm ${activeProject === proj.id ? 'text-primary' : 'text-base-content'}`}>{proj.name}</div>
+                                            <div className="text-xs text-base-content/60 mt-0.5">ID: {proj.id} • {proj.totalUnits || 0} Units</div>
                                         </div>
-                                        {activeProject === proj.id && <Check size={18} className="text-[#1A4B9C]" />}
+                                        {activeProject === proj.id && <Check size={18} className="text-primary" />}
                                     </button>
                                 ))}
                                 
-                                <div className="pt-4 mt-2 border-t border-[#E2E8F0]">
-                                    <button onClick={() => setIsAddProjectOpen(true)} className="w-full flex items-center justify-center gap-2 py-2.5 bg-slate-100 text-slate-700 rounded-lg text-sm font-bold hover:bg-slate-200 transition-colors">
+                                <div className="pt-4 mt-2 border-t border-base-300">
+                                    <button onClick={() => setIsAddProjectOpen(true)} className="w-full flex items-center justify-center gap-2 py-2.5 bg-base-200 text-base-content rounded-lg text-sm font-bold hover:bg-base-300 transition-colors cursor-pointer">
                                         <Building2 size={16} /> Add New Project
                                     </button>
                                 </div>
                             </div>
                         ) : (
                             <form onSubmit={handleAddProjectSubmit} className="p-6 space-y-4">
-                                <h4 className="text-sm font-bold text-[#1A4B9C] border-b border-[#E2E8F0] pb-2 mb-4">Create New Project</h4>
+                                <h4 className="text-sm font-bold text-primary border-b border-base-300 pb-2 mb-4">Create New Project</h4>
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Project ID (Optional)</label>
+                                    <label className="block text-xs font-bold text-base-content/70 uppercase tracking-wider mb-1">Project ID (Optional)</label>
                                     <input 
                                         type="text" 
                                         placeholder={`e.g. p${projects.length + 1}`} 
                                         value={newProjectForm.id} 
                                         onChange={e => setNewProjectForm({...newProjectForm, id: e.target.value})} 
-                                        className="w-full border border-[#E2E8F0] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#1A4B9C]" 
+                                        className="w-full bg-base-200 border border-base-300 rounded-lg px-3 py-2 text-sm text-base-content focus:outline-none focus:border-primary" 
                                     />
-                                    <div className="text-[10px] text-slate-400 mt-1">Leave empty to auto-generate (e.g. p{projects.length + 1}).</div>
+                                    <div className="text-[10px] text-base-content/50 mt-1">Leave empty to auto-generate (e.g. p{projects.length + 1}).</div>
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Project Name</label>
+                                    <label className="block text-xs font-bold text-base-content/70 uppercase tracking-wider mb-1">Project Name</label>
                                     <input 
                                         type="text" 
                                         placeholder="e.g. Skyline Heights" 
                                         required 
                                         value={newProjectForm.name} 
                                         onChange={e => setNewProjectForm({...newProjectForm, name: e.target.value})} 
-                                        className="w-full border border-[#E2E8F0] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#1A4B9C]" 
+                                        className="w-full bg-base-200 border border-base-300 rounded-lg px-3 py-2 text-sm text-base-content focus:outline-none focus:border-primary" 
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Total Units Billed</label>
+                                    <label className="block text-xs font-bold text-base-content/70 uppercase tracking-wider mb-1">Total Units Billed</label>
                                     <input 
                                         type="number" 
                                         placeholder="e.g. 50" 
                                         required 
                                         value={newProjectForm.totalUnits} 
                                         onChange={e => setNewProjectForm({...newProjectForm, totalUnits: e.target.value})} 
-                                        className="w-full border border-[#E2E8F0] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#1A4B9C]" 
+                                        className="w-full bg-base-200 border border-base-300 rounded-lg px-3 py-2 text-sm text-base-content focus:outline-none focus:border-primary" 
                                     />
                                 </div>
                                 <div className="pt-4 flex justify-end gap-3">
                                     <button 
                                         type="button" 
                                         onClick={() => setIsAddProjectOpen(false)} 
-                                        className="px-4 py-2 text-slate-600 bg-slate-100 rounded-lg text-sm font-bold hover:bg-slate-200 cursor-pointer"
+                                        className="px-4 py-2 text-base-content bg-base-200 rounded-lg text-sm font-bold hover:bg-base-300 cursor-pointer"
                                     >
                                         Cancel
                                     </button>
                                     <button 
                                         type="submit" 
-                                        className="px-4 py-2 bg-[#1A4B9C] text-white rounded-lg text-sm font-bold hover:bg-[#153B7C] cursor-pointer"
+                                        className="px-4 py-2 bg-primary text-primary-content rounded-lg text-sm font-bold hover:bg-primary/90 cursor-pointer"
                                     >
                                         Save Project
                                     </button>

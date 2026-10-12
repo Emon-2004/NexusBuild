@@ -43,20 +43,20 @@ const ProjectDetails = () => {
     // If project ID is invalid or not found
     if (!project) {
         return (
-            <div className="flex flex-col min-h-screen bg-[#f8f9fa] font-[Inter,sans-serif]">
+            <div className="flex flex-col min-h-screen bg-base-200 text-base-content font-[Inter,sans-serif]">
                 <Navbar />
                 <main className="flex-grow flex items-center justify-center py-20 px-6">
-                    <div className="max-w-md w-full bg-[#f8f9fa] border border-[#c4c6ce] p-8 text-center rounded-[8px] shadow-sm">
-                        <div className="w-16 h-16 bg-[#fe762a]/10 text-[#a14000] rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div className="max-w-md w-full bg-base-100 border border-base-300 p-8 text-center rounded-[8px] shadow-sm">
+                        <div className="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-4">
                             <Building size={32} />
                         </div>
-                        <h2 className="text-[24px] font-bold text-[#000f22] mb-2">Project Not Found</h2>
-                        <p className="text-[14px] text-[#43474d] mb-6">
+                        <h2 className="text-[24px] font-bold text-base-content mb-2">Project Not Found</h2>
+                        <p className="text-[14px] text-base-content/75 mb-6">
                             The project you are looking for does not exist or may have been moved.
                         </p>
                         <Link
                             to="/projects"
-                            className="inline-flex items-center justify-center gap-2 bg-[#000f22] hover:bg-[#0a2540] text-white text-[14px] font-bold px-6 py-3 rounded-[4px] transition-colors"
+                            className="inline-flex items-center justify-center gap-2 bg-primary hover:opacity-90 text-primary-content text-[14px] font-bold px-6 py-3 rounded-[4px] transition-colors"
                         >
                             <ArrowLeft size={16} />
                             Back to Projects
@@ -77,7 +77,7 @@ const ProjectDetails = () => {
     const activeImageIndex = activeImage >= galleryImages.length ? 0 : activeImage;
 
     return (
-        <div className="flex flex-col min-h-screen bg-[#f8f9fa] font-[Inter,sans-serif]">
+        <div className="flex flex-col min-h-screen bg-base-200 text-base-content font-[Inter,sans-serif]">
             <Navbar />
 
             {/* ══ 1. TOP NAVIGATION / BREADCRUMB ════════════════════════════════ */}
@@ -217,28 +217,28 @@ const ProjectDetails = () => {
                     <div className="lg:col-span-8 flex flex-col gap-10">
 
                         {/* Detailed Description */}
-                        <div className="bg-white border border-[#c4c6ce] p-6 lg:p-8 rounded-[6px] flex flex-col gap-4">
-                            <h2 className="text-[22px] font-bold text-[#000f22] border-b border-[#e1e3e4] pb-3 flex items-center gap-2">
-                                <Building size={20} className="text-[#a14000]" />
+                        <div className="bg-base-100 border border-base-300 p-6 lg:p-8 rounded-[6px] flex flex-col gap-4 text-base-content">
+                            <h2 className="text-[22px] font-bold text-base-content border-b border-base-300 pb-3 flex items-center gap-2">
+                                <Building size={20} className="text-primary" />
                                 Project Overview
                             </h2>
-                            <p className="text-[16px] text-[#43474d] leading-relaxed whitespace-pre-line">
+                            <p className="text-[16px] text-base-content/85 leading-relaxed whitespace-pre-line">
                                 {project.fullDescription || project.description}
                             </p>
                         </div>
 
                         {/* Key Features & Amenities checklist */}
                         {project.features && project.features.length > 0 && (
-                            <div className="bg-white border border-[#c4c6ce] p-6 lg:p-8 rounded-[6px] flex flex-col gap-6">
-                                <h2 className="text-[22px] font-bold text-[#000f22] border-b border-[#e1e3e4] pb-3 flex items-center gap-2">
-                                    <ShieldCheck size={20} className="text-[#a14000]" />
+                            <div className="bg-base-100 border border-base-300 p-6 lg:p-8 rounded-[6px] flex flex-col gap-6 text-base-content">
+                                <h2 className="text-[22px] font-bold text-base-content border-b border-base-300 pb-3 flex items-center gap-2">
+                                    <ShieldCheck size={20} className="text-primary" />
                                     Features &amp; Infrastructure Amenities
                                 </h2>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     {project.features.map((feature, idx) => (
-                                        <div key={idx} className="flex items-start gap-3 p-3 bg-[#f8f9fa] border border-[#e1e3e4] rounded-[4px]">
-                                            <CheckCircle2 size={18} className="text-[#a14000] flex-shrink-0 mt-0.5" />
-                                            <span className="text-[14px] font-medium text-[#191c1d] leading-snug">
+                                         <div key={idx} className="flex items-start gap-3 p-3 bg-base-200 border border-base-300 rounded-[4px]">
+                                            <CheckCircle2 size={18} className="text-primary flex-shrink-0 mt-0.5" />
+                                            <span className="text-[14px] font-medium text-base-content leading-snug">
                                                 {feature}
                                             </span>
                                         </div>
@@ -254,19 +254,19 @@ const ProjectDetails = () => {
 
                         {/* Specifications Card */}
                         {project.specs && project.specs.length > 0 && (
-                            <div className="bg-white border border-[#c4c6ce] p-6 rounded-[6px] flex flex-col gap-4">
-                                <h3 className="text-[18px] font-bold text-[#000f22] border-b border-[#e1e3e4] pb-3 flex items-center gap-2">
-                                    <Layers size={18} className="text-[#a14000]" />
+                            <div className="bg-base-100 border border-base-300 p-6 rounded-[6px] flex flex-col gap-4 text-base-content">
+                                <h3 className="text-[18px] font-bold text-base-content border-b border-base-300 pb-3 flex items-center gap-2">
+                                    <Layers size={18} className="text-primary" />
                                     Technical Specifications
                                 </h3>
 
-                                <div className="flex flex-col divide-y divide-[#e1e3e4]">
+                                <div className="flex flex-col divide-y divide-base-300">
                                     {project.specs.map((spec, idx) => (
                                         <div key={idx} className="py-3 flex flex-col gap-0.5">
-                                            <span className="text-[11px] font-semibold text-[#74777e] uppercase tracking-wider">
+                                            <span className="text-[11px] font-semibold text-base-content/70 uppercase tracking-wider">
                                                 {spec.label}
                                             </span>
-                                            <span className="text-[15px] font-semibold text-[#000f22]">
+                                            <span className="text-[15px] font-semibold text-base-content">
                                                 {spec.value}
                                             </span>
                                         </div>

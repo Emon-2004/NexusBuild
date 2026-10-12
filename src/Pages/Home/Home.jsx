@@ -147,7 +147,7 @@ const Home = () => {
     const featuredProjects = PROJECTS.slice(0, 3);
 
     return (
-        <div className="flex flex-col min-h-screen bg-white font-[Inter,sans-serif] text-[#191c1d]">
+        <div className="flex flex-col min-h-screen bg-base-100 font-[Inter,sans-serif] text-base-content">
 
             {/* ══════════════════════════════════════════════════════════════
              * 1. HERO SECTION
@@ -255,7 +255,10 @@ const Home = () => {
             {/* ══════════════════════════════════════════════════════════════
              * 2. FEATURED DEVELOPMENTS SECTION (LIMITED PREVIEW OF 3 PROJECTS)
              * ══════════════════════════════════════════════════════════════ */}
-            <section className="bg-white py-16 lg:py-24 px-6 lg:px-12">
+            {/* ══════════════════════════════════════════════════════════════
+             * 2. FEATURED DEVELOPMENTS SECTION (LIMITED PREVIEW OF 3 PROJECTS)
+             * ══════════════════════════════════════════════════════════════ */}
+            <section className="bg-base-100 py-16 lg:py-24 px-6 lg:px-12">
                 <div className="max-w-[1280px] mx-auto flex flex-col gap-12">
 
                     <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
@@ -263,10 +266,10 @@ const Home = () => {
                             <span className="text-[12px] font-semibold text-[#a14000] uppercase tracking-wider">
                                 Featured Portfolio
                             </span>
-                            <h2 className="text-[28px] lg:text-[32px] font-bold text-[#000f22] leading-tight">
+                            <h2 className="text-[28px] lg:text-[32px] font-bold text-base-content leading-tight">
                                 Signature Developments
                             </h2>
-                            <p className="text-[16px] font-normal text-[#43474d] leading-relaxed max-w-xl">
+                            <p className="text-[16px] font-normal text-base-content/75 leading-relaxed max-w-xl">
                                 Hand-picked showcase of our premier residential and commercial properties in Narayanganj.
                             </p>
                         </div>
@@ -284,7 +287,7 @@ const Home = () => {
                         {featuredProjects.map((project) => (
                             <div
                                 key={project.id}
-                                className="bg-white border border-[#c4c6ce] flex flex-col hover:shadow-lg transition-shadow duration-200 rounded-[4px] overflow-hidden"
+                                className="bg-base-100 border border-base-300 flex flex-col hover:shadow-lg transition-shadow duration-200 rounded-[4px] overflow-hidden"
                             >
                                 <div className="relative h-[200px] lg:h-[240px] overflow-hidden flex-shrink-0">
                                     <img
@@ -304,11 +307,11 @@ const Home = () => {
                                 </div>
 
                                 <div className="flex flex-col flex-1 p-6 gap-3">
-                                    <h3 className="text-[22px] font-bold text-[#000f22] leading-tight">
+                                    <h3 className="text-[22px] font-bold text-base-content leading-tight">
                                         {project.name}
                                     </h3>
 
-                                    <div className="flex items-center gap-4 text-[12px] text-[#74777e]">
+                                    <div className="flex items-center gap-4 text-[12px] text-base-content/65">
                                         <span className="flex items-center gap-1 font-medium">
                                             <MapPin size={13} />
                                             {project.location}
@@ -319,13 +322,13 @@ const Home = () => {
                                         </span>
                                     </div>
 
-                                    <p className="text-[15px] font-normal text-[#43474d] leading-relaxed flex-1">
+                                    <p className="text-[15px] font-normal text-base-content/75 leading-relaxed flex-1">
                                         {project.description}
                                     </p>
 
                                     <Link
                                         to={`/project-details/${project.id}`}
-                                        className="w-full flex items-center justify-center gap-2 py-3 border border-[#000f22] text-[#000f22] text-[14px] font-bold hover:bg-[#000f22] hover:text-white transition-colors duration-200 min-h-[44px] mt-2 rounded-[4px]"
+                                        className="w-full flex items-center justify-center gap-2 py-3 border border-base-300 text-base-content text-[14px] font-bold hover:bg-base-200 transition-colors duration-200 min-h-[44px] mt-2 rounded-[4px]"
                                     >
                                         Project Details
                                         <ArrowRight size={14} />
@@ -340,17 +343,20 @@ const Home = () => {
             {/* ══════════════════════════════════════════════════════════════
              * 3. EXPLORE NEIGHBORHOODS & GIS MAP
              * ══════════════════════════════════════════════════════════════ */}
-            <section className="bg-[#f8f9fa] border-y border-[#c4c6ce]/50 py-16 lg:py-24 px-6 lg:px-12">
+            {/* ══════════════════════════════════════════════════════════════
+             * 3. EXPLORE NEIGHBORHOODS & GIS MAP
+             * ══════════════════════════════════════════════════════════════ */}
+            <section className="bg-base-200 border-y border-base-300 py-16 lg:py-24 px-6 lg:px-12">
                 <div className="max-w-[1280px] mx-auto flex flex-col gap-10">
 
                     <div>
                         <span className="text-[12px] font-semibold text-[#a14000] uppercase tracking-wider">
                             Location Insights
                         </span>
-                        <h2 className="text-[28px] lg:text-[32px] font-bold text-[#000f22] leading-tight mt-1">
+                        <h2 className="text-[28px] lg:text-[32px] font-bold text-base-content leading-tight mt-1">
                             Explore Narayanganj Neighborhoods
                         </h2>
-                        <p className="text-[16px] font-normal text-[#43474d] leading-relaxed max-w-xl">
+                        <p className="text-[16px] font-normal text-base-content/75 leading-relaxed max-w-xl">
                             Discover active properties and ongoing infrastructure developments mapped across prime sectors.
                         </p>
                     </div>
@@ -367,16 +373,16 @@ const Home = () => {
                                         onClick={() => setSelectedNeighborhood(nb.name)}
                                         className={`p-5 rounded-[6px] border cursor-pointer transition-all ${
                                             isActive
-                                                ? "bg-white border-[#fe762a] shadow-md"
-                                                : "bg-white/60 border-[#c4c6ce] hover:border-[#74777e] hover:bg-white"
+                                                ? "bg-base-100 border-[#fe762a] shadow-md"
+                                                : "bg-base-100/60 border-base-300 hover:border-base-content/40 hover:bg-base-100"
                                         }`}
                                     >
                                         <div className="flex items-center justify-between">
-                                            <h4 className="text-[16px] font-bold text-[#000f22]">{nb.name}</h4>
-                                            <span className="text-[12px] font-medium text-[#74777e]">{nb.stats}</span>
+                                            <h4 className="text-[16px] font-bold text-base-content">{nb.name}</h4>
+                                            <span className="text-[12px] font-medium text-base-content/70">{nb.stats}</span>
                                         </div>
                                         {isActive && (
-                                            <p className="text-[14px] text-[#43474d] mt-2 leading-relaxed">
+                                            <p className="text-[14px] text-base-content/75 mt-2 leading-relaxed">
                                                 {nb.desc}
                                             </p>
                                         )}
@@ -386,15 +392,15 @@ const Home = () => {
 
                             <Link
                                 to="/gismap"
-                                className="mt-2 inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-[#000f22] hover:bg-[#0a2540] text-white text-[14px] font-bold rounded-[4px] transition-colors"
+                                className="mt-2 inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-primary hover:opacity-90 text-primary-content text-[14px] font-bold rounded-[4px] transition-colors"
                             >
-                                <Globe size={16} className="text-[#fe762a]" />
+                                <Globe size={16} />
                                 Launch Interactive GIS Map
                             </Link>
                         </div>
 
                         {/* Right: Map graphics preview */}
-                        <div className="lg:col-span-7 bg-white p-3 border border-[#c4c6ce] rounded-[8px] overflow-hidden shadow-sm flex flex-col justify-between min-h-[380px] relative">
+                        <div className="lg:col-span-7 bg-base-100 p-3 border border-base-300 rounded-[8px] overflow-hidden shadow-sm flex flex-col justify-between min-h-[380px] relative">
                             <div className="relative w-full h-full min-h-[340px] rounded-[4px] overflow-hidden bg-[#000f22] flex items-center justify-center">
                                 {/* Live OpenStreetMap interactive embed centered on selected neighborhood with loading spinner */}
                                 <MapFrameWithSkeleton
@@ -410,14 +416,14 @@ const Home = () => {
                                 />
                                 <div className="absolute inset-0 bg-[#000f22]/10 pointer-events-none" />
 
-                                <div className="absolute bottom-4 left-4 z-10 bg-white/95 backdrop-blur-md p-4 rounded-[6px] shadow-lg border border-[#c4c6ce] max-w-xs pointer-events-none">
-                                    <span className="text-[10px] font-bold text-[#74777e] uppercase tracking-wider block">
+                                <div className="absolute bottom-4 left-4 z-10 bg-base-100/95 backdrop-blur-md p-4 rounded-[6px] shadow-lg border border-base-300 max-w-xs pointer-events-none">
+                                    <span className="text-[10px] font-bold text-base-content/65 uppercase tracking-wider block">
                                         Selected Region
                                     </span>
-                                    <p className="text-[16px] font-bold text-[#000f22] mt-0.5">
+                                    <p className="text-[16px] font-bold text-base-content mt-0.5">
                                         {selectedNbData.name} District
                                     </p>
-                                    <p className="text-[12px] text-[#43474d] mt-1">
+                                    <p className="text-[12px] text-base-content/75 mt-1">
                                         Lat: {selectedNbData.lat}°N, Lng: {selectedNbData.lng}°E — Live GIS plot active.
                                     </p>
                                 </div>
@@ -477,7 +483,7 @@ const Home = () => {
                             </button>
                             <button
                                 onClick={() => setShowSiteVisit(true)}
-                                className="px-6 py-3.5 bg-white border-2 border-[#fe762a] text-[#fe762a] hover:bg-[#fe762a] hover:text-white text-[13px] font-extrabold transition-colors duration-200 rounded-[4px] cursor-pointer flex items-center gap-1.5"
+                                className="px-6 py-3.5 bg-base-100 border-2 border-[#fe762a] text-[#fe762a] hover:bg-[#fe762a] hover:text-white text-[13px] font-extrabold transition-colors duration-200 rounded-[4px] cursor-pointer flex items-center gap-1.5"
                             >
                                 Schedule Site Visit <ArrowRight size={14} />
                             </button>
@@ -506,17 +512,20 @@ const Home = () => {
             {/* ══════════════════════════════════════════════════════════════
              * 5. CLIENT CAPABILITIES & DIGITAL TOOLKIT
              * ══════════════════════════════════════════════════════════════ */}
-            <section className="bg-white py-16 lg:py-24 px-6 lg:px-12">
+            {/* ══════════════════════════════════════════════════════════════
+             * 5. CLIENT CAPABILITIES & DIGITAL TOOLKIT
+             * ══════════════════════════════════════════════════════════════ */}
+            <section className="bg-base-100 py-16 lg:py-24 px-6 lg:px-12">
                 <div className="max-w-[1280px] mx-auto flex flex-col gap-12">
 
                     <div className="text-center max-w-2xl mx-auto flex flex-col gap-3">
                         <span className="text-[12px] font-semibold text-[#a14000] uppercase tracking-wider">
                             Digital Platform
                         </span>
-                        <h2 className="text-[28px] lg:text-[34px] font-bold text-[#000f22] leading-tight">
+                        <h2 className="text-[28px] lg:text-[34px] font-bold text-base-content leading-tight">
                             Empowering Property Owners
                         </h2>
-                        <p className="text-[16px] text-[#43474d] leading-relaxed">
+                        <p className="text-[16px] text-base-content/75 leading-relaxed">
                             We equip clients with real-time construction progress tracking, transparent financial ledgers, and 24/7 support portals.
                         </p>
                     </div>
@@ -524,49 +533,49 @@ const Home = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
                         {/* Card 1 */}
-                        <div className="bg-[#f8f9fa] border border-[#c4c6ce] p-8 rounded-[8px] flex flex-col gap-4">
+                        <div className="bg-base-200 border border-base-300 p-8 rounded-[8px] flex flex-col gap-4">
                             <div className="w-12 h-12 rounded-[6px] bg-[#fe762a]/10 text-[#a14000] flex items-center justify-center">
                                 <TrendingUp size={24} />
                             </div>
-                            <h3 className="text-[20px] font-bold text-[#000f22]">Project Timeline Tracking</h3>
-                            <p className="text-[14px] text-[#43474d] leading-relaxed">
+                            <h3 className="text-[20px] font-bold text-base-content">Project Timeline Tracking</h3>
+                            <p className="text-[14px] text-base-content/75 leading-relaxed">
                                 Follow construction milestones and structural handovers with automated notifications.
                             </p>
-                            <div className="mt-2 pt-4 border-t border-[#c4c6ce]">
-                                <div className="flex justify-between text-[12px] font-bold text-[#74777e] mb-1">
+                            <div className="mt-2 pt-4 border-t border-base-300">
+                                <div className="flex justify-between text-[12px] font-bold text-base-content/70 mb-1">
                                     <span>Milestone: Structural Framework</span>
                                     <span className="text-[#a14000]">72%</span>
                                 </div>
-                                <div className="w-full bg-[#e1e3e4] h-2 rounded-full overflow-hidden">
+                                <div className="w-full bg-base-300 h-2 rounded-full overflow-hidden">
                                     <div className="bg-[#fe762a] h-full w-[72%]" />
                                 </div>
                             </div>
                         </div>
 
                         {/* Card 2 */}
-                        <div className="bg-[#f8f9fa] border border-[#c4c6ce] p-8 rounded-[8px] flex flex-col gap-4">
-                            <div className="w-12 h-12 rounded-[6px] bg-[#000f22]/10 text-[#000f22] flex items-center justify-center">
+                        <div className="bg-base-200 border border-base-300 p-8 rounded-[8px] flex flex-col gap-4">
+                            <div className="w-12 h-12 rounded-[6px] bg-primary/10 text-primary flex items-center justify-center">
                                 <FileText size={24} />
                             </div>
-                            <h3 className="text-[20px] font-bold text-[#000f22]">Financial Reporting</h3>
-                            <p className="text-[14px] text-[#43474d] leading-relaxed">
+                            <h3 className="text-[20px] font-bold text-base-content">Financial Reporting</h3>
+                            <p className="text-[14px] text-base-content/75 leading-relaxed">
                                 Access payment schedules, digitized invoices, and complete financial ledger transparency.
                             </p>
                             <Link
                                 to="/login"
-                                className="mt-auto text-[14px] font-bold text-[#000f22] hover:text-[#a14000] flex items-center gap-1.5 pt-4"
+                                className="mt-auto text-[14px] font-bold text-base-content hover:text-primary flex items-center gap-1.5 pt-4"
                             >
                                 Client Portal Login →
                             </Link>
                         </div>
 
                         {/* Card 3 */}
-                        <div className="bg-[#f8f9fa] border border-[#c4c6ce] p-8 rounded-[8px] flex flex-col gap-4">
+                        <div className="bg-base-200 border border-base-300 p-8 rounded-[8px] flex flex-col gap-4">
                             <div className="w-12 h-12 rounded-[6px] bg-[#a14000]/10 text-[#a14000] flex items-center justify-center">
                                 <LifeBuoy size={24} />
                             </div>
-                            <h3 className="text-[20px] font-bold text-[#000f22]">24/7 Client Care</h3>
-                            <p className="text-[14px] text-[#43474d] leading-relaxed">
+                            <h3 className="text-[20px] font-bold text-base-content">24/7 Client Care</h3>
+                            <p className="text-[14px] text-base-content/75 leading-relaxed">
                                 Dedicated support desk for resident inquiries, site visits, and property management needs.
                             </p>
                             <Link
@@ -631,7 +640,7 @@ const Home = () => {
             {/* Remodeling Request Modal */}
             {showRemodeling && (
                 <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
-                    <div className="bg-white rounded-xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200">
+                    <div className="bg-base-100 rounded-xl shadow-2xl max-w-md w-full overflow-hidden border border-base-300">
                         <div className="bg-[#001E3D] px-6 py-4 text-white flex justify-between items-center">
                             <h3 className="font-bold text-base">Request Professional Remodeling</h3>
                             <button onClick={() => setShowRemodeling(false)} className="text-slate-400 hover:text-white font-bold text-lg cursor-pointer">×</button>
@@ -648,35 +657,35 @@ const Home = () => {
                             });
                         }} className="p-6 space-y-4">
                             <div>
-                                <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Your Name *</label>
-                                <input required type="text" value={formName} onChange={e => setFormName(e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded text-sm text-slate-800 focus:outline-none focus:border-[#fe762a]" />
+                                <label className="block text-xs font-bold text-base-content/80 uppercase mb-1">Your Name *</label>
+                                <input required type="text" value={formName} onChange={e => setFormName(e.target.value)} className="w-full px-3 py-2 bg-base-200 border border-base-300 rounded text-sm text-base-content focus:outline-none focus:border-[#fe762a]" />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Phone Number *</label>
-                                    <input required type="text" value={formPhone} onChange={e => setFormPhone(e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded text-sm text-slate-800 focus:outline-none focus:border-[#fe762a]" />
+                                    <label className="block text-xs font-bold text-base-content/80 uppercase mb-1">Phone Number *</label>
+                                    <input required type="text" value={formPhone} onChange={e => setFormPhone(e.target.value)} className="w-full px-3 py-2 bg-base-200 border border-base-300 rounded text-sm text-base-content focus:outline-none focus:border-[#fe762a]" />
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Email Address</label>
-                                    <input type="email" value={formEmail} onChange={e => setFormEmail(e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded text-sm text-slate-800 focus:outline-none focus:border-[#fe762a]" />
+                                    <label className="block text-xs font-bold text-base-content/80 uppercase mb-1">Email Address</label>
+                                    <input type="email" value={formEmail} onChange={e => setFormEmail(e.target.value)} className="w-full px-3 py-2 bg-base-200 border border-base-300 rounded text-sm text-base-content focus:outline-none focus:border-[#fe762a]" />
                                 </div>
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Plot Size (e.g. 3 Katha)</label>
-                                    <input type="text" value={formPlotSize} onChange={e => setFormPlotSize(e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded text-sm text-slate-800 focus:outline-none focus:border-[#fe762a]" />
+                                    <label className="block text-xs font-bold text-base-content/80 uppercase mb-1">Plot Size (e.g. 3 Katha)</label>
+                                    <input type="text" value={formPlotSize} onChange={e => setFormPlotSize(e.target.value)} className="w-full px-3 py-2 bg-base-200 border border-base-300 rounded text-sm text-base-content focus:outline-none focus:border-[#fe762a]" />
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Site Location Address</label>
-                                    <input type="text" value={formAddress} onChange={e => setFormAddress(e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded text-sm text-slate-800 focus:outline-none focus:border-[#fe762a]" />
+                                    <label className="block text-xs font-bold text-base-content/80 uppercase mb-1">Site Location Address</label>
+                                    <input type="text" value={formAddress} onChange={e => setFormAddress(e.target.value)} className="w-full px-3 py-2 bg-base-200 border border-base-300 rounded text-sm text-base-content focus:outline-none focus:border-[#fe762a]" />
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Remodeling Scope Details *</label>
-                                <textarea required value={formDescription} onChange={e => setFormDescription(e.target.value)} rows={3} placeholder="Please detail the modifications or redesign you need..." className="w-full px-3 py-2 border border-slate-300 rounded text-sm text-slate-800 focus:outline-none focus:border-[#fe762a]"></textarea>
+                                <label className="block text-xs font-bold text-base-content/80 uppercase mb-1">Remodeling Scope Details *</label>
+                                <textarea required value={formDescription} onChange={e => setFormDescription(e.target.value)} rows={3} placeholder="Please detail the modifications or redesign you need..." className="w-full px-3 py-2 bg-base-200 border border-base-300 rounded text-sm text-base-content focus:outline-none focus:border-[#fe762a]"></textarea>
                             </div>
                             <div className="pt-2 flex justify-end gap-3">
-                                <button type="button" onClick={() => setShowRemodeling(false)} className="px-4 py-2 border border-slate-200 text-slate-600 rounded text-xs font-bold hover:bg-slate-50 cursor-pointer">Cancel</button>
+                                <button type="button" onClick={() => setShowRemodeling(false)} className="px-4 py-2 border border-base-300 text-base-content rounded text-xs font-bold hover:bg-base-200 cursor-pointer">Cancel</button>
                                 <button type="submit" className="px-5 py-2 bg-[#fe762a] hover:bg-[#a14000] text-white rounded text-xs font-bold cursor-pointer">Submit Request</button>
                             </div>
                         </form>
@@ -687,7 +696,7 @@ const Home = () => {
             {/* Site Visit Schedule Modal */}
             {showSiteVisit && (
                 <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
-                    <div className="bg-white rounded-xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200">
+                    <div className="bg-base-100 rounded-xl shadow-2xl max-w-md w-full overflow-hidden border border-base-300">
                         <div className="bg-[#001E3D] px-6 py-4 text-white flex justify-between items-center">
                             <h3 className="font-bold text-base">Schedule Site Visit</h3>
                             <button onClick={() => setShowSiteVisit(false)} className="text-slate-400 hover:text-white font-bold text-lg cursor-pointer">×</button>
@@ -703,22 +712,22 @@ const Home = () => {
                             });
                         }} className="p-6 space-y-4">
                             <div>
-                                <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Your Name *</label>
-                                <input required type="text" value={formName} onChange={e => setFormName(e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded text-sm text-slate-800 focus:outline-none focus:border-[#fe762a]" />
+                                <label className="block text-xs font-bold text-base-content/80 uppercase mb-1">Your Name *</label>
+                                <input required type="text" value={formName} onChange={e => setFormName(e.target.value)} className="w-full px-3 py-2 bg-base-200 border border-base-300 rounded text-sm text-base-content focus:outline-none focus:border-[#fe762a]" />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Phone Number *</label>
-                                    <input required type="text" value={formPhone} onChange={e => setFormPhone(e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded text-sm text-slate-800 focus:outline-none focus:border-[#fe762a]" />
+                                    <label className="block text-xs font-bold text-base-content/80 uppercase mb-1">Phone Number *</label>
+                                    <input required type="text" value={formPhone} onChange={e => setFormPhone(e.target.value)} className="w-full px-3 py-2 bg-base-200 border border-base-300 rounded text-sm text-base-content focus:outline-none focus:border-[#fe762a]" />
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Email Address</label>
-                                    <input type="email" value={formEmail} onChange={e => setFormEmail(e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded text-sm text-slate-800 focus:outline-none focus:border-[#fe762a]" />
+                                    <label className="block text-xs font-bold text-base-content/80 uppercase mb-1">Email Address</label>
+                                    <input type="email" value={formEmail} onChange={e => setFormEmail(e.target.value)} className="w-full px-3 py-2 bg-base-200 border border-base-300 rounded text-sm text-base-content focus:outline-none focus:border-[#fe762a]" />
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Select Project to Visit *</label>
-                                <select value={formProject} onChange={e => setFormProject(e.target.value)} className="w-full px-3 py-2 border border-[#E2E8F0] rounded text-sm text-slate-800 focus:outline-none bg-white">
+                                <label className="block text-xs font-bold text-base-content/80 uppercase mb-1">Select Project to Visit *</label>
+                                <select value={formProject} onChange={e => setFormProject(e.target.value)} className="w-full px-3 py-2 border border-base-300 rounded text-sm text-base-content focus:outline-none bg-base-200">
                                     <option value="Sardar Tower – Block A">Sardar Tower (Chashiara)</option>
                                     <option value="Shapla Green Fields">Shapla Green Fields (Chashiara)</option>
                                     <option value="Shamabai Biponi Bitan">Shamabai Biponi Bitan (Narayanganj Sadar)</option>
@@ -726,11 +735,11 @@ const Home = () => {
                                 </select>
                             </div>
                             <div>
-                                <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Preferred Date &amp; Notes *</label>
-                                <textarea required value={formDescription} onChange={e => setFormDescription(e.target.value)} rows={3} placeholder="Please mention preferred date/time and any specific instructions..." className="w-full px-3 py-2 border border-slate-300 rounded text-sm text-slate-800 focus:outline-none focus:border-[#fe762a]"></textarea>
+                                <label className="block text-xs font-bold text-base-content/80 uppercase mb-1">Preferred Date &amp; Notes *</label>
+                                <textarea required value={formDescription} onChange={e => setFormDescription(e.target.value)} rows={3} placeholder="Please mention preferred date/time and any specific instructions..." className="w-full px-3 py-2 bg-base-200 border border-base-300 rounded text-sm text-base-content focus:outline-none focus:border-[#fe762a]"></textarea>
                             </div>
                             <div className="pt-2 flex justify-end gap-3">
-                                <button type="button" onClick={() => setShowSiteVisit(false)} className="px-4 py-2 border border-slate-200 text-slate-600 rounded text-xs font-bold hover:bg-slate-50 cursor-pointer">Cancel</button>
+                                <button type="button" onClick={() => setShowSiteVisit(false)} className="px-4 py-2 border border-base-300 text-base-content rounded text-xs font-bold hover:bg-base-200 cursor-pointer">Cancel</button>
                                 <button type="submit" className="px-5 py-2 bg-[#fe762a] hover:bg-[#a14000] text-white rounded text-xs font-bold cursor-pointer">Schedule Visit</button>
                             </div>
                         </form>
@@ -741,7 +750,7 @@ const Home = () => {
             {/* General Inquiry Modal */}
             {showGeneralInquiry && (
                 <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
-                    <div className="bg-white rounded-xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200">
+                    <div className="bg-base-100 rounded-xl shadow-2xl max-w-md w-full overflow-hidden border border-base-300">
                         <div className="bg-[#001E3D] px-6 py-4 text-white flex justify-between items-center">
                             <h3 className="font-bold text-base">Submit General Inquiry</h3>
                             <button onClick={() => setShowGeneralInquiry(false)} className="text-slate-400 hover:text-white font-bold text-lg cursor-pointer">×</button>
@@ -756,25 +765,25 @@ const Home = () => {
                             });
                         }} className="p-6 space-y-4">
                             <div>
-                                <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Your Name *</label>
-                                <input required type="text" value={formName} onChange={e => setFormName(e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded text-sm text-slate-800 focus:outline-none focus:border-[#fe762a]" />
+                                <label className="block text-xs font-bold text-base-content/80 uppercase mb-1">Your Name *</label>
+                                <input required type="text" value={formName} onChange={e => setFormName(e.target.value)} className="w-full px-3 py-2 bg-base-200 border border-base-300 rounded text-sm text-base-content focus:outline-none focus:border-[#fe762a]" />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Phone Number *</label>
-                                    <input required type="text" value={formPhone} onChange={e => setFormPhone(e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded text-sm text-slate-800 focus:outline-none focus:border-[#fe762a]" />
+                                    <label className="block text-xs font-bold text-base-content/80 uppercase mb-1">Phone Number *</label>
+                                    <input required type="text" value={formPhone} onChange={e => setFormPhone(e.target.value)} className="w-full px-3 py-2 bg-base-200 border border-base-300 rounded text-sm text-base-content focus:outline-none focus:border-[#fe762a]" />
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Email Address</label>
-                                    <input type="email" value={formEmail} onChange={e => setFormEmail(e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded text-sm text-slate-800 focus:outline-none focus:border-[#fe762a]" />
+                                    <label className="block text-xs font-bold text-base-content/80 uppercase mb-1">Email Address</label>
+                                    <input type="email" value={formEmail} onChange={e => setFormEmail(e.target.value)} className="w-full px-3 py-2 bg-base-200 border border-base-300 rounded text-sm text-base-content focus:outline-none focus:border-[#fe762a]" />
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Inquiry / Message *</label>
-                                <textarea required value={formDescription} onChange={e => setFormDescription(e.target.value)} rows={4} placeholder="Please type your message or question here..." className="w-full px-3 py-2 border border-slate-300 rounded text-sm text-slate-800 focus:outline-none focus:border-[#fe762a]"></textarea>
+                                <label className="block text-xs font-bold text-base-content/80 uppercase mb-1">Inquiry / Message *</label>
+                                <textarea required value={formDescription} onChange={e => setFormDescription(e.target.value)} rows={4} placeholder="Please type your message or question here..." className="w-full px-3 py-2 bg-base-200 border border-base-300 rounded text-sm text-base-content focus:outline-none focus:border-[#fe762a]"></textarea>
                             </div>
                             <div className="pt-2 flex justify-end gap-3">
-                                <button type="button" onClick={() => setShowGeneralInquiry(false)} className="px-4 py-2 border border-slate-200 text-slate-600 rounded text-xs font-bold hover:bg-slate-50 cursor-pointer">Cancel</button>
+                                <button type="button" onClick={() => setShowGeneralInquiry(false)} className="px-4 py-2 border border-base-300 text-base-content rounded text-xs font-bold hover:bg-base-200 cursor-pointer">Cancel</button>
                                 <button type="submit" className="px-5 py-2 bg-[#fe762a] hover:bg-[#a14000] text-white rounded text-xs font-bold cursor-pointer">Submit Inquiry</button>
                             </div>
                         </form>

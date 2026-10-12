@@ -389,27 +389,27 @@ const Overview = () => {
         return (
             <div className="flex flex-col lg:flex-row gap-6 items-start animate-pulse">
                 <div className="flex-1 flex flex-col gap-6">
-                    <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-sm p-6 pb-8 flex flex-col gap-4">
-                        <div className="skeleton h-6 w-64 rounded bg-slate-200" />
-                        <div className="skeleton h-16 w-full rounded-lg bg-slate-100" />
+                    <div className="bg-base-100 rounded-2xl border border-base-300 shadow-sm p-6 pb-8 flex flex-col gap-4">
+                        <div className="skeleton h-6 w-64 rounded bg-base-300" />
+                        <div className="skeleton h-16 w-full rounded-lg bg-base-200" />
                     </div>
-                    <div className="bg-white rounded-lg border border-[#E2E8F0] shadow-sm p-6 flex flex-col gap-4">
-                        <div className="skeleton h-6 w-48 rounded bg-slate-200" />
-                        <div className="skeleton h-32 w-full rounded bg-slate-100" />
+                    <div className="bg-base-100 rounded-lg border border-base-300 shadow-sm p-6 flex flex-col gap-4">
+                        <div className="skeleton h-6 w-48 rounded bg-base-300" />
+                        <div className="skeleton h-32 w-full rounded bg-base-200" />
                     </div>
-                    <div className="bg-white rounded-lg border border-[#E2E8F0] shadow-sm p-6 flex flex-col gap-4">
-                        <div className="skeleton h-6 w-48 rounded bg-slate-200" />
-                        <div className="skeleton h-48 w-full rounded bg-slate-100" />
+                    <div className="bg-base-100 rounded-lg border border-base-300 shadow-sm p-6 flex flex-col gap-4">
+                        <div className="skeleton h-6 w-48 rounded bg-base-300" />
+                        <div className="skeleton h-48 w-full rounded bg-base-200" />
                     </div>
                 </div>
                 <div className="w-full lg:w-[360px] flex-shrink-0 flex flex-col gap-6">
-                    <div className="bg-white rounded-lg border border-[#E2E8F0] shadow-sm p-6 flex flex-col gap-4">
-                        <div className="skeleton h-48 w-full rounded-lg bg-slate-200" />
-                        <div className="skeleton h-12 w-full rounded bg-slate-100" />
+                    <div className="bg-base-100 rounded-lg border border-base-300 shadow-sm p-6 flex flex-col gap-4">
+                        <div className="skeleton h-48 w-full rounded-lg bg-base-300" />
+                        <div className="skeleton h-12 w-full rounded bg-base-200" />
                     </div>
-                    <div className="bg-white rounded-lg border border-[#E2E8F0] shadow-sm p-6 flex flex-col gap-4">
-                        <div className="skeleton h-6 w-40 rounded bg-slate-200" />
-                        <div className="skeleton h-32 w-full rounded bg-slate-100" />
+                    <div className="bg-base-100 rounded-lg border border-base-300 shadow-sm p-6 flex flex-col gap-4">
+                        <div className="skeleton h-6 w-40 rounded bg-base-300" />
+                        <div className="skeleton h-32 w-full rounded bg-base-200" />
                     </div>
                 </div>
             </div>
@@ -424,8 +424,8 @@ const Overview = () => {
             <div className="flex-1 flex flex-col gap-6 min-w-0 w-full">
                 
                 {/* 1. Construction Progress Card */}
-                <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-sm p-4 sm:p-6 pb-8">
-                    <h2 className="text-[#003178] font-bold text-base sm:text-[18px] mb-6 sm:mb-10 truncate">{activeProject?.name || 'Project'} Construction Progress</h2>
+                <div className="bg-base-100 rounded-2xl border border-base-300 shadow-sm p-4 sm:p-6 pb-8">
+                    <h2 className="text-primary font-bold text-base sm:text-[18px] mb-6 sm:mb-10 truncate">{activeProject?.name || 'Project'} Construction Progress</h2>
                     
                     <div className="relative mt-8 sm:mt-12 pb-4">
                         {(() => {
@@ -441,120 +441,120 @@ const Overview = () => {
                             return (
                                 <>
                                     {/* Mobile Vertical Line */}
-                                    <div className="absolute left-[17px] top-[24px] bottom-[24px] w-1 bg-[#E2E8F0] z-0 rounded-full overflow-hidden sm:hidden">
+                                    <div className="absolute left-[17px] top-[24px] bottom-[24px] w-1 bg-base-300 z-0 rounded-full overflow-hidden sm:hidden">
                                         <div className="w-full bg-[#006E1C] transition-all duration-500 ease-out" style={{ height: `${progressPercentage}%` }} />
                                     </div>
                                     
                                     {/* Desktop Horizontal Line */}
-                                    <div className="absolute top-4 left-[12.5%] right-[12.5%] h-1 bg-[#E2E8F0] z-0 rounded-full overflow-hidden hidden sm:block">
+                                    <div className="absolute top-4 left-[12.5%] right-[12.5%] h-1 bg-base-300 z-0 rounded-full overflow-hidden hidden sm:block">
                                         <div className="h-full bg-[#006E1C] transition-all duration-500 ease-out" style={{ width: `${progressPercentage}%` }} />
                                     </div>
                                     
                                     <div className="flex flex-col sm:flex-row justify-between items-start relative z-10 gap-8 sm:gap-0">
                                         {oPhases.map(step => {
-                                            const isCurrent = step.id === currentP;
-                                            const isCompleted = step.id < currentP;
-                                            return (
-                                                <div key={step.id} className="flex flex-row sm:flex-col items-center sm:flex-1 gap-4 sm:gap-0 w-full sm:w-auto text-left sm:text-center">
-                                                    <div className="flex-shrink-0 flex justify-center w-9">
-                                                        {isCompleted ? (
-                                                            <div className="w-9 h-9 rounded-full bg-[#006E1C] border-2 border-[#006E1C] flex items-center justify-center text-white z-10 relative shadow-sm">
-                                                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-                                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                                                                </svg>
-                                                            </div>
-                                                        ) : isCurrent ? (
-                                                            <div className="w-9 h-9 rounded-full bg-white border-4 border-[#003178] flex items-center justify-center z-10 relative shadow-md">
-                                                                <div className="w-3.5 h-3.5 rounded-full bg-[#003178] animate-pulse" />
-                                                            </div>
-                                                        ) : (
-                                                            <div className="w-9 h-9 rounded-full bg-white border-2 border-[#CBD5E1] flex items-center justify-center text-slate-400 font-bold text-xs z-10 relative">
-                                                                {step.id}
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                    <div className="flex flex-col sm:items-center flex-1">
-                                                        <div className={`text-[11px] uppercase tracking-wider sm:mt-4 whitespace-pre-line ${
-                                                            isCurrent 
-                                                                ? 'font-bold text-[#003178]' 
-                                                                : isCompleted 
-                                                                ? 'font-semibold text-[#006E1C]' 
-                                                                : 'font-medium text-slate-400'
-                                                        }`}>
-                                                            {step.name}
-                                                        </div>
-                                                        {step.date && (
-                                                            <div className={`text-[10px] mt-0.5 sm:mt-1 font-medium ${isCurrent ? 'text-[#003178] font-bold' : 'text-slate-400'}`}>
-                                                                {step.date}
-                                                            </div>
-                                                        )}
-                                                        {step.progress > 0 && step.progress < 100 && (
-                                                            <div className="mt-1.5 sm:mt-2">
-                                                                <span className="px-2 py-0.5 bg-[#E1EFFE] text-[#003178] font-extrabold text-[9px] rounded-full border border-blue-200">
-                                                                    {step.progress}% COMPLETE
-                                                                </span>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                </>
-                            );
-                        })()}
-                    </div>
-                </div>
-
-                {/* 2. Financial Ledger Overview */}
-                <div className="bg-white rounded-lg border border-[#E2E8F0] shadow-sm">
-                    <div className="p-6 pb-2 flex justify-between items-center">
-                        <h2 className="text-[#003178] font-bold text-[18px]">Financial Ledger Overview</h2>
-                        <button onClick={downloadStatement} className="flex items-center gap-2 text-sm font-bold text-[#003178] hover:bg-blue-50 px-3 py-1.5 rounded-md transition-colors">
-                            Statement <Download size={16} />
-                        </button>
-                    </div>
-                    
-                    <div className="p-4 sm:p-6 pt-2">
-                        <div className="border-t border-[#E2E8F0]" />
-                        
-                        <div className="py-3 sm:py-4 flex flex-wrap gap-2 justify-between items-center">
-                            <span className="text-xs sm:text-sm text-slate-600 font-medium">Total Property Valuation</span>
-                            <span className="text-slate-800 font-bold text-sm sm:text-[15px] whitespace-nowrap">৳ {financials.totalValuation}</span>
-                        </div>
-                        <div className="border-t border-[#E2E8F0]" />
-
-                        <div className="py-3 sm:py-4 flex flex-wrap gap-2 justify-between items-center">
-                            <span className="text-xs sm:text-sm text-slate-600 font-medium">Total Amount Paid to Date</span>
-                            <span className="text-[#006E1C] font-bold text-sm sm:text-[15px] whitespace-nowrap">৳ {financials.totalPaid}</span>
-                        </div>
-                        <div className="border-t border-[#E2E8F0]" />
-
-                        <div className="py-3 sm:py-4 flex flex-wrap gap-2 justify-between items-center">
-                            <span className="text-xs sm:text-sm text-slate-600 font-medium">Utility/Other Charges</span>
-                            <span className="text-slate-800 font-bold text-sm sm:text-[15px] whitespace-nowrap">৳ {financials.otherCharges}</span>
-                        </div>
-                        
-                        {/* Highlighted Row for Due Balance */}
-                        <div className="py-3 px-3 sm:py-4 sm:px-4 -mx-3 sm:-mx-4 bg-[#FDF2F2] flex flex-wrap gap-2 justify-between items-center border-y border-[#E2E8F0] mt-2">
-                            <span className="text-slate-800 font-medium text-xs sm:text-sm">Current Due Balance</span>
-                            <span className="text-[#9B1C1C] font-bold text-base sm:text-[16px] whitespace-nowrap">৳ {financials.dueBalance}</span>
-                        </div>
-                    </div>
-                </div>
+                                             const isCurrent = step.id === currentP;
+                                             const isCompleted = step.id < currentP;
+                                             return (
+                                                 <div key={step.id} className="flex flex-row sm:flex-col items-center sm:flex-1 gap-4 sm:gap-0 w-full sm:w-auto text-left sm:text-center">
+                                                     <div className="flex-shrink-0 flex justify-center w-9">
+                                                         {isCompleted ? (
+                                                             <div className="w-9 h-9 rounded-full bg-[#006E1C] border-2 border-[#006E1C] flex items-center justify-center text-white z-10 relative shadow-sm">
+                                                                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                                                                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                                                 </svg>
+                                                             </div>
+                                                         ) : isCurrent ? (
+                                                             <div className="w-9 h-9 rounded-full bg-base-100 border-4 border-primary flex items-center justify-center z-10 relative shadow-md">
+                                                                 <div className="w-3.5 h-3.5 rounded-full bg-primary animate-pulse" />
+                                                             </div>
+                                                         ) : (
+                                                             <div className="w-9 h-9 rounded-full bg-base-100 border-2 border-base-300 flex items-center justify-center text-base-content/40 font-bold text-xs z-10 relative">
+                                                                 {step.id}
+                                                             </div>
+                                                         )}
+                                                     </div>
+                                                     <div className="flex flex-col sm:items-center flex-1">
+                                                         <div className={`text-[11px] uppercase tracking-wider sm:mt-4 whitespace-pre-line ${
+                                                             isCurrent 
+                                                                 ? 'font-bold text-primary' 
+                                                                 : isCompleted 
+                                                                 ? 'font-semibold text-[#006E1C]' 
+                                                                 : 'font-medium text-base-content/50'
+                                                         }`}>
+                                                             {step.name}
+                                                         </div>
+                                                         {step.date && (
+                                                             <div className={`text-[10px] mt-0.5 sm:mt-1 font-medium ${isCurrent ? 'text-primary font-bold' : 'text-base-content/50'}`}>
+                                                                 {step.date}
+                                                             </div>
+                                                         )}
+                                                         {step.progress > 0 && step.progress < 100 && (
+                                                             <div className="mt-1.5 sm:mt-2">
+                                                                 <span className="px-2 py-0.5 bg-primary/10 text-primary font-extrabold text-[9px] rounded-full border border-primary/20">
+                                                                     {step.progress}% COMPLETE
+                                                                 </span>
+                                                             </div>
+                                                         )}
+                                                     </div>
+                                                 </div>
+                                             );
+                                         })}
+                                     </div>
+                                 </>
+                             );
+                         })()}
+                     </div>
+                 </div>
+ 
+                 {/* 2. Financial Ledger Overview */}
+                 <div className="bg-base-100 rounded-lg border border-base-300 shadow-sm">
+                     <div className="p-6 pb-2 flex justify-between items-center">
+                         <h2 className="text-primary font-bold text-[18px]">Financial Ledger Overview</h2>
+                         <button onClick={downloadStatement} className="flex items-center gap-2 text-sm font-bold text-primary hover:bg-primary/10 px-3 py-1.5 rounded-md transition-colors">
+                             Statement <Download size={16} />
+                         </button>
+                     </div>
+                     
+                     <div className="p-4 sm:p-6 pt-2">
+                         <div className="border-t border-base-300" />
+                         
+                         <div className="py-3 sm:py-4 flex flex-wrap gap-2 justify-between items-center">
+                             <span className="text-xs sm:text-sm text-base-content/70 font-medium">Total Property Valuation</span>
+                             <span className="text-base-content font-bold text-sm sm:text-[15px] whitespace-nowrap">৳ {financials.totalValuation}</span>
+                         </div>
+                         <div className="border-t border-base-300" />
+ 
+                         <div className="py-3 sm:py-4 flex flex-wrap gap-2 justify-between items-center">
+                             <span className="text-xs sm:text-sm text-base-content/70 font-medium">Total Amount Paid to Date</span>
+                             <span className="text-emerald-600 dark:text-emerald-400 font-bold text-sm sm:text-[15px] whitespace-nowrap">৳ {financials.totalPaid}</span>
+                         </div>
+                         <div className="border-t border-base-300" />
+ 
+                         <div className="py-3 sm:py-4 flex flex-wrap gap-2 justify-between items-center">
+                             <span className="text-xs sm:text-sm text-base-content/70 font-medium">Utility/Other Charges</span>
+                             <span className="text-base-content font-bold text-sm sm:text-[15px] whitespace-nowrap">৳ {financials.otherCharges}</span>
+                         </div>
+                         
+                         {/* Highlighted Row for Due Balance */}
+                         <div className="py-3 px-3 sm:py-4 sm:px-4 -mx-3 sm:-mx-4 bg-error/10 flex flex-wrap gap-2 justify-between items-center border-y border-error/20 mt-2">
+                             <span className="text-base-content font-medium text-xs sm:text-sm">Current Due Balance</span>
+                             <span className="text-error font-bold text-base sm:text-[16px] whitespace-nowrap">৳ {financials.dueBalance}</span>
+                         </div>
+                     </div>
+                 </div>
 
                 {/* 3. Installment Schedule Table */}
-                <div className="bg-white rounded-lg border border-[#E2E8F0] shadow-sm">
+                <div className="bg-base-100 rounded-lg border border-base-300 shadow-sm">
                     <div className="p-6">
-                        <h2 className="text-[#003178] font-bold text-[18px]">Installment Schedule</h2>
+                        <h2 className="text-primary font-bold text-[18px]">Installment Schedule</h2>
                     </div>
                     
                     {(!financials.installments || financials.installments.length === 0) ? (
                         <div className="p-8 text-center flex flex-col items-center gap-4">
-                            <Calendar size={48} className="text-[#003178] opacity-40" />
+                            <Calendar size={48} className="text-primary opacity-40" />
                             <div>
-                                <h3 className="font-bold text-slate-800">No Installment Schedule Set</h3>
-                                <p className="text-slate-500 text-sm mt-1 max-w-sm mx-auto">
+                                <h3 className="font-bold text-base-content">No Installment Schedule Set</h3>
+                                <p className="text-base-content/70 text-sm mt-1 max-w-sm mx-auto">
                                     An installment schedule has not been configured for your property yet. Please contact the administrator to setup your payment schedule.
                                 </p>
                             </div>
@@ -563,14 +563,14 @@ const Overview = () => {
                         <div className="overflow-x-auto">
                             <table className="w-full text-left border-collapse min-w-[600px]">
                             <thead>
-                                <tr className="bg-[#F7F9FB] border-y border-[#E2E8F0]">
-                                    <th className="py-3 px-6 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Installment No.</th>
-                                    <th className="py-3 px-6 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Due Date</th>
-                                    <th className="py-3 px-6 text-[11px] font-bold text-slate-500 uppercase tracking-wider text-right">Amount (৳)</th>
-                                    <th className="py-3 px-6 text-[11px] font-bold text-slate-500 uppercase tracking-wider text-right">Status</th>
+                                <tr className="bg-base-200 border-y border-base-300">
+                                    <th className="py-3 px-6 text-[11px] font-bold text-base-content/70 uppercase tracking-wider">Installment No.</th>
+                                    <th className="py-3 px-6 text-[11px] font-bold text-base-content/70 uppercase tracking-wider">Due Date</th>
+                                    <th className="py-3 px-6 text-[11px] font-bold text-base-content/70 uppercase tracking-wider text-right">Amount (৳)</th>
+                                    <th className="py-3 px-6 text-[11px] font-bold text-base-content/70 uppercase tracking-wider text-right">Status</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-[#E2E8F0]">
+                            <tbody className="divide-y divide-base-300">
                                 {[...financials.installments].sort((a, b) => {
                                     const aPaid = (a.status || '').toLowerCase() === 'paid';
                                     const bPaid = (b.status || '').toLowerCase() === 'paid';
@@ -578,14 +578,14 @@ const Overview = () => {
                                     if (!aPaid && bPaid) return -1;
                                     return new Date(a.dueDate || a.due_date) - new Date(b.dueDate || b.due_date);
                                 }).map((inst) => (
-                                    <tr key={inst.id} className={inst.active ? "bg-blue-50/30 border-l-4 border-[#003178]" : "hover:bg-slate-50"}>
-                                        <td className={`py-4 px-6 text-sm ${inst.active ? 'text-slate-800 font-bold pl-5' : 'text-slate-700 font-medium'}`}>
+                                    <tr key={inst.id} className={inst.active ? "bg-primary/10 border-l-4 border-primary" : "hover:bg-base-200/50"}>
+                                        <td className={`py-4 px-6 text-sm ${inst.active ? 'text-base-content font-bold pl-5' : 'text-base-content font-medium'}`}>
                                             {inst.installment}
                                         </td>
-                                        <td className={`py-4 px-6 text-sm ${inst.active ? 'text-[#003178] font-bold' : 'text-slate-500'}`}>
+                                        <td className={`py-4 px-6 text-sm ${inst.active ? 'text-primary font-bold' : 'text-base-content/70'}`}>
                                             {inst.dueDate}
                                         </td>
-                                        <td className={`py-4 px-6 text-sm text-right ${inst.active ? 'text-slate-800 font-bold' : 'text-slate-700 font-bold'}`}>
+                                        <td className={`py-4 px-6 text-sm text-right ${inst.active ? 'text-base-content font-bold' : 'text-base-content font-bold'}`}>
                                             {inst.amount}
                                         </td>
                                         <td className="py-4 px-6 text-right">
@@ -608,7 +608,7 @@ const Overview = () => {
             <div className="w-full lg:w-[360px] flex-shrink-0 flex flex-col gap-6">
                 
                 {/* 1. Property Hero Card */}
-                <div className="bg-white rounded-xl border border-[#E2E8F0] shadow-sm overflow-hidden flex flex-col">
+                <div className="bg-base-100 rounded-xl border border-base-300 shadow-sm overflow-hidden flex flex-col">
                     {/* Image Area with Gradient */}
                     <div className="h-52 relative overflow-hidden flex items-end p-5">
                         <img 
@@ -616,7 +616,7 @@ const Overview = () => {
                             alt={userProfile.propertyName} 
                             className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-500 hover:scale-105" 
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#003178] via-[#003178]/60 to-transparent opacity-90 z-10" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/60 to-transparent opacity-90 z-10" />
                         <div className="relative z-20 space-y-1">
                             <span className="text-[10px] font-bold uppercase tracking-wider text-blue-200 bg-blue-900/60 px-2 py-0.5 rounded">
                                 {userProfile.projectName}
@@ -626,45 +626,45 @@ const Overview = () => {
                         </div>
                     </div>
                     {/* Info Pills */}
-                    <div className="p-5 flex gap-4 text-sm bg-white border-b border-[#E2E8F0]">
+                    <div className="p-5 flex gap-4 text-sm bg-base-100 border-b border-base-300">
                         <div className="flex flex-col gap-1 flex-1">
-                            <span className="text-slate-400 text-xs font-bold uppercase tracking-wider">Area</span>
-                            <span className="text-slate-800 font-extrabold text-sm">{userProfile.area}</span>
+                            <span className="text-base-content/60 text-xs font-bold uppercase tracking-wider">Area</span>
+                            <span className="text-base-content font-extrabold text-sm">{userProfile.area}</span>
                         </div>
-                        <div className="w-[1px] bg-[#E2E8F0]"></div>
+                        <div className="w-[1px] bg-base-300"></div>
                         <div className="flex flex-col gap-1 flex-1">
-                            <span className="text-slate-400 text-xs font-bold uppercase tracking-wider">Target Handover</span>
-                            <span className="text-slate-800 font-extrabold text-sm">{userProfile.handoverDate}</span>
+                            <span className="text-base-content/60 text-xs font-bold uppercase tracking-wider">Target Handover</span>
+                            <span className="text-base-content font-extrabold text-sm">{userProfile.handoverDate}</span>
                         </div>
                     </div>
                 </div>
 
                 {/* 2. Recent Transactions List */}
-                <div className="bg-white rounded-lg border border-[#E2E8F0] shadow-sm p-6">
+                <div className="bg-base-100 rounded-lg border border-base-300 shadow-sm p-6">
                     <div className="flex justify-between items-center mb-6">
-                        <h3 className="font-bold text-[16px] text-slate-800">Recent Transactions</h3>
-                        <button onClick={() => navigate('/dashboard/financials')} className="text-[#003178] text-sm font-bold hover:underline">
+                        <h3 className="font-bold text-[16px] text-base-content">Recent Transactions</h3>
+                        <button onClick={() => navigate('/dashboard/financials')} className="text-primary text-sm font-bold hover:underline">
                             View All
                         </button>
                     </div>
                     
                     <div className="space-y-4">
                         {financials.transactions.slice(0, 3).map((tx) => (
-                            <div key={tx.id} className="flex justify-between items-center p-3 hover:bg-slate-50 rounded-lg transition-colors border border-transparent hover:border-[#E2E8F0] gap-2">
+                            <div key={tx.id} className="flex justify-between items-center p-3 hover:bg-base-200 rounded-lg transition-colors border border-transparent hover:border-base-300 gap-2">
                                 <div className="flex items-center gap-3 min-w-0 flex-1">
-                                    <div className="w-10 h-10 rounded-full bg-[#DEF7EC] flex items-center justify-center text-[#03543F] flex-shrink-0">
+                                    <div className="w-10 h-10 rounded-full bg-emerald-500/15 flex items-center justify-center text-emerald-600 dark:text-emerald-400 flex-shrink-0">
                                         <CheckCircle size={18} />
                                     </div>
                                     <div className="min-w-0">
-                                        <div className="font-bold text-sm text-slate-800 truncate">{tx.type}</div>
-                                        <div className="text-xs text-slate-500 truncate">{tx.date}</div>
+                                        <div className="font-bold text-sm text-base-content truncate">{tx.type}</div>
+                                        <div className="text-xs text-base-content/60 truncate">{tx.date}</div>
                                     </div>
                                 </div>
                                 <div className="text-right flex-shrink-0">
-                                    <div className="font-bold text-sm text-slate-800">৳ {tx.amount}</div>
+                                    <div className="font-bold text-sm text-base-content">৳ {tx.amount}</div>
                                     <button 
                                         onClick={() => handleDownloadReceipt(tx)}
-                                        className="text-[10px] uppercase tracking-wider font-bold text-[#003178] mt-0.5 hover:underline flex items-center justify-end gap-1 cursor-pointer"
+                                        className="text-[10px] uppercase tracking-wider font-bold text-primary mt-0.5 hover:underline flex items-center justify-end gap-1 cursor-pointer"
                                     >
                                         <Download size={10} /> Receipt
                                     </button>
@@ -673,7 +673,7 @@ const Overview = () => {
                         ))}
                     </div>
 
-                    <button className="w-full mt-6 text-[#003178] font-bold text-sm text-center hover:underline">
+                    <button className="w-full mt-6 text-primary font-bold text-sm text-center hover:underline">
                         View All History
                     </button>
                 </div>
@@ -683,21 +683,21 @@ const Overview = () => {
 
             {/* Installment Scheduler Modal */}
             {showScheduleModal && (
-                <div className="fixed inset-0 bg-[#000f22]/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-xl shadow-2xl max-w-md w-full overflow-hidden transform transition-all">
-                        <div className="bg-[#003178] text-white p-6">
+                <div className="fixed inset-0 bg-neutral/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                    <div className="bg-base-100 border border-base-300 rounded-xl shadow-2xl max-w-md w-full overflow-hidden transform transition-all">
+                        <div className="bg-primary text-primary-content p-6">
                             <h3 className="text-xl font-bold">Configure Installment Schedule</h3>
-                            <p className="text-[#A0B2C6] text-sm mt-1">
+                            <p className="text-primary-content/80 text-sm mt-1">
                                 Setup installment payments based on your property valuation: ৳ {financials.totalValuation || '10,00,000'}
                             </p>
                         </div>
                         <form onSubmit={handleGenerateSchedule} className="p-6 flex flex-col gap-4">
                             <div>
-                                <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2">Number of Installments</label>
+                                <label className="block text-xs font-semibold text-base-content/70 uppercase tracking-wider mb-2">Number of Installments</label>
                                 <select 
                                     value={numInstallments} 
                                     onChange={(e) => setNumInstallments(parseInt(e.target.value))}
-                                    className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:border-[#003178]"
+                                    className="w-full px-4 py-2 border border-base-300 bg-base-200 text-base-content rounded-md focus:outline-none focus:border-primary"
                                 >
                                     <option value={6}>6 Installments</option>
                                     <option value={12}>12 Installments (1 Year)</option>
@@ -707,11 +707,11 @@ const Overview = () => {
                                 </select>
                             </div>
                             <div>
-                                <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2">Payment Frequency</label>
+                                <label className="block text-xs font-semibold text-base-content/70 uppercase tracking-wider mb-2">Payment Frequency</label>
                                 <select 
                                     value={freq} 
                                     onChange={(e) => setFreq(e.target.value)}
-                                    className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:border-[#003178]"
+                                    className="w-full px-4 py-2 border border-base-300 bg-base-200 text-base-content rounded-md focus:outline-none focus:border-primary"
                                 >
                                     <option value="Monthly">Monthly</option>
                                     <option value="Quarterly">Quarterly</option>
@@ -719,12 +719,12 @@ const Overview = () => {
                                 </select>
                             </div>
                             <div>
-                                <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2">First Payment Start Date</label>
+                                <label className="block text-xs font-semibold text-base-content/70 uppercase tracking-wider mb-2">First Payment Start Date</label>
                                 <input 
                                     type="date" 
                                     value={startDate} 
                                     onChange={(e) => setStartDate(e.target.value)} 
-                                    className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:border-[#003178]"
+                                    className="w-full px-4 py-2 border border-base-300 bg-base-200 text-base-content rounded-md focus:outline-none focus:border-primary"
                                     required 
                                 />
                             </div>
@@ -732,13 +732,13 @@ const Overview = () => {
                                 <button 
                                     type="button" 
                                     onClick={() => setShowScheduleModal(false)}
-                                    className="px-4 py-2 border border-slate-300 text-slate-700 rounded-md hover:bg-slate-50 cursor-pointer"
+                                    className="px-4 py-2 border border-base-300 text-base-content rounded-md hover:bg-base-200 cursor-pointer"
                                 >
                                     Cancel
                                 </button>
                                 <button 
                                     type="submit" 
-                                    className="px-4 py-2 bg-[#fe762a] hover:bg-[#a14000] text-[#5e2200] hover:text-white font-semibold rounded-md transition-colors cursor-pointer"
+                                    className="px-4 py-2 bg-primary hover:bg-primary/90 text-primary-content font-semibold rounded-md transition-colors cursor-pointer"
                                 >
                                     Generate Schedule
                                 </button>

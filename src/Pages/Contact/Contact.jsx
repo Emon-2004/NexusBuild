@@ -69,7 +69,7 @@ const Contact = () => {
     const mapSrc = `https://maps.google.com/maps?q=${lat},${lng}&z=16&output=embed`;
 
     return (
-        <div className="flex flex-col min-h-screen font-[Inter,sans-serif] bg-[#f3f4f5]">
+        <div className="flex flex-col min-h-screen font-[Inter,sans-serif] bg-base-200 text-base-content">
             <Navbar />
 
             {/* ══ 1. HERO ══════════════════════════════════════════════════════ */}
@@ -132,7 +132,7 @@ const Contact = () => {
             </section>
 
             {/* ══ 2. CONTACT INFO CARDS ═══════════════════════════════════════ */}
-            <section className="py-16 bg-[#f3f4f5]">
+            <section className="py-16 bg-base-200">
                 <div className="max-w-[1184px] mx-auto px-6 sm:px-10 lg:px-12">
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                         {[
@@ -169,25 +169,25 @@ const Contact = () => {
                         ].map(({ id, icon: Icon, iconBg, title, lines }) => (
                             <div
                                 key={id}
-                                className="bg-white border border-[#c4c6ce] p-6 flex flex-col gap-2 rounded-[4px]"
+                                className="bg-base-100 border border-base-300 p-6 flex flex-col gap-2 rounded-lg"
                             >
                                 {/* Icon badge — 48×48 */}
                                 <div
-                                    className="w-12 h-12 flex items-center justify-center mb-2 flex-shrink-0"
+                                    className="w-12 h-12 flex items-center justify-center mb-2 flex-shrink-0 rounded-sm"
                                     style={{ background: iconBg }}
                                 >
                                     <Icon size={20} className="text-white" />
                                 </div>
 
                                 {/* Title */}
-                                <h3 className="text-[20px] font-semibold text-[#191c1d] leading-[32px]">
+                                <h3 className="text-[20px] font-semibold text-base-content leading-[32px]">
                                     {title}
                                 </h3>
 
                                 {/* Lines */}
                                 <div className="flex flex-col gap-1">
                                     {lines.map((value, i) => (
-                                        <p key={i} className="text-[16px] font-normal text-[#43474d] leading-[24px]">
+                                        <p key={i} className="text-[16px] font-normal text-base-content/75 leading-[24px]">
                                             {value}
                                         </p>
                                     ))}
@@ -199,22 +199,22 @@ const Contact = () => {
             </section>
 
             {/* ══ 3. FORM + MAP ════════════════════════════════════════════════ */}
-            <section className="pb-20 bg-[#f3f4f5]">
+            <section className="pb-20 bg-base-200">
                 <div className="max-w-[1184px] mx-auto px-6 sm:px-10 lg:px-12">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
 
                         {/* ── Left: Contact Form ───────────────────────────── */}
-                        <div className="bg-white border border-[#c4c6ce]">
+                        <div className="bg-base-100 border border-base-300 rounded-lg overflow-hidden">
                             {/* Form header */}
-                            <div className="px-8 py-6 border-b border-[#e1e3e4] flex items-center gap-3">
-                                <div className="w-8 h-8 bg-[#000f22] flex items-center justify-center flex-shrink-0">
-                                    <MessageSquare size={14} className="text-white" />
+                            <div className="px-8 py-6 border-b border-base-300 flex items-center gap-3">
+                                <div className="w-8 h-8 bg-primary flex items-center justify-center flex-shrink-0 rounded-xs">
+                                    <MessageSquare size={14} className="text-primary-content" />
                                 </div>
                                 <div>
-                                    <h2 className="text-[18px] font-semibold text-[#191c1d] leading-tight">
+                                    <h2 className="text-[18px] font-semibold text-base-content leading-tight">
                                         Send Us a Message
                                     </h2>
-                                    <p className="text-[13px] font-normal text-[#74777e] mt-0.5">
+                                    <p className="text-[13px] font-normal text-base-content/70 mt-0.5">
                                         We'll respond within 24 business hours
                                     </p>
                                 </div>
@@ -235,7 +235,7 @@ const Contact = () => {
                                 <div className="flex flex-col gap-1.5">
                                     <label
                                         htmlFor="fullName"
-                                        className="text-[13px] font-semibold text-[#43474d] uppercase tracking-[0.08em]"
+                                        className="text-[13px] font-semibold text-base-content/80 uppercase tracking-[0.08em]"
                                     >
                                         Full Name
                                     </label>
@@ -248,11 +248,11 @@ const Contact = () => {
                                         placeholder="Your full name"
                                         required
                                         className="
-                                            w-full h-12 px-4
-                                            border border-[#c4c6ce] bg-white
-                                            text-[15px] font-normal text-[#191c1d]
-                                            placeholder:text-[#9ea1a8]
-                                            focus:outline-none focus:border-[#a14000]
+                                            w-full h-12 px-4 rounded-sm
+                                            border border-base-300 bg-base-200
+                                            text-[15px] font-normal text-base-content
+                                            placeholder:text-base-content/40
+                                            focus:outline-none focus:border-primary
                                             transition-colors duration-150
                                         "
                                     />
@@ -262,7 +262,7 @@ const Contact = () => {
                                 <div className="flex flex-col gap-1.5">
                                     <label
                                         htmlFor="email"
-                                        className="text-[13px] font-semibold text-[#43474d] uppercase tracking-[0.08em]"
+                                        className="text-[13px] font-semibold text-base-content/80 uppercase tracking-[0.08em]"
                                     >
                                         Email Address
                                     </label>
@@ -275,11 +275,11 @@ const Contact = () => {
                                         placeholder="your@email.com"
                                         required
                                         className="
-                                            w-full h-12 px-4
-                                            border border-[#c4c6ce] bg-white
-                                            text-[15px] font-normal text-[#191c1d]
-                                            placeholder:text-[#9ea1a8]
-                                            focus:outline-none focus:border-[#a14000]
+                                            w-full h-12 px-4 rounded-sm
+                                            border border-base-300 bg-base-200
+                                            text-[15px] font-normal text-base-content
+                                            placeholder:text-base-content/40
+                                            focus:outline-none focus:border-primary
                                             transition-colors duration-150
                                         "
                                     />
@@ -289,7 +289,7 @@ const Contact = () => {
                                 <div className="flex flex-col gap-1.5">
                                     <label
                                         htmlFor="subject"
-                                        className="text-[13px] font-semibold text-[#43474d] uppercase tracking-[0.08em]"
+                                        className="text-[13px] font-semibold text-base-content/80 uppercase tracking-[0.08em]"
                                     >
                                         Subject
                                     </label>
@@ -300,23 +300,23 @@ const Contact = () => {
                                         onChange={handleChange}
                                         required
                                         className="
-                                            w-full h-12 px-4
-                                            border border-[#c4c6ce] bg-white
-                                            text-[15px] font-normal text-[#191c1d]
-                                            focus:outline-none focus:border-[#a14000]
+                                            w-full h-12 px-4 rounded-sm
+                                            border border-base-300 bg-base-200
+                                            text-[15px] font-normal text-base-content
+                                            focus:outline-none focus:border-primary
                                             transition-colors duration-150
                                             appearance-none
                                             cursor-pointer
                                         "
                                         style={{
-                                            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2343474d' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`,
+                                            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`,
                                             backgroundRepeat: 'no-repeat',
                                             backgroundPosition: 'right 16px center',
                                         }}
                                     >
-                                        <option value="" disabled>Select a subject…</option>
+                                        <option value="" disabled className="bg-base-100 text-base-content">Select a subject…</option>
                                         {SUBJECTS.map(s => (
-                                            <option key={s} value={s}>{s}</option>
+                                            <option key={s} value={s} className="bg-base-100 text-base-content">{s}</option>
                                         ))}
                                     </select>
                                 </div>
@@ -325,7 +325,7 @@ const Contact = () => {
                                 <div className="flex flex-col gap-1.5">
                                     <label
                                         htmlFor="message"
-                                        className="text-[13px] font-semibold text-[#43474d] uppercase tracking-[0.08em]"
+                                        className="text-[13px] font-semibold text-base-content/80 uppercase tracking-[0.08em]"
                                     >
                                         Your Message
                                     </label>
@@ -338,11 +338,11 @@ const Contact = () => {
                                         required
                                         rows={5}
                                         className="
-                                            w-full px-4 py-3
-                                            border border-[#c4c6ce] bg-white
-                                            text-[15px] font-normal text-[#191c1d]
-                                            placeholder:text-[#9ea1a8]
-                                            focus:outline-none focus:border-[#a14000]
+                                            w-full px-4 py-3 rounded-sm
+                                            border border-base-300 bg-base-200
+                                            text-[15px] font-normal text-base-content
+                                            placeholder:text-base-content/40
+                                            focus:outline-none focus:border-primary
                                             transition-colors duration-150
                                             resize-none
                                         "
@@ -354,17 +354,17 @@ const Contact = () => {
                                     type="submit"
                                     disabled={loading}
                                     className="
-                                        w-full h-14 flex items-center justify-center gap-2
-                                        bg-[#000f22] hover:bg-[#0a2540]
-                                        text-white text-[14px] font-bold uppercase tracking-[0.1em]
-                                        transition-colors duration-200
+                                        w-full h-14 flex items-center justify-center gap-2 rounded-sm
+                                        bg-primary hover:opacity-90 cursor-pointer
+                                        text-primary-content text-[14px] font-bold uppercase tracking-[0.1em]
+                                        transition-opacity duration-200
                                         disabled:opacity-50 disabled:cursor-not-allowed
                                         mt-1
                                     "
                                 >
                                     {loading ? (
                                         <span className="flex items-center gap-2">
-                                            <span className="loading loading-dots loading-sm text-white"></span>
+                                            <span className="loading loading-dots loading-sm text-primary-content"></span>
                                             SENDING MESSAGE...
                                         </span>
                                     ) : (
@@ -381,7 +381,7 @@ const Contact = () => {
                         <div className="flex flex-col gap-6">
 
                             {/* Map embed */}
-                            <div className="overflow-hidden border border-[#c4c6ce] relative" style={{ height: '360px' }}>
+                            <div className="overflow-hidden border border-base-300 rounded-lg relative" style={{ height: '360px' }}>
                                 <iframe
                                     title="NexusBuild Office Location — Narayanganj"
                                     src={mapSrc}
@@ -393,29 +393,29 @@ const Contact = () => {
                             </div>
 
                             {/* Address card */}
-                            <div className="bg-white border border-[#c4c6ce] p-6 flex flex-col gap-5">
-                                <h3 className="text-[16px] font-semibold text-[#191c1d] flex items-center gap-2">
-                                    <MapPin size={16} className="text-[#a14000] flex-shrink-0" />
+                            <div className="bg-base-100 border border-base-300 p-6 flex flex-col gap-5 rounded-lg text-base-content">
+                                <h3 className="text-[16px] font-semibold text-base-content flex items-center gap-2">
+                                    <MapPin size={16} className="text-primary flex-shrink-0" />
                                     Our Office
                                 </h3>
 
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                     {/* Address */}
                                     <div className="flex flex-col gap-1">
-                                        <span className="text-[11px] font-semibold text-[#74777e] uppercase tracking-[0.1em]">
+                                        <span className="text-[11px] font-semibold text-base-content/70 uppercase tracking-[0.1em]">
                                             Address
                                         </span>
-                                        <p className="text-[14px] font-normal text-[#43474d] leading-[22px]">
+                                        <p className="text-[14px] font-normal text-base-content/85 leading-[22px]">
                                             {savedSettingsToUse.headOfficeAddress}
                                         </p>
                                     </div>
 
                                     {/* Working hours */}
                                     <div className="flex flex-col gap-1">
-                                        <span className="text-[11px] font-semibold text-[#74777e] uppercase tracking-[0.1em]">
+                                        <span className="text-[11px] font-semibold text-base-content/70 uppercase tracking-[0.1em]">
                                             Working Hours
                                         </span>
-                                        <p className="text-[14px] font-normal text-[#43474d] leading-[22px] whitespace-pre-line">
+                                        <p className="text-[14px] font-normal text-base-content/85 leading-[22px] whitespace-pre-line">
                                             {savedSettingsToUse.contactOfficeHours || `Mon – Fri: 9:00 AM – 6:00 PM\nSaturday: 9:00 AM – 2:00 PM\nSunday: Closed`}
                                         </p>
                                     </div>
@@ -428,7 +428,7 @@ const Contact = () => {
                                     rel="noopener noreferrer"
                                     className="
                                         inline-flex items-center gap-2 text-[13px] font-semibold
-                                        text-[#a14000] hover:text-[#5e2200] border-t border-[#e1e3e4]
+                                        text-primary hover:opacity-80 border-t border-base-300
                                         pt-4 transition-colors duration-150
                                     "
                                 >
@@ -442,31 +442,31 @@ const Contact = () => {
                                 <a
                                     href={`tel:${savedSettingsToUse.supportPhone}`}
                                     className="
-                                        flex-1 flex items-center gap-3 bg-[#000f22] px-4 py-4
-                                        hover:bg-[#0a2540] transition-colors duration-200 group
+                                        flex-1 flex items-center gap-3 bg-base-100 border border-base-300 px-4 py-4 rounded-sm
+                                        hover:border-primary transition-colors duration-200 group
                                     "
                                 >
-                                    <div className="w-8 h-8 bg-[#a14000] flex items-center justify-center flex-shrink-0">
-                                        <Phone size={14} className="text-white" />
+                                    <div className="w-8 h-8 bg-primary flex items-center justify-center flex-shrink-0 rounded-xs">
+                                        <Phone size={14} className="text-primary-content" />
                                     </div>
                                     <div>
-                                        <p className="text-[10px] font-semibold text-[#768dad] uppercase tracking-wider">Call Us</p>
-                                        <p className="text-[13px] font-semibold text-white">{savedSettingsToUse.supportPhone}</p>
+                                        <p className="text-[10px] font-semibold text-base-content/70 uppercase tracking-wider">Call Us</p>
+                                        <p className="text-[13px] font-semibold text-base-content">{savedSettingsToUse.supportPhone}</p>
                                     </div>
                                 </a>
                                 <a
                                     href={`mailto:${savedSettingsToUse.supportEmail}`}
                                     className="
-                                        flex-1 flex items-center gap-3 bg-white border border-[#c4c6ce] px-4 py-4
-                                        hover:border-[#a14000] transition-colors duration-200
+                                        flex-1 flex items-center gap-3 bg-base-100 border border-base-300 px-4 py-4 rounded-sm
+                                        hover:border-primary transition-colors duration-200
                                     "
                                 >
-                                    <div className="w-8 h-8 bg-[#f3f4f5] border border-[#c4c6ce] flex items-center justify-center flex-shrink-0">
-                                        <Mail size={14} className="text-[#a14000]" />
+                                    <div className="w-8 h-8 bg-base-200 border border-base-300 flex items-center justify-center flex-shrink-0 rounded-xs">
+                                        <Mail size={14} className="text-primary" />
                                     </div>
                                     <div>
-                                        <p className="text-[10px] font-semibold text-[#74777e] uppercase tracking-wider">Email</p>
-                                        <p className="text-[13px] font-semibold text-[#191c1d]">{savedSettingsToUse.supportEmail}</p>
+                                        <p className="text-[10px] font-semibold text-base-content/70 uppercase tracking-wider">Email</p>
+                                        <p className="text-[13px] font-semibold text-base-content">{savedSettingsToUse.supportEmail}</p>
                                     </div>
                                 </a>
                             </div>

@@ -134,7 +134,7 @@ const DashboardContent = () => {
     ];
 
     return (
-        <div className="flex h-screen overflow-hidden font-sans bg-[#F0F4F8] print:block print:h-auto print:overflow-visible">
+        <div className="flex h-screen overflow-hidden font-sans bg-base-200 text-base-content print:block print:h-auto print:overflow-visible">
             {/* ══ MOBILE OVERLAY ════════════════════════════════ */}
             {sidebarOpen && (
                 <div 
@@ -222,17 +222,17 @@ const DashboardContent = () => {
             <div className="flex-1 flex flex-col overflow-hidden print:block print:h-auto print:overflow-visible min-w-0">
                 
                 {/* Top Header */}
-                <header className="h-[70px] flex-shrink-0 bg-white border-b border-[#E2E8F0] px-4 md:px-6 flex items-center justify-between z-50 relative print:hidden">
+                <header className="h-[70px] flex-shrink-0 bg-base-100 border-b border-base-300 px-4 md:px-6 flex items-center justify-between z-50 relative print:hidden">
                     <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
                         {/* Hamburger for mobile */}
                         <button
                             onClick={() => setSidebarOpen(true)}
-                            className="lg:hidden p-1.5 sm:p-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors flex-shrink-0"
+                            className="lg:hidden p-1.5 sm:p-2 rounded-lg text-base-content/80 hover:bg-base-200 transition-colors flex-shrink-0"
                             aria-label="Open Menu"
                         >
                             <Menu size={22} />
                         </button>
-                        <div className="text-slate-800 font-bold text-base sm:text-lg truncate">
+                        <div className="text-base-content font-bold text-base sm:text-lg truncate">
                             <span className="hidden sm:inline">Welcome Back, </span>
                             <span className="sm:hidden">Welcome, </span>
                             {userProfile.name}
@@ -247,11 +247,11 @@ const DashboardContent = () => {
                                 return (
                                     <button
                                         onClick={() => setShowNotif(p => !p)}
-                                        className="w-10 h-10 flex items-center justify-center rounded-full border border-[#003178] text-[#003178] hover:bg-blue-50 transition-colors cursor-pointer relative"
+                                        className="w-10 h-10 flex items-center justify-center rounded-full border border-base-300 text-base-content hover:bg-base-200 transition-colors cursor-pointer relative"
                                     >
                                         <Bell size={18} />
                                         {unreadCount > 0 && (
-                                            <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white font-bold text-[9px] flex items-center justify-center rounded-full border-2 border-white">
+                                            <span className="absolute -top-1 -right-1 w-4 h-4 bg-error text-error-content font-bold text-[9px] flex items-center justify-center rounded-full border-2 border-base-100">
                                                 {unreadCount}
                                             </span>
                                         )}
@@ -261,8 +261,8 @@ const DashboardContent = () => {
                             
                             {/* Live Notification Dropdown */}
                             {showNotif && (
-                                <div className="absolute right-0 top-12 w-80 sm:w-96 bg-white border border-[#E2E8F0] shadow-2xl rounded-2xl p-4 text-xs text-slate-700 z-50 divide-y divide-slate-100">
-                                    <div className="font-bold text-sm text-[#003178] pb-2 flex justify-between items-center">
+                                <div className="absolute right-0 top-12 w-80 sm:w-96 bg-base-100 border border-base-300 shadow-2xl rounded-2xl p-4 text-xs text-base-content z-50 divide-y divide-base-300">
+                                    <div className="font-bold text-sm text-base-content pb-2 flex justify-between items-center">
                                         <span>Notifications</span>
                                         <button 
                                             onClick={() => {
@@ -270,12 +270,12 @@ const DashboardContent = () => {
                                                 setReadNotifIds(allIds);
                                                 try { localStorage.setItem('client_read_notifs', JSON.stringify(allIds)); } catch(e) {}
                                             }}
-                                            className="text-[10px] bg-blue-100 text-[#003178] px-2 py-0.5 rounded-full font-bold hover:bg-blue-200 cursor-pointer"
+                                            className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold hover:bg-primary/20 cursor-pointer"
                                         >
                                             Mark all as read
                                         </button>
                                     </div>
-                                    <div className="max-h-64 overflow-y-auto divide-y divide-slate-100 py-1">
+                                    <div className="max-h-64 overflow-y-auto divide-y divide-base-300 py-1">
                                         {clientNotifications.map(n => {
                                             const isUnread = !readNotifIds.includes(n.id);
                                             return (
@@ -291,22 +291,22 @@ const DashboardContent = () => {
                                                         setShowNotif(false);
                                                     }}
                                                     className={`py-2.5 px-2 rounded-lg cursor-pointer transition-colors space-y-1 group ${
-                                                        isUnread ? 'bg-blue-50/70 hover:bg-blue-100/70 font-semibold' : 'hover:bg-slate-50'
+                                                        isUnread ? 'bg-base-200/80 hover:bg-base-200 font-semibold' : 'hover:bg-base-200'
                                                     }`}
                                                 >
                                                     <div className="flex justify-between items-center">
-                                                        <span className="font-bold text-slate-800 text-xs group-hover:text-[#003178] transition-colors flex items-center gap-1.5">
-                                                            {isUnread && <span className="w-1.5 h-1.5 rounded-full bg-blue-600 inline-block" />}
+                                                        <span className="font-bold text-base-content text-xs group-hover:text-primary transition-colors flex items-center gap-1.5">
+                                                            {isUnread && <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />}
                                                             {n.title}
                                                         </span>
                                                         <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${n.badge}`}>{n.date}</span>
                                                     </div>
-                                                    <p className="text-slate-500 text-xs line-clamp-2 leading-relaxed">{n.desc}</p>
+                                                    <p className="text-base-content/70 text-xs line-clamp-2 leading-relaxed">{n.desc}</p>
                                                 </div>
                                             );
                                         })}
                                         {clientNotifications.length === 0 && (
-                                            <div className="py-6 text-center text-slate-400">No new notifications.</div>
+                                            <div className="py-6 text-center text-base-content/60">No new notifications.</div>
                                         )}
                                     </div>
                                 </div>
@@ -316,7 +316,7 @@ const DashboardContent = () => {
                         {/* Profile Icon Button */}
                         <button 
                             onClick={() => setShowProfileModal(true)}
-                            className="w-10 h-10 flex items-center justify-center rounded-full border border-[#003178] text-[#003178] hover:bg-blue-50 transition-colors cursor-pointer"
+                            className="w-10 h-10 flex items-center justify-center rounded-full border border-base-300 text-base-content hover:bg-base-200 transition-colors cursor-pointer"
                             aria-label="Edit Profile"
                         >
                             <User size={18} />
@@ -332,40 +332,40 @@ const DashboardContent = () => {
 
             {/* Profile Modal */}
             {showProfileModal && (
-                <div className="fixed inset-0 bg-[#000f22]/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-xl shadow-2xl max-w-md w-full overflow-hidden transform transition-all">
-                        <div className="bg-[#003178] text-white p-6">
+                <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                    <div className="bg-base-100 text-base-content rounded-xl shadow-2xl max-w-md w-full overflow-hidden transform transition-all border border-base-300">
+                        <div className="bg-primary text-primary-content p-6">
                             <h3 className="text-xl font-bold">Edit Profile Information</h3>
-                            <p className="text-[#A0B2C6] text-sm mt-1">Update your basic details in the NexusBuild portal</p>
+                            <p className="text-primary-content/80 text-sm mt-1">Update your basic details in the NexusBuild portal</p>
                         </div>
                         <form onSubmit={handleSaveProfile} className="p-6 flex flex-col gap-4">
                             <div>
-                                <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2">Full Name</label>
+                                <label className="block text-xs font-semibold text-base-content/80 uppercase tracking-wider mb-2">Full Name</label>
                                 <input 
                                     type="text" 
                                     value={editName} 
                                     onChange={(e) => setEditName(e.target.value)} 
-                                    className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:border-[#003178]"
+                                    className="w-full px-4 py-2 bg-base-200 border border-base-300 text-base-content rounded-md focus:outline-none focus:border-primary"
                                     required 
                                 />
                             </div>
                             <div>
-                                <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2">Phone Number</label>
+                                <label className="block text-xs font-semibold text-base-content/80 uppercase tracking-wider mb-2">Phone Number</label>
                                 <input 
                                     type="text" 
                                     value={editPhone} 
                                     onChange={(e) => setEditPhone(e.target.value)} 
-                                    className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:border-[#003178]" 
+                                    className="w-full px-4 py-2 bg-base-200 border border-base-300 text-base-content rounded-md focus:outline-none focus:border-primary" 
                                     required
                                 />
                             </div>
                             <div>
-                                <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2">Email Address</label>
+                                <label className="block text-xs font-semibold text-base-content/80 uppercase tracking-wider mb-2">Email Address</label>
                                 <input 
                                     type="email" 
                                     value={editEmail} 
                                     onChange={(e) => setEditEmail(e.target.value)} 
-                                    className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:border-[#003178]" 
+                                    className="w-full px-4 py-2 bg-base-200 border border-base-300 text-base-content/60 rounded-md focus:outline-none focus:border-primary cursor-not-allowed" 
                                     required
                                     disabled
                                 />
@@ -374,13 +374,13 @@ const DashboardContent = () => {
                                 <button 
                                     type="button" 
                                     onClick={() => setShowProfileModal(false)}
-                                    className="px-4 py-2 border border-slate-300 text-slate-700 rounded-md hover:bg-slate-50 cursor-pointer"
+                                    className="px-4 py-2 border border-base-300 text-base-content/80 rounded-md hover:bg-base-200 cursor-pointer"
                                 >
                                     Cancel
                                 </button>
                                 <button 
                                     type="submit" 
-                                    className="px-4 py-2 bg-[#fe762a] hover:bg-[#a14000] text-[#5e2200] hover:text-white font-semibold rounded-md transition-colors cursor-pointer"
+                                    className="px-4 py-2 bg-primary hover:opacity-90 text-primary-content font-semibold rounded-md transition-opacity cursor-pointer"
                                 >
                                     Save Changes
                                 </button>

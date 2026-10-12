@@ -110,7 +110,7 @@ const About = () => {
     const teamMembers = systemSettings?.aboutTeamMembers?.length ? systemSettings.aboutTeamMembers : TEAM;
 
     return (
-        <div className="flex flex-col min-h-screen font-[Inter,sans-serif] bg-[#f3f4f5]">
+        <div className="flex flex-col min-h-screen font-[Inter,sans-serif] bg-base-200 text-base-content">
             <Navbar />
 
             {/* ══ 1. HERO ══════════════════════════════════════════════════════ */}
@@ -205,31 +205,29 @@ const About = () => {
             </section>
 
             {/* ══ 3. MISSION + VISION ═════════════════════════════════════════ */}
-            <section className="py-20 sm:py-28 bg-[#f3f4f5]">
+            <section className="py-20 sm:py-28 bg-base-100 text-base-content">
                 <div className="max-w-[1184px] mx-auto px-6 sm:px-10 lg:px-12">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-                        {/* Mission card — light bg */}
-                        <div className="bg-[#edeeef] border border-[#c4c6ce] p-12 flex flex-col justify-between gap-6">
+                        {/* Mission card */}
+                        <div className="bg-base-200 border border-base-300 p-12 flex flex-col justify-between gap-6 rounded-lg">
                             <div>
-                                {/* Icon */}
                                 <div className="w-10 h-10 mb-6">
-                                    <Target size={40} className="text-[#a14000]" />
+                                    <Target size={40} className="text-primary" />
                                 </div>
-                                <h2 className="text-[24px] font-semibold text-[#191c1d] mb-6 leading-[32px]">
+                                <h2 className="text-[24px] font-semibold text-base-content mb-6 leading-[32px]">
                                     Our Mission
                                 </h2>
-                                <p className="text-[16px] font-normal text-[#43474d] leading-[24px]">
+                                <p className="text-[16px] font-normal text-base-content/80 leading-[24px]">
                                     To redefine urban living by integrating cutting-edge GIS technology and engineering
                                     precision into every brick we lay. We strive to provide transparent, technology-driven
                                     real estate solutions that empower communities across Bangladesh.
                                 </p>
                             </div>
-                            {/* Divider link */}
-                            <div className="border-t border-[#c4c6ce] pt-6 flex items-center justify-between">
+                            <div className="border-t border-base-300 pt-6 flex items-center justify-between">
                                 <Link
                                     to="/gismap"
-                                    className="text-[16px] font-normal text-[#a14000] hover:text-[#5e2200] flex items-center gap-2 transition-colors"
+                                    className="text-[16px] font-semibold text-primary hover:opacity-80 flex items-center gap-2 transition-colors"
                                 >
                                     LEARN ABOUT OUR TECHNOLOGY
                                     <ChevronRight size={16} />
@@ -237,27 +235,25 @@ const About = () => {
                             </div>
                         </div>
 
-                        {/* Vision card — dark bg */}
-                        <div className="bg-[#000f22] border border-[#0a2540] p-12 flex flex-col justify-between gap-6">
+                        {/* Vision card */}
+                        <div className="bg-base-200 border border-base-300 p-12 flex flex-col justify-between gap-6 rounded-lg">
                             <div>
-                                {/* Icon */}
                                 <div className="w-10 h-10 mb-6">
-                                    <Eye size={40} className="text-[#ffb694]" />
+                                    <Eye size={40} className="text-primary" />
                                 </div>
-                                <h2 className="text-[24px] font-semibold text-white mb-6 leading-[32px]">
+                                <h2 className="text-[24px] font-semibold text-base-content mb-6 leading-[32px]">
                                     Our Vision
                                 </h2>
-                                <p className="text-[16px] font-normal text-[#b0c8eb] leading-[24px]">
+                                <p className="text-[16px] font-normal text-base-content/80 leading-[24px]">
                                     To be the undisputed benchmark for structural integrity and innovative infrastructure
                                     in the region. We envision a future where every family resides in a home designed
                                     with absolute precision and unmatched safety standards.
                                 </p>
                             </div>
-                            {/* Divider link */}
-                            <div className="border-t border-white/10 pt-6 flex items-center justify-between">
+                            <div className="border-t border-base-300 pt-6 flex items-center justify-between">
                                 <Link
                                     to="/"
-                                    className="text-[16px] font-normal text-[#ffb694] hover:text-white flex items-center gap-2 transition-colors"
+                                    className="text-[16px] font-semibold text-primary hover:opacity-80 flex items-center gap-2 transition-colors"
                                 >
                                     VIEW OUR PROJECTS
                                     <ChevronRight size={16} />
@@ -270,18 +266,18 @@ const About = () => {
             </section>
 
             {/* ══ 4. TIMELINE — "A Journey Through Time" ══════════════════════ */}
-            <section className="py-20 sm:py-28 bg-white">
+            <section className="py-20 sm:py-28 bg-base-200 text-base-content">
                 <div className="max-w-[1184px] mx-auto px-6 sm:px-10 lg:px-12">
 
                     {/* Section heading */}
                     <div className="text-center mb-16">
-                        <span className="text-[11px] font-semibold text-[#a14000] uppercase tracking-[0.22em] block mb-4">
+                        <span className="text-[11px] font-semibold text-primary uppercase tracking-[0.22em] block mb-4">
                             Our History
                         </span>
-                        <h2 className="text-[32px] font-semibold text-[#000f22] tracking-tight">
+                        <h2 className="text-[32px] font-semibold text-base-content tracking-tight">
                             A Journey Through Time
                         </h2>
-                        <p className="mt-3 text-[16px] text-[#74777e]">
+                        <p className="mt-3 text-[16px] text-base-content/70">
                             Defining the skyline of Narayanganj for over two decades.
                         </p>
                     </div>
@@ -289,7 +285,7 @@ const About = () => {
                     {/* Timeline */}
                     <div className="relative">
                         {/* Vertical line (desktop) */}
-                        <div className="hidden lg:block absolute left-1/2 -translate-x-px top-0 bottom-0 w-px bg-[#e1e3e4]" />
+                        <div className="hidden lg:block absolute left-1/2 -translate-x-px top-0 bottom-0 w-px bg-base-300" />
 
                         <div className="flex flex-col gap-12">
                             {milestones.map((m, i) => {
@@ -302,19 +298,19 @@ const About = () => {
                                         {/* Card */}
                                         <div className={`w-full lg:w-[calc(50%-40px)] ${isLeft ? 'lg:text-right' : 'lg:text-left'}`}>
                                             <div className={`
-                                                bg-[#f3f4f5] border border-[#e1e3e4] p-6
-                                                hover:border-[#a14000]/40 hover:bg-[#edeeef]
+                                                bg-base-100 border border-base-300 p-6 rounded-lg
+                                                hover:border-primary/50
                                                 transition-colors duration-200 group
                                             `}>
                                                 <div className={`flex items-center gap-3 mb-3 ${isLeft ? 'lg:justify-end' : ''}`}>
-                                                    <span className="text-[11px] font-bold text-white bg-[#a14000] px-2 py-0.5 tracking-wider uppercase">
+                                                    <span className="text-[11px] font-bold text-primary-content bg-primary px-2 py-0.5 tracking-wider uppercase rounded-xs">
                                                         {m.year}
                                                     </span>
-                                                    <h3 className="text-[16px] font-semibold text-[#000f22]">
+                                                    <h3 className="text-[16px] font-semibold text-base-content">
                                                         {m.title}
                                                     </h3>
                                                 </div>
-                                                <p className={`text-[14px] font-normal text-[#74777e] leading-[22px]`}>
+                                                <p className="text-[14px] font-normal text-base-content/75 leading-[22px]">
                                                     {m.desc}
                                                 </p>
                                             </div>
@@ -322,7 +318,7 @@ const About = () => {
 
                                         {/* Centre node */}
                                         <div className="hidden lg:flex w-20 flex-shrink-0 items-center justify-center z-10">
-                                            <div className="w-4 h-4 rounded-full bg-[#a14000] ring-4 ring-white shadow-md" />
+                                            <div className="w-4 h-4 rounded-full bg-primary ring-4 ring-base-100 shadow-md" />
                                         </div>
 
                                         {/* Spacer */}
@@ -336,18 +332,18 @@ const About = () => {
             </section>
 
             {/* ══ 5. TEAM ══════════════════════════════════════════════════════ */}
-            <section className="py-20 sm:py-28 bg-[#f3f4f5]">
+            <section className="py-20 sm:py-28 bg-base-100 text-base-content">
                 <div className="max-w-[1184px] mx-auto px-6 sm:px-10 lg:px-12">
 
                     {/* Section heading */}
                     <div className="text-center mb-16">
-                        <span className="text-[11px] font-semibold text-[#a14000] uppercase tracking-[0.22em] block mb-4">
+                        <span className="text-[11px] font-semibold text-primary uppercase tracking-[0.22em] block mb-4">
                             {peopleEyebrow}
                         </span>
-                        <h2 className="text-[32px] font-semibold text-[#000f22] tracking-tight">
+                        <h2 className="text-[32px] font-semibold text-base-content tracking-tight">
                             {peopleTitle}
                         </h2>
-                        <p className="mt-3 text-[16px] text-[#74777e] max-w-[480px] mx-auto">
+                        <p className="mt-3 text-[16px] text-base-content/70 max-w-[480px] mx-auto">
                             {peopleSubtitle}
                         </p>
                     </div>
@@ -357,7 +353,7 @@ const About = () => {
                         {teamMembers.map((member, idx) => (
                             <div
                                 key={member.name + idx}
-                                className="bg-white border border-[#e1e3e4] overflow-hidden group hover:shadow-[0px_8px_24px_#0000001a] transition-shadow duration-300 flex flex-col justify-between"
+                                className="bg-base-100 border border-base-300 rounded-lg overflow-hidden group hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between"
                             >
                                 <div>
                                     {/* Avatar / colour header */}
@@ -375,16 +371,16 @@ const About = () => {
 
                                     {/* Info */}
                                     <div className="p-5">
-                                        <h3 className="text-[15px] font-semibold text-[#191c1d] leading-tight mb-1">
+                                        <h3 className="text-[15px] font-semibold text-base-content leading-tight mb-1">
                                             {member.name}
                                         </h3>
                                         <p
-                                            className="text-[11px] font-bold uppercase tracking-wider mb-3 pb-3 border-b border-[#e1e3e4]"
-                                            style={{ color: member.bg || '#a14000' }}
+                                            className="text-[11px] font-bold uppercase tracking-wider mb-3 pb-3 border-b border-base-300"
+                                            style={{ color: member.bg || 'var(--color-primary)' }}
                                         >
                                             {member.role}
                                         </p>
-                                        <p className="text-[13px] font-normal text-[#74777e] leading-[20px]">
+                                        <p className="text-[13px] font-normal text-base-content/75 leading-[20px]">
                                             {member.bio}
                                         </p>
                                     </div>
@@ -392,10 +388,10 @@ const About = () => {
 
                                 {/* Social row */}
                                 <div className="px-5 pb-5 pt-2 flex items-center gap-2">
-                                    <button className="w-8 h-8 border border-[#e1e3e4] flex items-center justify-center hover:border-[#a14000] hover:text-[#a14000] transition-colors text-[#74777e] rounded cursor-pointer">
+                                    <button className="w-8 h-8 border border-base-300 flex items-center justify-center hover:border-primary hover:text-primary transition-colors text-base-content/70 rounded cursor-pointer">
                                         <Globe size={13} />
                                     </button>
-                                    <button className="w-8 h-8 border border-[#e1e3e4] flex items-center justify-center hover:border-[#a14000] hover:text-[#a14000] transition-colors text-[#74777e] rounded cursor-pointer">
+                                    <button className="w-8 h-8 border border-base-300 flex items-center justify-center hover:border-primary hover:text-primary transition-colors text-base-content/70 rounded cursor-pointer">
                                         <Mail size={13} />
                                     </button>
                                 </div>
