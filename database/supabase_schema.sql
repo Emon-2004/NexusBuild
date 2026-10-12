@@ -10,6 +10,7 @@ CREATE TABLE public.clients (
     email TEXT UNIQUE NOT NULL,
     phone TEXT,
     status TEXT DEFAULT 'Active',
+    role TEXT DEFAULT 'client',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now())
 );
 
@@ -113,17 +114,24 @@ INSERT INTO public.projects (id, name, progress_phase) VALUES
     ('p2', 'Green Valley Residency', 1)
 ON CONFLICT (id) DO NOTHING;
 
+-- Insert default Admin seed into clients table
+INSERT INTO public.clients (name, email, phone, status, role) VALUES
+    ('System Administrator', 'admin@example.com', '+1 234 567 8900', 'Active', 'admin')
+ON CONFLICT (email) DO UPDATE SET
+    role = 'admin',
+    status = 'Active';
+
 -- Turn off RLS temporarily for easy development/testing
 -- In production, you MUST enable RLS and write policies.
-ALTER TABLE public.clients DISABLE ROW LEVEL SECURITY;
-ALTER TABLE public.leads DISABLE ROW LEVEL SECURITY;
-ALTER TABLE public.applications DISABLE ROW LEVEL SECURITY;
-ALTER TABLE public.projects DISABLE ROW LEVEL SECURITY;
-ALTER TABLE public.properties DISABLE ROW LEVEL SECURITY;
-ALTER TABLE public.installments DISABLE ROW LEVEL SECURITY;
-ALTER TABLE public.transactions DISABLE ROW LEVEL SECURITY;
-ALTER TABLE public.site_updates DISABLE ROW LEVEL SECURITY;
-ALTER TABLE public.tickets DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.clients ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.leads ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.applications ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.projects ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.properties ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.installments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.transactions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.site_updates ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.tickets ENABLE ROW LEVEL SECURITY;
 
 -- 10. Public Projects Table (For Public Website Catalog)
 CREATE TABLE public.public_projects (
@@ -156,7 +164,7 @@ ON CONFLICT (id) DO UPDATE SET
     nearby_colleges = EXCLUDED.nearby_colleges,
     nearby_markets = EXCLUDED.nearby_markets;
 
-ALTER TABLE public.public_projects DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.public_projects ENABLE ROW LEVEL SECURITY;
 
 -- 11. System Settings Table (Global company configurations)
 CREATE TABLE public.system_settings (
@@ -165,17 +173,130 @@ CREATE TABLE public.system_settings (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now())
 );
 
-ALTER TABLE public.system_settings DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.system_settings ENABLE ROW LEVEL SECURITY;
 
 -- Insert default system settings
 INSERT INTO public.system_settings (id, settings) VALUES
     ('global', '{
-        "companyName": "Reliance Housing Ltd.",
-        "regNumber": "REG-2023-998811",
-        "headOfficeAddress": "Shamabay New Market, 259 B B Road, Narayanganj",
-        "supportEmail": "info@reliancehousing.com",
-        "supportPhone": "+880 1234 567890"
+        "companyName": "Real Estate Platform",
+        "regNumber": "REG-XXXX-XXXXXX",
+        "headOfficeAddress": "123 Business Avenue, Tech District",
+        "supportEmail": "info@example.com",
+        "supportPhone": "+1 234 567 8900"
     }'::jsonb)
 ON CONFLICT (id) DO NOTHING;
 
 
+
+
+-- ==========================================
+-- ROW LEVEL SECURITY (RLS) POLICIES
+-- ==========================================
+
+-- Helper function to check if the current user is an admin
+CREATE OR REPLACE FUNCTION public.is_admin()
+RETURNS BOOLEAN
+LANGUAGE sql
+SECURITY DEFINER
+AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.clients
+    WHERE email = auth.jwt()->>'email' AND role = 'admin'
+  );
+$$;
+
+-- Helper function to get the current user's client_id
+CREATE OR REPLACE FUNCTION public.get_client_id()
+RETURNS UUID
+LANGUAGE sql
+SECURITY DEFINER
+AS $$
+  SELECT id FROM public.clients
+  WHERE email = auth.jwt()->>'email'
+  LIMIT 1;
+$$;
+
+-- 1. Clients Table Policies
+CREATE POLICY "Admins have full access to clients" ON public.clients
+FOR ALL USING (public.is_admin());
+
+CREATE POLICY "Clients can view their own profile" ON public.clients
+FOR SELECT USING (email = auth.jwt()->>'email');
+
+-- 2. Leads Table Policies
+CREATE POLICY "Admins have full access to leads" ON public.leads
+FOR ALL USING (public.is_admin());
+
+CREATE POLICY "Anyone can insert leads" ON public.leads
+FOR INSERT WITH CHECK (true);
+
+-- 3. Applications Table Policies
+CREATE POLICY "Admins have full access to applications" ON public.applications
+FOR ALL USING (public.is_admin());
+
+CREATE POLICY "Anyone can insert applications" ON public.applications
+FOR INSERT WITH CHECK (true);
+
+-- 4. Projects Table Policies (Public Read, Admin Write)
+CREATE POLICY "Projects are viewable by everyone" ON public.projects
+FOR SELECT USING (true);
+
+CREATE POLICY "Admins can modify projects" ON public.projects
+FOR ALL USING (public.is_admin());
+
+-- 5. Properties Table Policies
+CREATE POLICY "Admins have full access to properties" ON public.properties
+FOR ALL USING (public.is_admin());
+
+CREATE POLICY "Clients can view their own properties" ON public.properties
+FOR SELECT USING (client_id = public.get_client_id());
+
+-- 6. Installments Table Policies
+CREATE POLICY "Admins have full access to installments" ON public.installments
+FOR ALL USING (public.is_admin());
+
+CREATE POLICY "Clients can view installments for their properties" ON public.installments
+FOR SELECT USING (
+  property_id IN (
+    SELECT id FROM public.properties WHERE client_id = public.get_client_id()
+  )
+);
+
+-- 7. Transactions Table Policies
+CREATE POLICY "Admins have full access to transactions" ON public.transactions
+FOR ALL USING (public.is_admin());
+
+CREATE POLICY "Clients can view transactions for their properties" ON public.transactions
+FOR SELECT USING (
+  property_id IN (
+    SELECT id FROM public.properties WHERE client_id = public.get_client_id()
+  )
+);
+
+-- 8. Site Updates Table Policies (Public Read, Admin Write)
+CREATE POLICY "Site updates are viewable by everyone" ON public.site_updates
+FOR SELECT USING (true);
+
+CREATE POLICY "Admins can modify site updates" ON public.site_updates
+FOR ALL USING (public.is_admin());
+
+-- 9. Tickets Table Policies
+CREATE POLICY "Admins have full access to tickets" ON public.tickets
+FOR ALL USING (public.is_admin());
+
+CREATE POLICY "Clients can view and create their own tickets" ON public.tickets
+FOR ALL USING (client_id = public.get_client_id());
+
+-- 10. Public Projects Table Policies (Public Read, Admin Write)
+CREATE POLICY "Public projects are viewable by everyone" ON public.public_projects
+FOR SELECT USING (true);
+
+CREATE POLICY "Admins can modify public projects" ON public.public_projects
+FOR ALL USING (public.is_admin());
+
+-- 11. System Settings Table Policies (Public Read, Admin Write)
+CREATE POLICY "System settings are viewable by everyone" ON public.system_settings
+FOR SELECT USING (true);
+
+CREATE POLICY "Admins can modify system settings" ON public.system_settings
+FOR ALL USING (public.is_admin());

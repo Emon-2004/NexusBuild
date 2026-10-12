@@ -12,9 +12,9 @@ export const PROJECTS = [
         location: "Narayanganj",
         fullAddress: "Plot 12-15, Sardar Tower Corridor, Narayanganj",
         type: "Mixed Use",
-        image: "/Frontend/Projects/Reliance_Zenith_Towers.svg",
+        image: "/Frontend/Projects/Project_1.svg",
         gallery: [
-            "/Frontend/Projects/Reliance_Zenith_Towers.svg",
+            "/Frontend/Projects/Project_1.svg",
             "/Frontend/Projects/Hero_Section.svg",
             "/Frontend/Projects/Decades_of_Trust_in_Narayanganj.svg"
         ],

@@ -7,16 +7,41 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    const loadUserRole = async (sessionUser) => {
+        const { data: clientData, error } = await supabase
+            .from('clients')
+            .select('*')
+            .eq('email', sessionUser.email)
+            .maybeSingle();
+
+        if (clientData && clientData.status === 'Active') {
+            return {
+                id: sessionUser.id,
+                email: sessionUser.email,
+                role: clientData.role || 'client',
+                clientId: clientData.id,
+                name: clientData.name,
+                phone: clientData.phone
+            };
+        } else if (clientData && clientData.role === 'admin') {
+             return {
+                id: sessionUser.id,
+                email: sessionUser.email,
+                role: 'admin',
+                clientId: clientData.id,
+                name: clientData.name,
+                phone: clientData.phone
+            };
+        }
+        return null;
+    };
+
     useEffect(() => {
         // Get initial session
-        supabase.auth.getSession().then(({ data: { session } }) => {
+        supabase.auth.getSession().then(async ({ data: { session } }) => {
             if (session?.user) {
-                const isadmin = session.user.email === 'admin@reliance.com';
-                setUser({
-                    id: session.user.id,
-                    email: session.user.email,
-                    role: isadmin ? 'admin' : 'client'
-                });
+                const userData = await loadUserRole(session.user);
+                setUser(userData);
             } else {
                 setUser(null);
             }
@@ -26,38 +51,15 @@ export const AuthProvider = ({ children }) => {
         // Listen for auth changes
         const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
             if (session?.user) {
-                const isadmin = session.user.email === 'admin@reliance.com';
-                if (isadmin) {
-                    setUser({
-                        id: session.user.id,
-                        email: session.user.email,
-                        role: 'admin'
-                    });
-                    setLoading(false);
+                const userData = await loadUserRole(session.user);
+                if (userData) {
+                    setUser(userData);
                 } else {
-                    const { data: clientData, error: clientErr } = await supabase
-                        .from('clients')
-                        .select('*')
-                        .eq('email', session.user.email)
-                        .maybeSingle();
-
-                    if (clientData && clientData.status === 'Active') {
-                        setUser({
-                            id: session.user.id,
-                            email: session.user.email,
-                            role: 'client',
-                            clientId: clientData.id,
-                            name: clientData.name,
-                            phone: clientData.phone
-                        });
-                        setLoading(false);
-                    } else {
-                        // Unapproved or invalid -> sign out immediately
-                        await supabase.auth.signOut();
-                        setUser(null);
-                        setLoading(false);
-                    }
+                    // Unapproved or invalid -> sign out immediately
+                    await supabase.auth.signOut();
+                    setUser(null);
                 }
+                setLoading(false);
             } else {
                 setUser(null);
                 setLoading(false);
@@ -68,20 +70,17 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const signIn = async (email, password) => {
-        const isadmin = email.toLowerCase() === 'admin@reliance.com';
-        if (!isadmin) {
-            const { data: clientData, error: clientErr } = await supabase
-                .from('clients')
-                .select('*')
-                .eq('email', email)
-                .maybeSingle();
+        const { data: clientData, error: clientErr } = await supabase
+            .from('clients')
+            .select('*')
+            .eq('email', email)
+            .maybeSingle();
 
-            if (clientErr || !clientData) {
-                throw new Error("Your account is pending admin approval. Our team will contact you soon.");
-            }
-            if (clientData.status !== 'Active') {
-                throw new Error("Your account is not active. Please contact support.");
-            }
+        if (clientErr || !clientData) {
+            throw new Error("Your account is pending admin approval or does not exist. Our team will contact you soon.");
+        }
+        if (clientData.status !== 'Active' && clientData.role !== 'admin') {
+            throw new Error("Your account is not active. Please contact support.");
         }
 
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
