@@ -9,6 +9,7 @@ import ForgotPasswordModal from '../../Components/ForgotPasswordModal/ForgotPass
 import { useAuth } from '../../Context/AuthContext';
 import { useDatabase } from '../../Context/DatabaseContext';
 import { DEFAULT_SYSTEM_SETTINGS } from '../../config/defaultSettings';
+import { Button, Input, Badge } from '../../Components/UI';
 // ─── Login logging is handled inline below via supabase.rpc() ────────────────
 
 const Login = () => {
@@ -122,9 +123,11 @@ const Login = () => {
                                 <div className="flex flex-col gap-4">
                                     <div>
                                         {/* Eyebrow */}
-                                        <p className="text-[10px] font-semibold tracking-[0.2em] uppercase text-[#fe762a] mb-3">
-                                            Client Portal
-                                        </p>
+                                        <div className="mb-3">
+                                            <Badge variant="outline" size="sm" className="text-[#fe762a] border-[#fe762a]/50 font-semibold tracking-[0.2em] uppercase">
+                                                Client Portal
+                                            </Badge>
+                                        </div>
                                         {/* Main heading — Figma: 32px, bold, white */}
                                         <h1 className="text-[32px] font-bold leading-tight tracking-tight text-white">
                                             Architectural Excellence,<br />
@@ -192,9 +195,11 @@ const Login = () => {
                                     &larr; Back to Home
                                 </Link>
 
-                                <p className="text-[10px] font-semibold tracking-[0.2em] uppercase text-primary hidden lg:block">
-                                    NexusBuild
-                                </p>
+                                <div className="hidden lg:block mb-1">
+                                    <Badge variant="primary" size="sm" className="font-bold tracking-wider">
+                                        NexusBuild
+                                    </Badge>
+                                </div>
                                 <h2 className="text-[24px] sm:text-[28px] lg:text-[32px] font-bold text-base-content tracking-tight leading-tight">
                                     Welcome Back
                                 </h2>
@@ -207,68 +212,38 @@ const Login = () => {
                             <form onSubmit={handleSubmit} className="flex flex-col gap-6">
 
                                 {/* Email input */}
-                                <div className="flex flex-col gap-2">
-                                    <label className="text-[10px] font-bold text-base-content/80 uppercase tracking-[0.14em]">
-                                        Email Address
-                                    </label>
-                                    <div className="relative flex items-center">
-                                        <span className="absolute left-4 text-base-content/60 pointer-events-none flex items-center">
-                                            <AtSign size={16} />
-                                        </span>
-                                        <input
-                                            type="text"
-                                            className="
-                                                w-full pl-11 pr-4 py-3.5
-                                                bg-base-200 border border-base-300
-                                                rounded-lg
-                                                text-[14px] text-base-content placeholder:text-base-content/40
-                                                focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20
-                                                transition-all duration-200
-                                                min-h-[44px]
-                                            "
-                                            placeholder="Email or Username (e.g. Admin)"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            required
-                                        />
-                                    </div>
-                                </div>
+                                <Input
+                                    label="Email Address"
+                                    type="text"
+                                    placeholder="Email or Username (e.g. Admin)"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                    leftIcon={<AtSign size={16} />}
+                                    className="min-h-[44px]"
+                                />
 
                                 {/* Password input */}
-                                <div className="flex flex-col gap-2">
-                                    <label className="text-[10px] font-bold text-base-content/80 uppercase tracking-[0.14em]">
-                                        Password
-                                    </label>
-                                    <div className="relative flex items-center">
-                                        <span className="absolute left-4 text-base-content/60 pointer-events-none flex items-center">
-                                            <Lock size={16} />
-                                        </span>
-                                        <input
-                                            type={showPassword ? "text" : "password"}
-                                            className="
-                                                w-full pl-11 pr-12 py-3.5
-                                                bg-base-200 border border-base-300
-                                                rounded-lg
-                                                text-[14px] text-base-content placeholder:text-base-content/40
-                                                focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20
-                                                transition-all duration-200
-                                                min-h-[44px]
-                                            "
-                                            placeholder="••••••••"
-                                            value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
-                                            required
-                                        />
+                                <Input
+                                    label="Password"
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder="••••••••"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                    leftIcon={<Lock size={16} />}
+                                    rightIcon={
                                         <button
                                             type="button"
                                             onClick={() => setShowPassword(!showPassword)}
-                                            className="absolute right-4 text-base-content/60 hover:text-base-content focus:outline-none flex items-center min-h-[44px] min-w-[44px] justify-end cursor-pointer"
+                                            className="text-base-content/60 hover:text-base-content focus:outline-none flex items-center min-h-[40px] cursor-pointer"
                                             aria-label={showPassword ? 'Hide password' : 'Show password'}
                                         >
                                             {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                                         </button>
-                                    </div>
-                                </div>
+                                    }
+                                    className="min-h-[44px]"
+                                />
 
                                 {/* Remember Me row */}
                                 <div className="flex items-center justify-between">
@@ -296,36 +271,16 @@ const Login = () => {
                                 )}
 
                                 {/* CTA Button */}
-                                <button
+                                <Button
                                     type="submit"
-                                    disabled={loading || redirecting}
-                                    className="
-                                        w-full flex items-center justify-center gap-2
-                                        bg-primary hover:opacity-90
-                                        text-primary-content font-semibold text-[16px]
-                                        py-3.5 px-6 rounded-lg min-h-[52px]
-                                        transition-opacity duration-200
-                                        disabled:opacity-50 disabled:cursor-not-allowed
-                                        shadow-md
-                                        cursor-pointer
-                                    "
+                                    variant="primary"
+                                    size="lg"
+                                    loading={loading || redirecting}
+                                    rightIcon={!loading && !redirecting ? <ArrowRight size={16} /> : null}
+                                    className="w-full min-h-[52px] shadow-md text-[16px] font-semibold"
                                 >
-                                    {redirecting ? (
-                                        <span className="flex items-center gap-2">
-                                            <span className="loading loading-spinner loading-xs text-primary-content"></span>
-                                            Redirecting...
-                                        </span>
-                                    ) : loading ? (
-                                        <span className="flex items-center gap-2">
-                                            <span className="loading loading-dots loading-sm text-primary-content"></span>
-                                            Signing in...
-                                        </span>
-                                    ) : (
-                                        <>
-                                            Sign In <ArrowRight size={16} />
-                                        </>
-                                    )}
-                                </button>
+                                    {redirecting ? 'Redirecting...' : loading ? 'Signing in...' : 'Sign In'}
+                                </Button>
 
                                 {/* Demo Credentials Buttons — Enabled when VITE_ENABLE_DEMO === "true" */}
                                 {import.meta.env.VITE_ENABLE_DEMO === "true" && (
@@ -338,31 +293,26 @@ const Login = () => {
                                             <div className="flex-1 h-px bg-base-300" />
                                         </div>
                                         <div className="grid grid-cols-2 gap-3">
-                                            <button
+                                            <Button
                                                 type="button"
+                                                variant="ghost"
+                                                size="sm"
                                                 disabled={loading || redirecting}
                                                 onClick={() => handleDemoLogin("user@example.com", "User@123456")}
-                                                className="
-                                                    w-full py-2.5 px-3 border border-base-300 hover:border-primary
-                                                    bg-base-100 hover:bg-base-200 text-base-content font-semibold text-[13px]
-                                                    rounded-lg transition-all duration-200 disabled:opacity-50
-                                                    disabled:cursor-not-allowed cursor-pointer text-center
-                                                "
+                                                className="w-full border border-base-300 hover:border-primary text-base-content text-[13px] py-2.5"
                                             >
                                                 Demo User
-                                            </button>
-                                            <button
+                                            </Button>
+                                            <Button
                                                 type="button"
+                                                variant="primary"
+                                                size="sm"
                                                 disabled={loading || redirecting}
                                                 onClick={() => handleDemoLogin("admin@example.com", "Admin@123456")}
-                                                className="
-                                                    w-full py-2.5 px-3 border border-primary bg-primary hover:opacity-90
-                                                    text-primary-content font-semibold text-[13px] rounded-lg transition-all duration-200
-                                                    disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-center
-                                                "
+                                                className="w-full text-[13px] py-2.5"
                                             >
                                                 Demo Admin
-                                            </button>
+                                            </Button>
                                         </div>
                                     </div>
                                 )}
