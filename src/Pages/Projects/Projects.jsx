@@ -1,10 +1,23 @@
-import { useState, useMemo } from "react";
-import { Link } from "react-router";
-import { Search, MapPin, ArrowRight, Wrench, CalendarCheck, RotateCcw, CheckCircle2 } from "lucide-react";
+import { useState, useMemo, useEffect } from "react";
+import { Link, useSearchParams } from "react-router";
+import {
+    Search,
+    MapPin,
+    ArrowRight,
+    Wrench,
+    CalendarCheck,
+    RotateCcw,
+    CheckCircle2,
+    ArrowUpDown,
+    ChevronLeft,
+    ChevronRight,
+    SlidersHorizontal
+} from "lucide-react";
 import { useDatabase } from "../../Context/DatabaseContext";
 import { DEFAULT_SYSTEM_SETTINGS } from "../../config/defaultSettings";
 import { supabase } from "../../lib/supabaseClient";
 import { showToast } from '../../Components/Toast/globalToast';
+import { Button, Badge } from "../../Components/UI";
 
 // ── Public image paths (files in /public/frontend/projects/) ──────────────────
 const IMG_HERO = "/Frontend/Projects/Hero_Section.svg";
@@ -24,8 +37,8 @@ const IMG_ABOUT = "/Frontend/Projects/Decades_of_Trust_in_Narayanganj.svg";
 const ImageWithSkeleton = ({ src, alt, className }) => {
     const [loaded, setLoaded] = useState(false);
     return (
-        <div className="relative w-full h-full overflow-hidden bg-[#edeeef]">
-            {!loaded && <div className="skeleton absolute inset-0 w-full h-full bg-[#e1e3e4]" />}
+        <div className="relative w-full h-full overflow-hidden bg-base-300">
+            {!loaded && <div className="skeleton absolute inset-0 w-full h-full bg-base-300" />}
             <img
                 src={src}
                 alt={alt}
@@ -36,8 +49,39 @@ const ImageWithSkeleton = ({ src, alt, className }) => {
     );
 };
 
+// Helper parsers for client-side sorting
+const extractPrice = (proj) => {
+    if (typeof proj.price === 'number') return proj.price;
+    const raw = String(proj.priceRange || proj.price || '');
+    const crMatch = raw.match(/([\d.]+)\s*Cr/i);
+    if (crMatch) return parseFloat(crMatch[1]) * 10000000;
+    const lacMatch = raw.match(/([\d.]+)\s*(?:Lac|Lakh)/i);
+    if (lacMatch) return parseFloat(lacMatch[1]) * 100000;
+    const num = parseFloat(raw.replace(/[^\d.]/g, ''));
+    return isNaN(num) ? 0 : num;
+};
+
+const extractSize = (proj) => {
+    const specArea = proj.specs?.find(s => /area|size/i.test(s.label))?.value;
+    const raw = String(proj.area || proj.size || specArea || '');
+    const num = parseFloat(raw.replace(/[^\d.]/g, ''));
+    return isNaN(num) ? 0 : num;
+};
+
+const extractNewest = (proj) => {
+    if (proj.created_at) {
+        const time = new Date(proj.created_at).getTime();
+        if (!isNaN(time)) return time;
+    }
+    const specYear = proj.specs?.find(s => /year/i.test(s.label))?.value;
+    const year = parseInt(String(specYear || proj.completionYear || '').replace(/[^\d]/g, ''), 10);
+    if (!isNaN(year) && year > 0) return year;
+    const idNum = parseInt(String(proj.id).replace(/[^\d]/g, ''), 10);
+    return isNaN(idNum) ? 0 : idNum;
+};
+
 const Projects = () => {
-    const { publicProjects, systemSettings } = useDatabase();
+    const { publicProjects, systemSettings, loading } = useDatabase();
 
     const [showRemodeling, setShowRemodeling] = useState(false);
     const [showSiteVisit, setShowSiteVisit] = useState(false);
@@ -95,6 +139,13 @@ const Projects = () => {
         }
     };
 
+    // ── Search & Pagination URL State ─────────────────────────────────────────
+    const [searchParams, setSearchParams] = useSearchParams();
+    const currentSort = searchParams.get("sort") || "default";
+    const rawPage = parseInt(searchParams.get("page") || "1", 10);
+    const currentPage = isNaN(rawPage) || rawPage < 1 ? 1 : rawPage;
+    const ITEMS_PER_PAGE = 12;
+
     // ── Filter State ──────────────────────────────────────────────────────────
     const [locationFilter, setLocationFilter] = useState("");
     const [typeFilter, setTypeFilter] = useState("");
@@ -130,6 +181,9 @@ const Projects = () => {
             type: typeFilter,
             status: statusFilter,
         });
+        const nextParams = new URLSearchParams(searchParams);
+        nextParams.set("page", "1");
+        setSearchParams(nextParams);
     };
 
     const handleResetFilters = () => {
@@ -137,33 +191,83 @@ const Projects = () => {
         setTypeFilter("");
         setStatusFilter("");
         setAppliedFilters({ location: "", type: "", status: "" });
+        const nextParams = new URLSearchParams(searchParams);
+        nextParams.delete("page");
+        setSearchParams(nextParams);
     };
 
     // Filter projects based on active applied criteria
-    const filteredProjects = publicProjects.filter((project) => {
-        // Location filter match
-        if (
-            appliedFilters.location &&
-            project.location.toLowerCase() !== appliedFilters.location.toLowerCase()
-        ) {
-            return false;
+    const filteredProjects = useMemo(() => {
+        return publicProjects.filter((project) => {
+            if (
+                appliedFilters.location &&
+                project.location?.toLowerCase() !== appliedFilters.location.toLowerCase()
+            ) {
+                return false;
+            }
+            if (
+                appliedFilters.type &&
+                project.type?.toLowerCase() !== appliedFilters.type.toLowerCase()
+            ) {
+                return false;
+            }
+            if (
+                appliedFilters.status &&
+                project.status?.toLowerCase() !== appliedFilters.status.toLowerCase()
+            ) {
+                return false;
+            }
+            return true;
+        });
+    }, [publicProjects, appliedFilters]);
+
+    // Client-side sorting
+    const sortedProjects = useMemo(() => {
+        const list = [...filteredProjects];
+        switch (currentSort) {
+            case "price_asc":
+                return list.sort((a, b) => extractPrice(a) - extractPrice(b));
+            case "price_desc":
+                return list.sort((a, b) => extractPrice(b) - extractPrice(a));
+            case "newest":
+                return list.sort((a, b) => extractNewest(b) - extractNewest(a));
+            case "size":
+                return list.sort((a, b) => extractSize(b) - extractSize(a));
+            default:
+                return list;
         }
-        // Type filter match
-        if (
-            appliedFilters.type &&
-            project.type.toLowerCase() !== appliedFilters.type.toLowerCase()
-        ) {
-            return false;
+    }, [filteredProjects, currentSort]);
+
+    // Pagination at 12 items per page
+    const totalPages = Math.max(1, Math.ceil(sortedProjects.length / ITEMS_PER_PAGE));
+    const activePage = Math.min(currentPage, totalPages);
+
+    const paginatedProjects = useMemo(() => {
+        const startIdx = (activePage - 1) * ITEMS_PER_PAGE;
+        return sortedProjects.slice(startIdx, startIdx + ITEMS_PER_PAGE);
+    }, [sortedProjects, activePage]);
+
+    const handleSortChange = (newSort) => {
+        const nextParams = new URLSearchParams(searchParams);
+        if (newSort && newSort !== "default") {
+            nextParams.set("sort", newSort);
+        } else {
+            nextParams.delete("sort");
         }
-        // Status filter match
-        if (
-            appliedFilters.status &&
-            project.status.toLowerCase() !== appliedFilters.status.toLowerCase()
-        ) {
-            return false;
+        nextParams.set("page", "1");
+        setSearchParams(nextParams);
+    };
+
+    const handlePageChange = (newPage) => {
+        if (newPage < 1 || newPage > totalPages) return;
+        const nextParams = new URLSearchParams(searchParams);
+        nextParams.set("page", String(newPage));
+        setSearchParams(nextParams);
+        const section = document.getElementById("all-projects-section");
+        if (section) {
+            section.scrollIntoView({ behavior: "smooth", block: "start" });
         }
-        return true;
-    });
+    };
 
     return (
         <div className="flex flex-col min-h-screen bg-base-100 text-base-content font-[Inter,sans-serif]">
@@ -292,114 +396,231 @@ const Projects = () => {
             </section>
 
             {/* ══════════════════════════════════════════════════════════════
-             * 2. ALL PROJECTS SECTION
+             * 2. ALL PROJECTS SECTION (4 CARDS PER ROW, SORTING, PAGINATION, SKELETONS)
              * ══════════════════════════════════════════════════════════════ */}
-            <section className="bg-base-100 py-16 lg:py-24 px-6 lg:px-12">
-                <div className="max-w-[1280px] mx-auto flex flex-col gap-12">
+            <section id="all-projects-section" className="bg-base-100 py-16 lg:py-24 px-6 lg:px-12">
+                <div className="max-w-[1280px] mx-auto flex flex-col gap-10">
 
-                    {/* Section header & active filter info */}
-                    <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-                        <div className="flex flex-col gap-2">
-                            <h2 className="text-[28px] lg:text-[32px] font-semibold text-base-content leading-tight">
+                    {/* Section header & active filter/sort controls */}
+                    <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-4 border-b border-base-300">
+                        <div className="flex flex-col gap-2 max-w-xl">
+                            <span className="text-[12px] font-semibold text-primary uppercase tracking-wider">
+                                Curated Catalog
+                            </span>
+                            <h2 className="text-[28px] lg:text-[34px] font-bold text-base-content leading-tight">
                                 Signature Developments
                             </h2>
-                            <p className="text-[16px] font-normal text-base-content/75 leading-relaxed max-w-xl">
+                            <p className="text-[15px] font-normal text-base-content/75 leading-relaxed">
                                 Explore our portfolio of architectural excellence, from luxury residences to premier commercial spaces.
                             </p>
                         </div>
 
-                        {/* Reset / All link */}
-                        {(appliedFilters.location || appliedFilters.type || appliedFilters.status) ? (
-                            <button
-                                onClick={handleResetFilters}
-                                className="flex items-center gap-2 text-[14px] font-bold text-primary hover:opacity-80 transition-colors flex-shrink-0 cursor-pointer"
-                            >
-                                <RotateCcw size={14} />
-                                Reset Filters ({filteredProjects.length} found)
-                            </button>
-                        ) : (
-                            <button
-                                onClick={handleResetFilters}
-                                className="flex items-center gap-2 text-[14px] font-bold text-primary hover:opacity-80 transition-colors flex-shrink-0 cursor-pointer"
-                            >
-                                View All Projects ({publicProjects.length})
-                                <ArrowRight size={14} />
-                            </button>
-                        )}
+                        {/* Controls Toolbar: Sort dropdown + Counter + Filter Reset */}
+                        <div className="flex items-center gap-3 flex-wrap">
+                            {/* Sort Dropdown */}
+                            <div className="flex items-center gap-2 bg-base-200/90 px-3.5 py-2 rounded-xl border border-base-300 shadow-sm">
+                                <ArrowUpDown size={15} className="text-base-content/70 flex-shrink-0" />
+                                <label htmlFor="projects-sort-select" className="text-xs font-semibold text-base-content/70 select-none">Sort:</label>
+                                <select
+                                    id="projects-sort-select"
+                                    value={currentSort}
+                                    onChange={(e) => handleSortChange(e.target.value)}
+                                    className="bg-transparent text-sm font-semibold text-base-content focus:outline-none cursor-pointer pr-1"
+                                >
+                                    <option value="default" className="bg-base-100 text-base-content">Featured / Default</option>
+                                    <option value="price_asc" className="bg-base-100 text-base-content">Price: Low to High</option>
+                                    <option value="price_desc" className="bg-base-100 text-base-content">Price: High to Low</option>
+                                    <option value="newest" className="bg-base-100 text-base-content">Newest</option>
+                                    <option value="size" className="bg-base-100 text-base-content">Size: Large to Small</option>
+                                </select>
+                            </div>
+
+                            {/* Reset / All link */}
+                            {(appliedFilters.location || appliedFilters.type || appliedFilters.status) ? (
+                                <button
+                                    onClick={handleResetFilters}
+                                    className="flex items-center gap-1.5 text-[13px] font-bold text-primary hover:opacity-80 transition-colors cursor-pointer px-3 py-2 rounded-xl border border-primary/20 bg-primary/5"
+                                >
+                                    <RotateCcw size={14} />
+                                    Reset Filters ({filteredProjects.length})
+                                </button>
+                            ) : (
+                                <span className="text-xs font-semibold text-base-content/60 px-2">
+                                    {publicProjects.length} Total Projects
+                                </span>
+                            )}
+                        </div>
                     </div>
 
-                    {/* Project Grid OR Empty State */}
-                    {filteredProjects.length > 0 ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {filteredProjects.map((project) => (
+                    {/* Skeletons OR Project Grid OR Empty State */}
+                    {loading ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+                            {Array.from({ length: 8 }).map((_, idx) => (
                                 <div
-                                    key={project.id}
-                                    className="bg-base-100 border border-base-300 flex flex-col hover:shadow-lg transition-shadow duration-200 rounded-lg overflow-hidden"
+                                    key={idx}
+                                    className="bg-base-100 border border-base-300 flex flex-col justify-between h-full rounded-xl overflow-hidden shadow-sm animate-pulse"
                                 >
-                                    {/* Card image area — Figma: 256px tall, with status pill overlay */}
-                                    <div className="relative h-[200px] lg:h-[256px] overflow-hidden flex-shrink-0">
-                                        <ImageWithSkeleton
-                                            src={project.image}
-                                            alt={project.name}
-                                            className="absolute inset-0 w-full h-full object-cover"
-                                        />
-
-                                        {/* Status pill */}
-                                        <div className="absolute top-3 left-3">
-                                            <span
-                                                className="text-[12px] font-bold text-white px-3 py-1 uppercase tracking-wider rounded-[2px]"
-                                                style={{ backgroundColor: project.statusBg }}
-                                            >
-                                                {project.status}
-                                            </span>
+                                    <div className="skeleton h-[200px] lg:h-[220px] w-full bg-base-300 rounded-none" />
+                                    <div className="p-5 flex flex-col flex-1 gap-3 justify-between">
+                                        <div className="space-y-2">
+                                            <div className="skeleton h-6 w-3/4 bg-base-300 rounded" />
+                                            <div className="flex gap-3">
+                                                <div className="skeleton h-4 w-20 bg-base-300 rounded" />
+                                                <div className="skeleton h-4 w-16 bg-base-300 rounded" />
+                                            </div>
+                                            <div className="skeleton h-12 w-full bg-base-300 rounded mt-2" />
                                         </div>
-                                    </div>
-
-                                    {/* Card body */}
-                                    <div className="flex flex-col flex-1 p-6 gap-3">
-                                        <h3 className="text-[24px] font-semibold text-base-content leading-tight">
-                                            {project.name}
-                                        </h3>
-
-                                        {/* Meta row */}
-                                        <div className="flex items-center gap-4 text-[12px] text-base-content/70">
-                                            <span className="flex items-center gap-1">
-                                                <MapPin size={12} />
-                                                {project.location}
-                                            </span>
-                                            <span className="flex items-center gap-1">
-                                                <Wrench size={12} />
-                                                {project.type}
-                                            </span>
+                                        <div className="space-y-2 pt-2">
+                                            <div className="skeleton h-10 w-full bg-base-300 rounded-lg" />
+                                            <div className="skeleton h-9 w-full bg-base-300 rounded-lg" />
                                         </div>
-
-                                        <p className="text-[16px] font-normal text-base-content/80 leading-relaxed flex-1">
-                                            {project.description}
-                                        </p>
-
-                                        {/* Project Details Link/Btn */}
-                                        <Link
-                                            to={`/project-details/${project.id}`}
-                                            className="w-full flex items-center justify-center gap-2 py-3 border border-base-content/30 text-base-content text-[14px] font-bold hover:bg-base-content hover:text-base-100 transition-colors duration-200 cursor-pointer min-h-[44px] rounded-sm"
-                                        >
-                                            Project Details
-                                        </Link>
-
-                                        {/* View Map Link/Btn */}
-                                        <Link
-                                            to="/gismap"
-                                            className="w-full flex items-center justify-center gap-2 py-2.5 border border-base-300 text-base-content/80 text-[14px] font-bold hover:border-base-content hover:text-base-content transition-colors duration-200 cursor-pointer min-h-[44px] rounded-sm"
-                                        >
-                                            <MapPin size={14} />
-                                            View Map
-                                        </Link>
                                     </div>
                                 </div>
                             ))}
                         </div>
+                    ) : paginatedProjects.length > 0 ? (
+                        <div className="flex flex-col gap-10">
+                            {/* 4 Cards per Row Desktop Grid with Equal Heights */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+                                {paginatedProjects.map((project) => (
+                                    <div
+                                        key={project.id}
+                                        className="bg-base-100 border border-base-300 flex flex-col justify-between h-full hover:shadow-lg transition-all duration-200 rounded-xl overflow-hidden group"
+                                    >
+                                        {/* Card image area */}
+                                        <div className="relative h-[200px] lg:h-[220px] overflow-hidden flex-shrink-0">
+                                            <ImageWithSkeleton
+                                                src={project.image}
+                                                alt={project.name}
+                                                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                            />
+
+                                            {/* Status pill */}
+                                            <div className="absolute top-3 left-3">
+                                                <span
+                                                    className="text-[11px] font-bold text-white px-2.5 py-1 uppercase tracking-wider rounded-[3px] shadow-sm"
+                                                    style={{ backgroundColor: project.statusBg || '#000f22' }}
+                                                >
+                                                    {project.status}
+                                                </span>
+                                            </div>
+
+                                            {/* Price Tag pill */}
+                                            {project.priceRange && (
+                                                <div className="absolute bottom-3 right-3">
+                                                    <span className="text-[11px] font-bold bg-base-100/90 backdrop-blur-sm text-base-content px-2 py-0.5 rounded shadow-sm">
+                                                        {project.priceRange}
+                                                    </span>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* Card body — equal height flex structure */}
+                                        <div className="flex flex-col flex-1 p-5 gap-3 justify-between">
+                                            <div className="flex flex-col gap-2">
+                                                <h3 className="text-[20px] font-bold text-base-content leading-tight line-clamp-1">
+                                                    {project.name}
+                                                </h3>
+
+                                                {/* Meta row */}
+                                                <div className="flex items-center gap-3 text-[12px] text-base-content/70">
+                                                    <span className="flex items-center gap-1 truncate max-w-[130px]">
+                                                        <MapPin size={13} className="text-primary flex-shrink-0" />
+                                                        <span className="truncate">{project.location}</span>
+                                                    </span>
+                                                    <span className="flex items-center gap-1 flex-shrink-0">
+                                                        <Wrench size={13} className="text-secondary flex-shrink-0" />
+                                                        <span>{project.type}</span>
+                                                    </span>
+                                                </div>
+
+                                                <p className="text-[14px] font-normal text-base-content/75 leading-relaxed line-clamp-2">
+                                                    {project.description}
+                                                </p>
+                                            </div>
+
+                                            {/* Actions pinned at bottom */}
+                                            <div className="flex flex-col gap-2 pt-2 border-t border-base-200">
+                                                <Link
+                                                    to={`/project-details/${project.id}`}
+                                                    className="w-full flex items-center justify-center gap-2 py-2.5 bg-primary text-primary-content text-[13px] font-bold hover:opacity-90 transition-opacity duration-200 cursor-pointer min-h-[42px] rounded-lg shadow-sm"
+                                                >
+                                                    Project Details
+                                                    <ArrowRight size={14} />
+                                                </Link>
+
+                                                <Link
+                                                    to="/gismap"
+                                                    className="w-full flex items-center justify-center gap-2 py-2 border border-base-300 text-base-content/80 text-[13px] font-medium hover:bg-base-200 hover:text-base-content transition-colors duration-200 cursor-pointer min-h-[40px] rounded-lg"
+                                                >
+                                                    <MapPin size={13} />
+                                                    View Map
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Pagination Controls */}
+                            {totalPages > 1 && (
+                                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-base-300">
+                                    <span className="text-sm text-base-content/70">
+                                        Showing <span className="font-semibold text-base-content">{(activePage - 1) * ITEMS_PER_PAGE + 1}</span> to <span className="font-semibold text-base-content">{Math.min(activePage * ITEMS_PER_PAGE, sortedProjects.length)}</span> of <span className="font-semibold text-base-content">{sortedProjects.length}</span> properties
+                                    </span>
+
+                                    <div className="flex items-center gap-1.5">
+                                        <button
+                                            type="button"
+                                            disabled={activePage === 1}
+                                            onClick={() => handlePageChange(activePage - 1)}
+                                            className="px-3 py-1.5 rounded-lg border border-base-300 text-xs font-semibold flex items-center gap-1 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-base-200 cursor-pointer transition-colors bg-base-100 text-base-content"
+                                            aria-label="Previous Page"
+                                        >
+                                            <ChevronLeft size={16} />
+                                            <span className="hidden sm:inline">Prev</span>
+                                        </button>
+
+                                        <div className="flex items-center gap-1 mx-1">
+                                            {Array.from({ length: totalPages }).map((_, i) => {
+                                                const pNum = i + 1;
+                                                const isCurrent = pNum === activePage;
+                                                return (
+                                                    <button
+                                                        key={pNum}
+                                                        type="button"
+                                                        onClick={() => handlePageChange(pNum)}
+                                                        className={`w-8 h-8 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
+                                                            isCurrent
+                                                                ? 'bg-primary text-primary-content shadow-sm'
+                                                                : 'hover:bg-base-200 text-base-content border border-base-300 bg-base-100'
+                                                        }`}
+                                                        aria-label={`Page ${pNum}`}
+                                                        aria-current={isCurrent ? "page" : undefined}
+                                                    >
+                                                        {pNum}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+
+                                        <button
+                                            type="button"
+                                            disabled={activePage === totalPages}
+                                            onClick={() => handlePageChange(activePage + 1)}
+                                            className="px-3 py-1.5 rounded-lg border border-base-300 text-xs font-semibold flex items-center gap-1 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-base-200 cursor-pointer transition-colors bg-base-100 text-base-content"
+                                            aria-label="Next Page"
+                                        >
+                                            <span className="hidden sm:inline">Next</span>
+                                            <ChevronRight size={16} />
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     ) : (
                         /* Styled Empty State when search returns no projects */
-                        <div className="bg-base-200 border border-base-300 p-10 sm:p-14 text-center rounded-[8px] flex flex-col items-center justify-center gap-4 my-4">
+                        <div className="bg-base-200 border border-base-300 p-10 sm:p-14 text-center rounded-2xl flex flex-col items-center justify-center gap-4 my-4">
                             <div className="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center">
                                 <Search size={30} />
                             </div>
@@ -411,7 +632,7 @@ const Projects = () => {
                             </p>
                             <button
                                 onClick={handleResetFilters}
-                                className="mt-2 inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-content hover:opacity-90 text-[14px] font-bold rounded-[4px] transition-colors cursor-pointer"
+                                className="mt-2 inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-content hover:opacity-90 text-[14px] font-bold rounded-xl transition-colors cursor-pointer shadow-sm"
                             >
                                 <RotateCcw size={16} />
                                 Reset Filters

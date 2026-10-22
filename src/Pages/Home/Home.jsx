@@ -58,7 +58,7 @@ const MapFrameWithSkeleton = ({ src, title }) => {
 };
 
 const Home = () => {
-    const { systemSettings } = useDatabase();
+    const { systemSettings, publicProjects, loading } = useDatabase();
     const [selectedNeighborhood, setSelectedNeighborhood] = useState("Chashiara");
     const [showRemodeling, setShowRemodeling] = useState(false);
     const [showSiteVisit, setShowSiteVisit] = useState(false);
@@ -152,8 +152,9 @@ const Home = () => {
 
     const selectedNbData = neighborhoods.find(n => n.name === selectedNeighborhood) || neighborhoods[0];
 
-    // Take top 3 projects for the featured preview
-    const featuredProjects = PROJECTS.slice(0, 3);
+    // Take top 4 projects for the featured preview (4 cards per row on desktop)
+    const allProjects = publicProjects && publicProjects.length > 0 ? publicProjects : PROJECTS;
+    const featuredProjects = allProjects.slice(0, 4);
 
     return (
         <div className="flex flex-col min-h-screen bg-base-100 font-[Inter,sans-serif] text-base-content">
@@ -174,10 +175,7 @@ const Home = () => {
             <PartnersGrid />
 
             {/* ══════════════════════════════════════════════════════════════
-             * 3. FEATURED DEVELOPMENTS SECTION (LIMITED PREVIEW OF 3 PROJECTS)
-             * ══════════════════════════════════════════════════════════════ */}
-            {/* ══════════════════════════════════════════════════════════════
-             * 2. FEATURED DEVELOPMENTS SECTION (LIMITED PREVIEW OF 3 PROJECTS)
+             * 3. FEATURED DEVELOPMENTS SECTION (4-CARD GRID WITH EQUAL HEIGHTS & SKELETONS)
              * ══════════════════════════════════════════════════════════════ */}
             <section className="bg-base-100 py-16 lg:py-24 px-6 lg:px-12">
                 <div className="max-w-[1280px] mx-auto flex flex-col gap-12">
@@ -199,64 +197,96 @@ const Home = () => {
                             to="/projects"
                             className="inline-flex items-center gap-2 text-[14px] font-bold text-[#a14000] hover:text-[#5e2200] transition-colors flex-shrink-0"
                         >
-                            View All Projects ({PROJECTS.length})
+                            View All Projects ({allProjects.length})
                             <ArrowRight size={16} />
                         </Link>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {featuredProjects.map((project) => (
-                            <div
-                                key={project.id}
-                                className="bg-base-100 border border-base-300 flex flex-col hover:shadow-lg transition-shadow duration-200 rounded-[4px] overflow-hidden"
-                            >
-                                <div className="relative h-[200px] lg:h-[240px] overflow-hidden flex-shrink-0">
-                                    <img
-                                        src={project.image}
-                                        alt={project.name}
-                                        className="absolute inset-0 w-full h-full object-cover"
-                                    />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+                        {loading ? (
+                            Array.from({ length: 4 }).map((_, idx) => (
+                                <div
+                                    key={idx}
+                                    className="bg-base-100 border border-base-300 flex flex-col justify-between h-full rounded-xl overflow-hidden shadow-sm animate-pulse"
+                                >
+                                    <div className="skeleton h-[200px] lg:h-[220px] w-full bg-base-300 rounded-none" />
+                                    <div className="p-5 flex flex-col flex-1 gap-3 justify-between">
+                                        <div className="space-y-2">
+                                            <div className="skeleton h-6 w-3/4 bg-base-300 rounded" />
+                                            <div className="flex gap-3">
+                                                <div className="skeleton h-4 w-20 bg-base-300 rounded" />
+                                                <div className="skeleton h-4 w-16 bg-base-300 rounded" />
+                                            </div>
+                                            <div className="skeleton h-12 w-full bg-base-300 rounded mt-2" />
+                                        </div>
+                                        <div className="skeleton h-10 w-full bg-base-300 rounded-lg mt-2" />
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            featuredProjects.map((project) => (
+                                <div
+                                    key={project.id}
+                                    className="bg-base-100 border border-base-300 flex flex-col justify-between h-full hover:shadow-lg transition-all duration-200 rounded-xl overflow-hidden group"
+                                >
+                                    <div className="relative h-[200px] lg:h-[220px] overflow-hidden flex-shrink-0">
+                                        <img
+                                            src={project.image}
+                                            alt={project.name}
+                                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                        />
 
-                                    <div className="absolute top-3 left-3">
-                                        <span
-                                            className="text-[12px] font-bold text-white px-3 py-1 uppercase tracking-wider rounded-[2px]"
-                                            style={{ backgroundColor: project.statusBg }}
+                                        <div className="absolute top-3 left-3">
+                                            <span
+                                                className="text-[11px] font-bold text-white px-2.5 py-1 uppercase tracking-wider rounded-[3px] shadow-sm"
+                                                style={{ backgroundColor: project.statusBg || '#000f22' }}
+                                            >
+                                                {project.status}
+                                            </span>
+                                        </div>
+
+                                        {project.priceRange && (
+                                            <div className="absolute bottom-3 right-3">
+                                                <span className="text-[11px] font-bold bg-base-100/90 backdrop-blur-sm text-base-content px-2 py-0.5 rounded shadow-sm">
+                                                    {project.priceRange}
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="flex flex-col flex-1 p-5 gap-3 justify-between">
+                                        <div className="flex flex-col gap-2">
+                                            <h3 className="text-[20px] font-bold text-base-content leading-tight line-clamp-1">
+                                                {project.name}
+                                            </h3>
+
+                                            <div className="flex items-center gap-3 text-[12px] text-base-content/65">
+                                                <span className="flex items-center gap-1 font-medium truncate max-w-[130px]">
+                                                    <MapPin size={13} className="text-primary flex-shrink-0" />
+                                                    <span className="truncate">{project.location}</span>
+                                                </span>
+                                                <span className="flex items-center gap-1 font-medium flex-shrink-0">
+                                                    <Wrench size={13} className="text-secondary flex-shrink-0" />
+                                                    <span>{project.type}</span>
+                                                </span>
+                                            </div>
+
+                                            <p className="text-[14px] font-normal text-base-content/75 leading-relaxed line-clamp-2">
+                                                {project.description}
+                                            </p>
+                                        </div>
+
+                                        <Link
+                                            to={`/project-details/${project.id}`}
+                                            className="w-full flex items-center justify-center gap-2 py-2.5 bg-primary text-primary-content text-[13px] font-bold hover:opacity-90 transition-opacity duration-200 min-h-[42px] mt-2 rounded-lg shadow-sm"
                                         >
-                                            {project.status}
-                                        </span>
+                                            Project Details
+                                            <ArrowRight size={14} />
+                                        </Link>
                                     </div>
                                 </div>
-
-                                <div className="flex flex-col flex-1 p-6 gap-3">
-                                    <h3 className="text-[22px] font-bold text-base-content leading-tight">
-                                        {project.name}
-                                    </h3>
-
-                                    <div className="flex items-center gap-4 text-[12px] text-base-content/65">
-                                        <span className="flex items-center gap-1 font-medium">
-                                            <MapPin size={13} />
-                                            {project.location}
-                                        </span>
-                                        <span className="flex items-center gap-1 font-medium">
-                                            <Wrench size={13} />
-                                            {project.type}
-                                        </span>
-                                    </div>
-
-                                    <p className="text-[15px] font-normal text-base-content/75 leading-relaxed flex-1">
-                                        {project.description}
-                                    </p>
-
-                                    <Link
-                                        to={`/project-details/${project.id}`}
-                                        className="w-full flex items-center justify-center gap-2 py-3 border border-base-300 text-base-content text-[14px] font-bold hover:bg-base-200 transition-colors duration-200 min-h-[44px] mt-2 rounded-[4px]"
-                                    >
-                                        Project Details
-                                        <ArrowRight size={14} />
-                                    </Link>
-                                </div>
-                            </div>
-                        ))}
+                            ))
+                        )}
                     </div>
                 </div>
             </section>
