@@ -19,6 +19,7 @@ import DEFAULT_SYSTEM_SETTINGS from "../../config/defaultSettings";
 const NAV_LINKS = [
     { to: "/projects", label: "Projects" },
     { to: "/gismap",   label: "GIS Map"  },
+    { to: "/blog",     label: "Blog"     },
     { to: "/about",    label: "About"    },
     { to: "/contact",  label: "Contact"  },
 ];

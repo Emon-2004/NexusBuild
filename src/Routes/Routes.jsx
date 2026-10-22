@@ -10,6 +10,8 @@ import About from '../Pages/About/About';
 import Contact from '../Pages/Contact/Contact';
 import ResetPassword from '../Pages/ResetPassword/ResetPassword';
 import ProjectDetails from '../Pages/ProjectDetails/ProjectDetails';
+import Blog from '../Pages/Blog/Blog';
+import BlogPostDetails from '../Pages/Blog/BlogPostDetails';
 import TermsOfService from '../Pages/About/TermsOfService';
 import PrivacyPolicy from '../Pages/About/PrivacyPolicy';
 
@@ -79,6 +81,8 @@ export const router = createBrowserRouter([
             { path: 'gismap',         Component: Gismap },
             { path: 'about',          Component: About },
             { path: 'contact',        Component: Contact },
+            { path: 'blog',           Component: Blog },
+            { path: 'blog/:id',       Component: BlogPostDetails },
             { path: 'reset-password', Component: ResetPassword },
             { path: 'project-details/:id', Component: ProjectDetails },
 
