@@ -20,6 +20,7 @@ import { PROJECTS } from "../../data/projectsData";
 import { useDatabase } from "../../Context/DatabaseContext";
 import { DEFAULT_SYSTEM_SETTINGS } from "../../config/defaultSettings";
 import map_mockup from "../../assets/pics/map_mockup.png";
+import { HeroSlider, LiveStatsCounter, TestimonialsCarousel, FaqAccordion } from "../../Components/Home";
 
 // Public assets matching design system
 const IMG_HERO = "/Frontend/Projects/Hero_Section.svg";
@@ -150,110 +151,17 @@ const Home = () => {
         <div className="flex flex-col min-h-screen bg-base-100 font-[Inter,sans-serif] text-base-content">
 
             {/* ══════════════════════════════════════════════════════════════
-             * 1. HERO SECTION
-             * High-impact hero with brand tagline and direct CTAs to /projects
+             * 1. HERO SLIDER (CONSTRAINED TO 60-70VH WITH INTERACTIVE SLIDER)
              * ══════════════════════════════════════════════════════════════ */}
-            <section className="relative min-h-[550px] lg:min-h-[720px] overflow-hidden flex items-center">
-                {/* Hero background image */}
-                <img
-                    src={systemSettings?.heroImage || IMG_HERO}
-                    alt="Real Estate & Infrastructure"
-                    className="absolute inset-0 w-full h-full object-cover select-none"
-                />
-                {/* Dark overlay using design token #000f22 */}
-                <div className="absolute inset-0 bg-gradient-to-r from-[#000f22]/90 via-[#000f22]/70 to-[#000f22]/30" />
-
-                <div className="relative z-10 w-full max-w-[1280px] mx-auto px-6 lg:px-12 py-16 lg:py-24">
-                    <div className="max-w-[720px] flex flex-col gap-6">
-
-                        {/* Tagline pill badge */}
-                        <div className="inline-flex self-start">
-                            <span className="bg-[#a14000] text-white text-[12px] font-medium px-3.5 py-1.5 uppercase tracking-wider rounded-[2px]">
-                                {systemSettings?.heroTagline || DEFAULT_SYSTEM_SETTINGS.heroTagline}
-                            </span>
-                        </div>
-
-                        {/* Headline */}
-                        <h1 className="text-[32px] sm:text-[44px] lg:text-[56px] font-bold text-white leading-[1.15] tracking-tight">
-                            {systemSettings?.heroHeadline || DEFAULT_SYSTEM_SETTINGS.heroHeadline}
-                        </h1>
-
-                        {/* Subtitle */}
-                        <p className="text-[16px] lg:text-[18px] font-normal text-[#e1e3e4] leading-relaxed max-w-[620px]">
-                            {systemSettings?.heroSubtitle || DEFAULT_SYSTEM_SETTINGS.heroSubtitle}
-                        </p>
-
-                        {/* Action CTAs */}
-                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
-                            <Link
-                                to={systemSettings?.heroCta1Link || DEFAULT_SYSTEM_SETTINGS.heroCta1Link}
-                                className="flex items-center justify-center gap-2.5 px-8 py-4 bg-[#fe762a] hover:bg-[#a14000] text-[#5e2200] hover:text-white text-[14px] font-bold transition-colors duration-200 min-h-[48px] rounded-[4px]"
-                            >
-                                {systemSettings?.heroCta1Text || DEFAULT_SYSTEM_SETTINGS.heroCta1Text}
-                                <ArrowRight size={16} />
-                            </Link>
-
-                            <Link
-                                to={systemSettings?.heroCta2Link || DEFAULT_SYSTEM_SETTINGS.heroCta2Link}
-                                className="flex items-center justify-center gap-2.5 px-8 py-4 border border-[#fe762a] text-white hover:bg-[#fe762a]/10 text-[14px] font-bold transition-all duration-200 min-h-[48px] rounded-[4px]"
-                            >
-                                <Globe size={16} className="text-[#fe762a]" />
-                                {systemSettings?.heroCta2Text || DEFAULT_SYSTEM_SETTINGS.heroCta2Text}
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <HeroSlider systemSettings={systemSettings} />
 
             {/* ══════════════════════════════════════════════════════════════
-             * STATS HIGHLIGHT TICKER BAR
+             * 2. LIVE STATISTICS COUNTER (DATABASE COUNTS & ANIMATED COUNT-UP)
              * ══════════════════════════════════════════════════════════════ */}
-            <section className="bg-[#000f22] border-t border-white/10 py-6 px-6 lg:px-12">
-                <div className="max-w-[1280px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center md:text-left">
-                    <div className="flex flex-col sm:flex-row items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-[#fe762a]/10 flex items-center justify-center text-[#fe762a] flex-shrink-0">
-                            <Building2 size={20} />
-                        </div>
-                        <div>
-                            <span className="text-[24px] font-bold text-white leading-none block">150+</span>
-                            <span className="text-[12px] text-[#768dad] uppercase tracking-wider font-medium">Projects Delivered</span>
-                        </div>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-[#fe762a]/10 flex items-center justify-center text-[#fe762a] flex-shrink-0">
-                            <ShieldCheck size={20} />
-                        </div>
-                        <div>
-                            <span className="text-[24px] font-bold text-white leading-none block">12+ Years</span>
-                            <span className="text-[12px] text-[#768dad] uppercase tracking-wider font-medium">Proven Expertise</span>
-                        </div>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-[#fe762a]/10 flex items-center justify-center text-[#fe762a] flex-shrink-0">
-                            <Award size={20} />
-                        </div>
-                        <div>
-                            <span className="text-[24px] font-bold text-white leading-none block">12k+</span>
-                            <span className="text-[12px] text-[#768dad] uppercase tracking-wider font-medium">Families Housed</span>
-                        </div>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-[#fe762a]/10 flex items-center justify-center text-[#fe762a] flex-shrink-0">
-                            <Globe size={20} />
-                        </div>
-                        <div>
-                            <span className="text-[24px] font-bold text-white leading-none block">100%</span>
-                            <span className="text-[12px] text-[#768dad] uppercase tracking-wider font-medium">GIS Site Accuracy</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <LiveStatsCounter />
 
             {/* ══════════════════════════════════════════════════════════════
-             * 2. FEATURED DEVELOPMENTS SECTION (LIMITED PREVIEW OF 3 PROJECTS)
+             * 3. FEATURED DEVELOPMENTS SECTION (LIMITED PREVIEW OF 3 PROJECTS)
              * ══════════════════════════════════════════════════════════════ */}
             {/* ══════════════════════════════════════════════════════════════
              * 2. FEATURED DEVELOPMENTS SECTION (LIMITED PREVIEW OF 3 PROJECTS)
@@ -589,6 +497,16 @@ const Home = () => {
                     </div>
                 </div>
             </section>
+
+            {/* ══════════════════════════════════════════════════════════════
+             * 6. TESTIMONIALS & CLIENT REVIEWS CAROUSEL
+             * ══════════════════════════════════════════════════════════════ */}
+            <TestimonialsCarousel />
+
+            {/* ══════════════════════════════════════════════════════════════
+             * 7. FAQ ACCORDION
+             * ══════════════════════════════════════════════════════════════ */}
+            <FaqAccordion />
 
             {/* ══════════════════════════════════════════════════════════════
              * 6. DECADES OF TRUST SECTION
