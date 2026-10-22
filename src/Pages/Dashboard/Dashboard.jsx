@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router';
 import {
     LayoutDashboard, BookOpen, HardHat, Headphones,
-    Bell, LogOut, Building2, User, Menu, X as XIcon
+    Bell, LogOut, Building2, User, Menu, X as XIcon, Settings
 } from 'lucide-react';
 import { useAuth } from '../../Context/AuthContext';
 import { ClientDataProvider, useClientData } from '../../Context/ClientDataContext';
@@ -11,9 +11,11 @@ import { DEFAULT_SYSTEM_SETTINGS } from '../../config/defaultSettings';
 import { showToast } from '../../Components/Toast/globalToast';
 
 const NAV_LINKS = [
-    { to: '/dashboard',            label: 'Dashboard',        icon: LayoutDashboard, end: true },
+    { to: '/dashboard',            label: 'Overview',         icon: LayoutDashboard, end: true },
+    { to: '/dashboard/progress',   label: 'My Properties',    icon: Building2 },
     { to: '/dashboard/financials', label: 'Financials',       icon: BookOpen },
-    { to: '/dashboard/progress',   label: 'Projects',         icon: HardHat },
+    { to: '/dashboard/profile',    label: 'Profile',          icon: User },
+    { to: '/dashboard/settings',   label: 'Settings',         icon: Settings },
     { to: '/dashboard/support',    label: 'Support',          icon: Headphones },
 ];
 
@@ -205,7 +207,7 @@ const DashboardContent = () => {
                 </div>
 
                 {/* User Profile Widget (Bottom Sidebar) */}
-                <div className="p-4 bg-[#0A2550]">
+                <div onClick={() => navigate('/dashboard/profile')} className="p-4 bg-[#0A2550] cursor-pointer hover:bg-[#081e42] transition-colors" title="Manage Profile & Settings">
                     <div className="flex items-center gap-4">
                         <div className="w-11 h-11 bg-white text-[#0A2550] rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0 border-2 border-[#A0B2C6]/30">
                             {userProfile.name.charAt(0).toUpperCase()}

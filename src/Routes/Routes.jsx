@@ -19,6 +19,8 @@ import Overview from '../Pages/Dashboard/Overview';
 import FinancialLedger from '../Pages/Dashboard/FinancialLedger';
 import ProjectProgress from '../Pages/Dashboard/ProjectProgress';
 import Support from '../Pages/Dashboard/Support';
+import Profile from '../Pages/Dashboard/Profile';
+import Settings from '../Pages/Dashboard/Settings';
 import ProtectedRoute from '../Components/ProtectedRoute/ProtectedRoute';
 
 // Admin Pages
@@ -92,6 +94,8 @@ export const router = createBrowserRouter([
                     { index: true,              Component: Overview },
                     { path: 'financials',       Component: FinancialLedger },
                     { path: 'progress',         Component: ProjectProgress },
+                    { path: 'profile',          Component: Profile },
+                    { path: 'settings',         Component: Settings },
                     { path: 'support',          Component: Support },
                 ],
             },

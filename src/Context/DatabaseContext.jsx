@@ -722,6 +722,15 @@ export const DatabaseProvider = ({ children }) => {
         }
     };
 
+    const updateLead = async (id, updates) => {
+        const { error } = await supabase.from('leads').update(updates).eq('id', id);
+        if (!error) {
+            setLeads(prev => prev.map(l => l.id === id ? { ...l, ...updates } : l));
+            return true;
+        }
+        return false;
+    };
+
     const addClient = async (client, projectId = null) => {
         const { data, error } = await supabase.from('clients').insert([client]).select();
         if (!error && data) {
@@ -1324,6 +1333,7 @@ export const DatabaseProvider = ({ children }) => {
         addSiteUpdate,
         addLead,
         updateLeadStatus,
+        updateLead,
         addClient,
         updateClient,
         updateProperty,

@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useAdminData } from '../../Context/AdminDataContext';
-import { Search, Filter, Download, Plus, ChevronRight, X, User, CreditCard, Wallet, MessageSquare, CheckCircle, Send, CornerDownRight, Trash2 } from 'lucide-react';
+import { Search, Filter, Download, Plus, X, User, CreditCard, Wallet, MessageSquare, CheckCircle, Send, CornerDownRight, Trash2, ArrowUpDown, ArrowUp, ArrowDown, Eye, Edit2, AlertTriangle, Building, Calendar, Phone, Mail } from 'lucide-react';
+import { Table, Modal, Button, Badge } from '../../Components/UI';
 import { showToast } from '../../Components/Toast/globalToast';
 
 const ClientManagement = () => {
     const { 
-        clients, properties, installments, transactions, tickets, leads,
+        clients, properties, installments, transactions, tickets,
         addClient, updateClient, updateProperty, 
         addInstallment, updateInstallment, deleteInstallment, addTransaction, resolveTicket, deleteTicket, replyToTicket,
         deleteClient, activeProject
@@ -13,6 +14,16 @@ const ClientManagement = () => {
     
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('All');
+    
+    // Table sorting & pagination
+    const [sortKey, setSortKey] = useState('id');
+    const [sortDirection, setSortDirection] = useState('asc');
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 8;
+
+    // View & Delete Modal States
+    const [viewingClient, setViewingClient] = useState(null);
+    const [deletingClient, setDeletingClient] = useState(null);
     
     // Add Client Modal State
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -179,7 +190,9 @@ const ClientManagement = () => {
                     }
                 }
             }
-        } catch(err) {}
+        } catch {
+            // Keep existing date if parsing fails
+        }
 
         addInstallment({
             propertyId: editForm.propertyId,
@@ -226,11 +239,78 @@ const ClientManagement = () => {
         document.body.removeChild(link);
     };
 
-    const filteredClients = clients.filter(c => {
-        const matchesSearch = c.name.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesStatus = statusFilter === 'All' || c.status === statusFilter;
-        return matchesSearch && matchesStatus;
-    });
+    const handleSort = (key) => {
+        if (sortKey === key) {
+            setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
+        } else {
+            setSortKey(key);
+            setSortDirection('asc');
+        }
+        setCurrentPage(1);
+    };
+
+    const handleConfirmDeleteClient = async () => {
+        if (!deletingClient) return;
+        try {
+            await deleteClient(deletingClient.id);
+            showToast(`Client ${deletingClient.name} has been removed.`, 'success', 'Client Deleted');
+            setDeletingClient(null);
+        } catch (err) {
+            showToast('Failed to delete client: ' + (err.message || 'Unknown error'), 'error', 'Error');
+        }
+    };
+
+    const filteredClients = useMemo(() => {
+        return clients.filter(c => {
+            const prop = properties.find(p => p.clientId === c.id);
+            const search = searchTerm.toLowerCase().trim();
+            const matchesSearch = !search ||
+                (c.name && c.name.toLowerCase().includes(search)) ||
+                (c.email && c.email.toLowerCase().includes(search)) ||
+                (c.phone && c.phone.toLowerCase().includes(search)) ||
+                (c.id && c.id.toLowerCase().includes(search)) ||
+                (prop && prop.unitName && prop.unitName.toLowerCase().includes(search));
+            const matchesStatus = statusFilter === 'All' || c.status === statusFilter;
+            return matchesSearch && matchesStatus;
+        });
+    }, [clients, properties, searchTerm, statusFilter]);
+
+    const sortedClients = useMemo(() => {
+        return [...filteredClients].sort((a, b) => {
+            const propA = properties.find(p => p.clientId === a.id);
+            const propB = properties.find(p => p.clientId === b.id);
+            let valA = '';
+            let valB = '';
+            if (sortKey === 'id') {
+                valA = a.id || '';
+                valB = b.id || '';
+            } else if (sortKey === 'name') {
+                valA = (a.name || '').toLowerCase();
+                valB = (b.name || '').toLowerCase();
+            } else if (sortKey === 'unit') {
+                valA = (propA?.unitName || '').toLowerCase();
+                valB = (propB?.unitName || '').toLowerCase();
+            } else if (sortKey === 'valuation') {
+                valA = parseInt(String(propA?.totalValuation || 0).replace(/,/g, '')) || 0;
+                valB = parseInt(String(propB?.totalValuation || 0).replace(/,/g, '')) || 0;
+            } else if (sortKey === 'paid') {
+                valA = parseInt(String(propA?.totalPaid || 0).replace(/,/g, '')) || 0;
+                valB = parseInt(String(propB?.totalPaid || 0).replace(/,/g, '')) || 0;
+            } else if (sortKey === 'due') {
+                valA = parseInt(String(propA?.dueBalance || 0).replace(/,/g, '')) || 0;
+                valB = parseInt(String(propB?.dueBalance || 0).replace(/,/g, '')) || 0;
+            }
+            if (valA < valB) return sortDirection === 'asc' ? -1 : 1;
+            if (valA > valB) return sortDirection === 'asc' ? 1 : -1;
+            return 0;
+        });
+    }, [filteredClients, properties, sortKey, sortDirection]);
+
+    const totalPages = Math.max(1, Math.ceil(sortedClients.length / itemsPerPage));
+    const paginatedClients = useMemo(() => {
+        const start = (currentPage - 1) * itemsPerPage;
+        return sortedClients.slice(start, start + itemsPerPage);
+    }, [sortedClients, currentPage, itemsPerPage]);
 
     // Filtered data for the active client
     const clientInstallments = editForm.propertyId 
@@ -255,7 +335,7 @@ const ClientManagement = () => {
                 if (t.message) msgs.push({ sender: 'client', text: t.message, date: t.date || 'Original Date' });
                 if (t.adminReply || t.admin_reply) msgs.push({ sender: 'admin', text: t.adminReply || t.admin_reply, date: t.date || 'Original Date' });
             }
-        } catch (e) {
+        } catch {
             msgs = [{ sender: 'client', text: t.message, date: t.date }];
         }
         return msgs;
@@ -272,8 +352,6 @@ const ClientManagement = () => {
         setReplyingTicketId(null);
         showToast(`Reply sent to ${selectedClient?.name || 'client'}.${resolve ? ' Ticket resolved.' : ''}`, 'success', 'Reply Sent');
     };
-
-    const totalDue = properties.reduce((sum, p) => sum + (parseInt(String(p.dueBalance).replace(/,/g, '')) || 0), 0);
 
     return (
         <div className="max-w-6xl mx-auto space-y-6 px-4 lg:px-0 text-slate-800">
@@ -307,15 +385,23 @@ const ClientManagement = () => {
             {/* Directory Table */}
             <div className="bg-white border border-[#E2E8F0] rounded-xl shadow-sm overflow-hidden mb-10">
                 <div className="px-6 py-4 border-b border-[#E2E8F0] flex flex-col sm:flex-row gap-3 sm:justify-between sm:items-center bg-slate-50">
-                    <h3 className="text-sm font-bold text-slate-800">Client Directory</h3>
+                    <div>
+                        <h3 className="text-sm font-bold text-slate-800">Client Directory</h3>
+                        <p className="text-[11px] text-slate-500 mt-0.5">
+                            Showing {sortedClients.length === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, sortedClients.length)} of {sortedClients.length} clients
+                        </p>
+                    </div>
                     <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                         <div className="relative w-full sm:w-auto">
                             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                             <input 
                                 type="text" 
-                                placeholder="Search clients..."
+                                placeholder="Search by name, unit, email..."
                                 value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
+                                onChange={(e) => {
+                                    setSearchTerm(e.target.value);
+                                    setCurrentPage(1);
+                                }}
                                 className="pl-9 pr-4 py-1.5 border border-[#E2E8F0] rounded-lg text-xs w-full sm:w-64 outline-none focus:border-[#1A4B9C] bg-white text-slate-800"
                             />
                         </div>
@@ -325,73 +411,167 @@ const ClientManagement = () => {
                     </div>
                 </div>
 
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse min-w-[800px]">
-                    <thead>
-                        <tr className="bg-white border-b border-[#E2E8F0] text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                            <th className="px-6 py-3">User</th>
-                            <th className="px-6 py-3">Client Name</th>
-                            <th className="px-6 py-3">Unit ID</th>
-                            <th className="px-6 py-3">Total Value</th>
-                            <th className="px-6 py-3">Total Paid</th>
-                            <th className="px-6 py-3">Net Due</th>
-                            <th className="px-6 py-3">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-[#E2E8F0]">
-                        {filteredClients.map(client => {
-                            const prop = properties.find(p => p.clientId === client.id);
-                            return (
-                                <tr key={client.id} className="hover:bg-slate-50 transition-colors">
-                                    <td className="px-6 py-3">
-                                        <div className="text-xs text-slate-500 font-bold">USR-{client.id.split('_')[1]}</div>
-                                    </td>
-                                    <td className="px-6 py-3">
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-6 h-6 rounded-full bg-[#E1EFFE] text-[#1A4B9C] flex items-center justify-center font-bold text-[10px]">
-                                                {client.name.charAt(0)}
+                <div className="p-4">
+                    <Table variant="zebra" size="sm" containerClassName="border border-[#E2E8F0]">
+                        <thead>
+                            <tr className="bg-slate-100/70 border-b border-[#E2E8F0] text-[10px] font-bold text-slate-600 uppercase tracking-wider">
+                                <th className="px-4 py-3">
+                                    <button onClick={() => handleSort('id')} className="flex items-center gap-1.5 text-left font-bold hover:text-[#1A4B9C] transition-colors cursor-pointer">
+                                        User {sortKey === 'id' ? (sortDirection === 'asc' ? <ArrowUp size={12} className="text-[#1A4B9C]" /> : <ArrowDown size={12} className="text-[#1A4B9C]" />) : <ArrowUpDown size={12} className="opacity-40" />}
+                                    </button>
+                                </th>
+                                <th className="px-4 py-3">
+                                    <button onClick={() => handleSort('name')} className="flex items-center gap-1.5 text-left font-bold hover:text-[#1A4B9C] transition-colors cursor-pointer">
+                                        Client Name {sortKey === 'name' ? (sortDirection === 'asc' ? <ArrowUp size={12} className="text-[#1A4B9C]" /> : <ArrowDown size={12} className="text-[#1A4B9C]" />) : <ArrowUpDown size={12} className="opacity-40" />}
+                                    </button>
+                                </th>
+                                <th className="px-4 py-3">
+                                    <button onClick={() => handleSort('unit')} className="flex items-center gap-1.5 text-left font-bold hover:text-[#1A4B9C] transition-colors cursor-pointer">
+                                        Unit ID {sortKey === 'unit' ? (sortDirection === 'asc' ? <ArrowUp size={12} className="text-[#1A4B9C]" /> : <ArrowDown size={12} className="text-[#1A4B9C]" />) : <ArrowUpDown size={12} className="opacity-40" />}
+                                    </button>
+                                </th>
+                                <th className="px-4 py-3">
+                                    <button onClick={() => handleSort('valuation')} className="flex items-center gap-1.5 text-left font-bold hover:text-[#1A4B9C] transition-colors cursor-pointer">
+                                        Total Value {sortKey === 'valuation' ? (sortDirection === 'asc' ? <ArrowUp size={12} className="text-[#1A4B9C]" /> : <ArrowDown size={12} className="text-[#1A4B9C]" />) : <ArrowUpDown size={12} className="opacity-40" />}
+                                    </button>
+                                </th>
+                                <th className="px-4 py-3">
+                                    <button onClick={() => handleSort('paid')} className="flex items-center gap-1.5 text-left font-bold hover:text-[#1A4B9C] transition-colors cursor-pointer">
+                                        Total Paid {sortKey === 'paid' ? (sortDirection === 'asc' ? <ArrowUp size={12} className="text-[#1A4B9C]" /> : <ArrowDown size={12} className="text-[#1A4B9C]" />) : <ArrowUpDown size={12} className="opacity-40" />}
+                                    </button>
+                                </th>
+                                <th className="px-4 py-3">
+                                    <button onClick={() => handleSort('due')} className="flex items-center gap-1.5 text-left font-bold hover:text-[#1A4B9C] transition-colors cursor-pointer">
+                                        Net Due {sortKey === 'due' ? (sortDirection === 'asc' ? <ArrowUp size={12} className="text-[#1A4B9C]" /> : <ArrowDown size={12} className="text-[#1A4B9C]" />) : <ArrowUpDown size={12} className="opacity-40" />}
+                                    </button>
+                                </th>
+                                <th className="px-4 py-3 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-[#E2E8F0]">
+                            {paginatedClients.map(client => {
+                                const prop = properties.find(p => p.clientId === client.id);
+                                return (
+                                    <tr key={client.id} className="hover:bg-slate-50 transition-colors">
+                                        <td className="px-4 py-3">
+                                            <div className="text-xs text-slate-500 font-bold font-mono">
+                                                {client.id.includes('_') ? `USR-${client.id.split('_')[1]}` : client.id.slice(0, 8)}
                                             </div>
-                                            <div className="font-bold text-slate-800 text-xs">{client.name}</div>
-                                        </div>
-                                    </td>
-                                    <td className="px-6 py-3">
-                                        {prop ? (
-                                            <div>
-                                                <div className="text-xs font-bold text-slate-800">{prop.unitName}</div>
-                                                <div className="text-[10px] text-slate-500">{prop.projectId === 'p1' ? 'Sardar Tower' : 'Green Valley'}</div>
+                                        </td>
+                                        <td className="px-4 py-3">
+                                            <div className="flex items-center gap-2.5">
+                                                <div className="w-7 h-7 rounded-full bg-[#E1EFFE] text-[#1A4B9C] flex items-center justify-center font-bold text-xs shadow-sm">
+                                                    {client.name?.charAt(0) || 'U'}
+                                                </div>
+                                                <div>
+                                                    <div className="font-bold text-slate-800 text-xs">{client.name}</div>
+                                                    <div className="text-[10px] text-slate-400">{client.email || client.phone}</div>
+                                                </div>
                                             </div>
-                                        ) : (
-                                            <span className="text-slate-400 italic text-xs">Unassigned</span>
-                                        )}
-                                    </td>
-                                    <td className="px-6 py-3 text-xs font-bold text-slate-800">
-                                        {prop ? `৳${formatBDT(prop.totalValuation)}` : '-'}
-                                    </td>
-                                    <td className="px-6 py-3">
-                                        {prop ? (
-                                            <div className="inline-flex items-center px-2 py-0.5 rounded bg-[#DEF7EC] text-[#03543F] text-[10px] font-bold uppercase tracking-wider">
-                                                ৳{formatBDT(prop.totalPaid)}
+                                        </td>
+                                        <td className="px-4 py-3">
+                                            {prop ? (
+                                                <div>
+                                                    <div className="text-xs font-bold text-slate-800">{prop.unitName}</div>
+                                                    <div className="text-[10px] text-slate-500">{prop.projectId === 'p1' ? 'Sardar Tower' : 'Green Valley'}</div>
+                                                </div>
+                                            ) : (
+                                                <span className="text-slate-400 italic text-xs">Unassigned</span>
+                                            )}
+                                        </td>
+                                        <td className="px-4 py-3 text-xs font-bold text-slate-800">
+                                            {prop ? `৳${formatBDT(prop.totalValuation)}` : '-'}
+                                        </td>
+                                        <td className="px-4 py-3">
+                                            {prop ? (
+                                                <Badge variant="success" size="sm">
+                                                    ৳{formatBDT(prop.totalPaid)}
+                                                </Badge>
+                                            ) : '-'}
+                                        </td>
+                                        <td className="px-4 py-3">
+                                            {prop ? (
+                                                <Badge variant={parseInt(String(prop.dueBalance).replace(/,/g, '')) > 0 ? "danger" : "neutral"} size="sm">
+                                                    ৳{formatBDT(prop.dueBalance)}
+                                                </Badge>
+                                            ) : '-'}
+                                        </td>
+                                        <td className="px-4 py-3 text-right">
+                                            <div className="flex items-center justify-end gap-1.5">
+                                                <button 
+                                                    onClick={() => setViewingClient({ client, prop })} 
+                                                    title="View Client Details"
+                                                    className="p-1.5 text-slate-500 hover:text-[#1A4B9C] hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
+                                                >
+                                                    <Eye size={15} />
+                                                </button>
+                                                <button 
+                                                    onClick={() => openEditModal(client, prop)} 
+                                                    title="Manage Client Hub"
+                                                    className="p-1.5 text-slate-500 hover:text-[#1A4B9C] hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
+                                                >
+                                                    <Edit2 size={15} />
+                                                </button>
+                                                <button 
+                                                    onClick={() => setDeletingClient(client)} 
+                                                    title="Delete Client"
+                                                    className="p-1.5 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                                                >
+                                                    <Trash2 size={15} />
+                                                </button>
                                             </div>
-                                        ) : '-'}
-                                    </td>
-                                    <td className="px-6 py-3">
-                                        {prop ? (
-                                            <div className="inline-flex items-center px-2 py-0.5 rounded bg-red-100 text-red-700 text-[10px] font-bold uppercase tracking-wider">
-                                                ৳{formatBDT(prop.dueBalance)}
-                                            </div>
-                                        ) : '-'}
-                                    </td>
-                                    <td className="px-6 py-3">
-                                        <button onClick={() => openEditModal(client, prop)} className="flex items-center gap-1 text-[#1A4B9C] font-bold text-xs hover:underline">
-                                            Manage Hub <ChevronRight size={12} />
-                                        </button>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                            {paginatedClients.length === 0 && (
+                                <tr>
+                                    <td colSpan="7" className="px-6 py-12 text-center text-slate-400 text-sm font-medium">
+                                        No clients matched your search or filter.
                                     </td>
                                 </tr>
-                            );
-                        })}
-                    </tbody>
-                    </table>
+                            )}
+                        </tbody>
+                    </Table>
                 </div>
+
+                {/* Pagination Controls */}
+                {totalPages > 1 && (
+                    <div className="px-6 py-3 border-t border-[#E2E8F0] bg-slate-50 flex items-center justify-between">
+                        <div className="text-xs text-slate-500 font-medium">
+                            Page <span className="font-bold text-slate-700">{currentPage}</span> of <span className="font-bold text-slate-700">{totalPages}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                            <button
+                                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                                disabled={currentPage === 1}
+                                className="px-3 py-1 border border-[#E2E8F0] rounded-lg text-xs font-semibold text-slate-600 bg-white hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors shadow-sm"
+                            >
+                                Previous
+                            </button>
+                            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                                <button
+                                    key={page}
+                                    onClick={() => setCurrentPage(page)}
+                                    className={`w-7 h-7 rounded-lg text-xs font-bold transition-colors cursor-pointer shadow-sm ${
+                                        currentPage === page
+                                            ? 'bg-[#1A4B9C] text-white'
+                                            : 'border border-[#E2E8F0] bg-white text-slate-600 hover:bg-slate-100'
+                                    }`}
+                                >
+                                    {page}
+                                </button>
+                            ))}
+                            <button
+                                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                                disabled={currentPage === totalPages}
+                                className="px-3 py-1 border border-[#E2E8F0] rounded-lg text-xs font-semibold text-slate-600 bg-white hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors shadow-sm"
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* Add Client Modal */}
@@ -973,6 +1153,140 @@ const ClientManagement = () => {
                         </div>
                     </div>
                 </div>
+            )}
+
+            {/* ── View Client Modal ── */}
+            {viewingClient && (
+                <Modal
+                    isOpen={!!viewingClient}
+                    onClose={() => setViewingClient(null)}
+                    title="Client Profile & Unit Overview"
+                    size="lg"
+                    actions={
+                        <div className="flex items-center justify-end gap-2 w-full">
+                            <Button variant="outline" size="sm" onClick={() => setViewingClient(null)}>
+                                Close
+                            </Button>
+                            <Button 
+                                variant="primary" 
+                                size="sm" 
+                                onClick={() => {
+                                    const c = viewingClient.client;
+                                    const p = viewingClient.prop;
+                                    setViewingClient(null);
+                                    openEditModal(c, p);
+                                }}
+                            >
+                                Open Full Manage Hub
+                            </Button>
+                        </div>
+                    }
+                >
+                    <div className="space-y-5">
+                        {/* Header Profile Info */}
+                        <div className="flex items-center gap-3.5 p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                            <div className="w-12 h-12 rounded-full bg-[#1A4B9C] text-white flex items-center justify-center font-extrabold text-lg shadow-sm">
+                                {viewingClient.client.name?.charAt(0) || 'U'}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2">
+                                    <h4 className="font-bold text-slate-800 text-base">{viewingClient.client.name}</h4>
+                                    <Badge variant={viewingClient.client.status === 'Active' ? 'success' : 'neutral'} size="sm">
+                                        {viewingClient.client.status || 'Active'}
+                                    </Badge>
+                                </div>
+                                <div className="text-xs text-slate-500 font-mono mt-0.5">
+                                    ID: {viewingClient.client.id}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Contact & Unit Grid */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div className="p-3 bg-white border border-slate-200 rounded-xl space-y-1.5">
+                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Contact Information</span>
+                                <div className="flex items-center gap-2 text-xs text-slate-700">
+                                    <Mail size={13} className="text-[#1A4B9C]" />
+                                    <span>{viewingClient.client.email || 'No email provided'}</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-xs text-slate-700">
+                                    <Phone size={13} className="text-[#1A4B9C]" />
+                                    <span>{viewingClient.client.phone || 'No phone provided'}</span>
+                                </div>
+                            </div>
+
+                            <div className="p-3 bg-white border border-slate-200 rounded-xl space-y-1.5">
+                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Assigned Unit</span>
+                                {viewingClient.prop ? (
+                                    <>
+                                        <div className="flex items-center gap-2 text-xs font-bold text-slate-800">
+                                            <Building size={13} className="text-[#1A4B9C]" />
+                                            <span>{viewingClient.prop.unitName} ({viewingClient.prop.projectId === 'p1' ? 'Sardar Tower' : 'Green Valley'})</span>
+                                        </div>
+                                        <div className="flex items-center gap-2 text-xs text-slate-500">
+                                            <Calendar size={13} className="text-slate-400" />
+                                            <span>Handover: {viewingClient.prop.handoverDate || 'TBD'}</span>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <span className="text-xs text-slate-400 italic">No unit assigned to this client yet.</span>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Financial Standing Cards */}
+                        {viewingClient.prop && (
+                            <div className="grid grid-cols-3 gap-2.5 pt-1">
+                                <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center">
+                                    <span className="text-[10px] font-bold text-slate-500 uppercase block">Valuation</span>
+                                    <span className="text-xs sm:text-sm font-extrabold text-slate-800 mt-1 block">৳{formatBDT(viewingClient.prop.totalValuation)}</span>
+                                </div>
+                                <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-center">
+                                    <span className="text-[10px] font-bold text-emerald-700 uppercase block">Total Paid</span>
+                                    <span className="text-xs sm:text-sm font-extrabold text-emerald-800 mt-1 block">৳{formatBDT(viewingClient.prop.totalPaid)}</span>
+                                </div>
+                                <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-center">
+                                    <span className="text-[10px] font-bold text-red-700 uppercase block">Net Due</span>
+                                    <span className="text-xs sm:text-sm font-extrabold text-red-800 mt-1 block">৳{formatBDT(viewingClient.prop.dueBalance)}</span>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </Modal>
+            )}
+
+            {/* ── Delete Confirmation Modal ── */}
+            {deletingClient && (
+                <Modal
+                    isOpen={!!deletingClient}
+                    onClose={() => setDeletingClient(null)}
+                    title="Confirm Client Deletion"
+                    size="md"
+                    actions={
+                        <div className="flex items-center justify-end gap-2 w-full">
+                            <Button variant="outline" size="sm" onClick={() => setDeletingClient(null)}>
+                                Cancel
+                            </Button>
+                            <Button variant="danger" size="sm" onClick={handleConfirmDeleteClient}>
+                                Yes, Delete Client
+                            </Button>
+                        </div>
+                    }
+                >
+                    <div className="flex items-start gap-3.5 py-1">
+                        <div className="p-2.5 bg-red-100 text-red-600 rounded-xl flex-shrink-0">
+                            <AlertTriangle size={24} />
+                        </div>
+                        <div>
+                            <h4 className="font-bold text-slate-800 text-sm">
+                                Are you sure you want to delete <span className="text-red-600">{deletingClient.name}</span>?
+                            </h4>
+                            <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
+                                This action will remove the client profile and de-link their property and ledger data. This action cannot be reversed.
+                            </p>
+                        </div>
+                    </div>
+                </Modal>
             )}
 
         </div>
