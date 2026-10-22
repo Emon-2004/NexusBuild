@@ -20,7 +20,15 @@ import { PROJECTS } from "../../data/projectsData";
 import { useDatabase } from "../../Context/DatabaseContext";
 import { DEFAULT_SYSTEM_SETTINGS } from "../../config/defaultSettings";
 import map_mockup from "../../assets/pics/map_mockup.png";
-import { HeroSlider, LiveStatsCounter, TestimonialsCarousel, FaqAccordion } from "../../Components/Home";
+import {
+    HeroSlider,
+    LiveStatsCounter,
+    PartnersGrid,
+    MarketUpdates,
+    TestimonialsCarousel,
+    FaqAccordion,
+    NewsletterBar
+} from "../../Components/Home";
 
 // Public assets matching design system
 const IMG_HERO = "/Frontend/Projects/Hero_Section.svg";
@@ -159,6 +167,11 @@ const Home = () => {
              * 2. LIVE STATISTICS COUNTER (DATABASE COUNTS & ANIMATED COUNT-UP)
              * ══════════════════════════════════════════════════════════════ */}
             <LiveStatsCounter />
+
+            {/* ══════════════════════════════════════════════════════════════
+             * 2.5 STATUTORY ACCREDITATIONS & PARTNERS GRID
+             * ══════════════════════════════════════════════════════════════ */}
+            <PartnersGrid />
 
             {/* ══════════════════════════════════════════════════════════════
              * 3. FEATURED DEVELOPMENTS SECTION (LIMITED PREVIEW OF 3 PROJECTS)
@@ -499,14 +512,24 @@ const Home = () => {
             </section>
 
             {/* ══════════════════════════════════════════════════════════════
-             * 6. TESTIMONIALS & CLIENT REVIEWS CAROUSEL
+             * 6. LATEST MARKET UPDATES & ARCHITECTURAL INSIGHTS
+             * ══════════════════════════════════════════════════════════════ */}
+            <MarketUpdates />
+
+            {/* ══════════════════════════════════════════════════════════════
+             * 7. TESTIMONIALS & CLIENT REVIEWS CAROUSEL
              * ══════════════════════════════════════════════════════════════ */}
             <TestimonialsCarousel />
 
             {/* ══════════════════════════════════════════════════════════════
-             * 7. FAQ ACCORDION
+             * 8. FAQ ACCORDION
              * ══════════════════════════════════════════════════════════════ */}
             <FaqAccordion />
+
+            {/* ══════════════════════════════════════════════════════════════
+             * 9. VIP NEWSLETTER & PRE-LAUNCH ALLOCATION BAR
+             * ══════════════════════════════════════════════════════════════ */}
+            <NewsletterBar />
 
             {/* ══════════════════════════════════════════════════════════════
              * 6. DECADES OF TRUST SECTION
