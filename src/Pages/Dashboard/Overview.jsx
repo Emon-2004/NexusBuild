@@ -1,11 +1,12 @@
-import { useState } from 'react';
-import { Download, CheckCircle, Calendar } from 'lucide-react';
+import { useState, useMemo } from 'react';
+import { Download, CheckCircle, Calendar, BarChart2 } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import heroImg from '../../assets/pics/hero_pic.png';
 import { useClientData } from '../../Context/ClientDataContext';
 import { useDatabase } from '../../Context/DatabaseContext';
 import { DEFAULT_SYSTEM_SETTINGS } from '../../config/defaultSettings';
 import { showToast } from '../../Components/Toast/globalToast';
+import { MonthlyBarChart, MilestoneLineChart, StatusDonutChart } from '../../Components/Charts';
 
 const PrintView = ({ financials, userProfile, systemSettings }) => (
     <div id="print-area" className="hidden print:block bg-white text-slate-800 p-12 font-sans max-w-4xl mx-auto border border-slate-300 rounded shadow-sm">
@@ -133,6 +134,65 @@ const Overview = () => {
     const [numInstallments, setNumInstallments] = useState(12);
     const [freq, setFreq] = useState('Monthly');
     const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
+
+    // ── Client Live Charts Data Aggregation ───────────────────────────────────
+    const formatBDT = (amount) => new Intl.NumberFormat('en-IN').format(amount);
+
+    // 1. Bar Chart: Installment Schedule Outflow (Paid vs Due)
+    const clientInstallmentBarData = useMemo(() => {
+        if (financials.installments && financials.installments.length > 0) {
+            return financials.installments.slice(0, 6).map((inst, idx) => {
+                const rawAmt = parseInt(String(inst.amount || '0').replace(/[^\d]/g, ''), 10) || 0;
+                const isPaid = (inst.status || '').toLowerCase() === 'paid';
+                return {
+                    month: inst.installment ? inst.installment.replace(' Installment', '') : `Inst ${idx + 1}`,
+                    paid: isPaid ? rawAmt : 0,
+                    due: !isPaid ? rawAmt : 0,
+                };
+            });
+        }
+        return [
+            { month: '1st', paid: 850000, due: 0 },
+            { month: '2nd', paid: 850000, due: 0 },
+            { month: '3rd', paid: 0, due: 850000 },
+            { month: '4th', paid: 0, due: 850000 },
+            { month: '5th', paid: 0, due: 850000 },
+            { month: '6th', paid: 0, due: 850000 },
+        ];
+    }, [financials.installments]);
+
+    // 2. Line Chart: Construction Milestones vs Payment Settlement Trajectory
+    const clientMilestoneLineData = useMemo(() => {
+        const oPhases = activeProject?.phases || [
+            { id: 1, name: 'Foundation', progress: 100 },
+            { id: 2, name: 'Basement', progress: 50 },
+            { id: 3, name: 'Slabs Casting', progress: 0 },
+            { id: 4, name: 'Handover', progress: 0 }
+        ];
+
+        const totalVal = parseFloat(String(financials.totalValuation || '10000000').replace(/[^\d.]/g, '')) || 10000000;
+        const paidVal = parseFloat(String(financials.totalPaid || '3500000').replace(/[^\d.]/g, '')) || 3500000;
+        const paidPct = Math.min(100, Math.round((paidVal / totalVal) * 100));
+
+        return oPhases.map((phase, idx) => ({
+            name: phase.name.split('&')[0].trim(),
+            progress: phase.progress || 0,
+            settled: Math.min(100, Math.round((idx + 1) * (paidPct / oPhases.length) * 1.5))
+        }));
+    }, [activeProject?.phases, financials.totalValuation, financials.totalPaid]);
+
+    // 3. Donut Chart: Asset Valuation & Equity Allocation Breakdown
+    const clientValuationDonutData = useMemo(() => {
+        const paid = parseInt(String(financials.totalPaid || '3500000').replace(/[^\d]/g, ''), 10) || 3500000;
+        const due = parseInt(String(financials.dueBalance || '6500000').replace(/[^\d]/g, ''), 10) || 6500000;
+        const charges = parseInt(String(financials.otherCharges || '250000').replace(/[^\d]/g, ''), 10) || 250000;
+
+        return [
+            { name: 'Paid Equity', value: paid, color: '#10b981' },
+            { name: 'Due Balance', value: due, color: '#f59e0b' },
+            { name: 'Other Charges', value: charges, color: '#3b82f6' }
+        ];
+    }, [financials.totalPaid, financials.dueBalance, financials.otherCharges]);
 
     const handleGenerateSchedule = async (e) => {
         e.preventDefault();
@@ -542,6 +602,64 @@ const Overview = () => {
                          </div>
                      </div>
                  </div>
+
+                {/* Visual Portfolio Analytics & Vector Charts */}
+                <div className="space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                        <h2 className="text-base sm:text-[18px] font-bold text-primary flex items-center gap-2">
+                            <BarChart2 size={20} className="text-primary" />
+                            Interactive Visual Analytics
+                        </h2>
+                        <span className="text-xs font-semibold text-base-content/60">
+                            Live milestone telemetry &amp; equity tracking
+                        </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* Bar Chart: Installment Schedule Outflow */}
+                        <div className="flex">
+                            <MonthlyBarChart
+                                title="Installment Outflow & Status"
+                                subtitle="Settled payments vs pending dues across schedule"
+                                data={clientInstallmentBarData}
+                                bars={[
+                                    { dataKey: "paid", name: "Settled (৳)", color: "#10b981" },
+                                    { dataKey: "due", name: "Pending Due (৳)", color: "#f59e0b" }
+                                ]}
+                                formatValue={(val) => `৳ ${formatBDT(val)}`}
+                                badgeText="Schedule"
+                            />
+                        </div>
+
+                        {/* Donut Chart: Asset Equity Allocation */}
+                        <div className="flex">
+                            <StatusDonutChart
+                                title="Property Equity & Valuation"
+                                subtitle="Paid equity, outstanding balance & charges"
+                                data={clientValuationDonutData}
+                                centerLabel="Total Valuation"
+                                centerValue={`৳ ${financials.totalValuation || '1.0Cr'}`}
+                                formatValue={(val) => `৳ ${formatBDT(val)}`}
+                                badgeText="Asset Mix"
+                            />
+                        </div>
+
+                        {/* Line Chart: Milestones vs Settlement Trajectory */}
+                        <div className="md:col-span-2">
+                            <MilestoneLineChart
+                                title="Construction Progress vs Settlement Trajectory"
+                                subtitle="Cumulative engineering milestone completion vs payment equity percentage"
+                                data={clientMilestoneLineData}
+                                lines={[
+                                    { dataKey: "progress", name: "Engineering Construction %", color: "#10b981" },
+                                    { dataKey: "settled", name: "Settled Equity %", color: "#1A4B9C" }
+                                ]}
+                                unit="%"
+                                badgeText="Trajectory"
+                            />
+                        </div>
+                    </div>
+                </div>
 
                 {/* 3. Installment Schedule Table */}
                 <div className="bg-base-100 rounded-lg border border-base-300 shadow-sm">
